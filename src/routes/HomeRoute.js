@@ -12,7 +12,7 @@ import {
 const HomeRoute = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} exact />
+      <Route path="/" element={<Home />} />
       <Route path="/join" element={<Join />} />
     </Routes>
   );
