@@ -1,0 +1,228 @@
+@font-face {
+  font-family: 'NanumPenScript';
+  src: url('../fonts/NanumPenScript-Regular.ttf') format('ttf');
+}
+@font-face {
+  font-family: 'S-Core';
+  src: url('../fonts/SCDream4.otf') format('otf');
+}
+@font-face {
+  font-family: 'NanumSquareBold';
+  src: url('../fonts/NanumSquareB.otf') format('otf');
+}
+@font-face {
+  font-family: 'NanumSquareRegular';
+  font-weight: normal;
+  src: url('../fonts/NanumSquareR.otf') format('otf');
+}
+@font-face {
+  font-family: 'NanumSquareL';
+  src: url('../fonts/NanumSquareL.otf') format('otf');
+}
+@font-face {
+  font-family: 'NanumGothic';
+  src: url('../fonts/NanumGothic.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+}
+/* Gmarket Sans */
+@font-face {
+  font-family: 'GmL';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansLight.woff')
+    format('woff');
+}
+@font-face {
+  font-family: 'GmM';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff')
+    format('woff');
+}
+@font-face {
+  font-family: 'GmB';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff')
+    format('woff');
+}
+/* ELAND Choice */
+@font-face {
+  font-family: 'ElandL';
+  src: url('../fonts/ELANDChoiceL.ttf') format('woff');
+}
+@font-face {
+  font-family: 'ElandM';
+  src: url('../fonts/ELANDChoiceM.ttf') format('woff');
+}
+@font-face {
+  font-family: 'ElandB';
+  src: url('../fonts/ELANDChoiceB.ttf') format('woff');
+}
+/* SCDream */
+@font-face {
+  font-family: 'SCD4';
+  src: url('../fonts/SCDream4.otf') format('woff');
+}
+@font-face {
+  font-family: 'SCD5';
+  src: url('../fonts/SCDream5.otf') format('woff');
+}
+/* Noto Sans KR */
+@font-face {
+  font-family: 'NotoT';
+  src: url('../fonts/NotoSansKR-Thin.woff2') format('woff2'),
+    url('../fonts/NotoSansKR-Thin.woff') format('woff'),
+    url('../fonts/NotoSansKR-Thin.otf') format('truetype');
+}
+@font-face {
+  font-family: 'NotoL';
+  src: url('../fonts/NotoSansKR-Light.woff2') format('woff2'),
+    url('../fonts/NotoSansKR-Light.woff') format('woff'),
+    url('../fonts/NotoSansKR-Light.otf') format('truetype');
+}
+@font-face {
+  font-family: 'NotoR';
+  src: url('../fonts/NotoSansKR-Regular.woff2') format('woff2'),
+    url('../fonts/NotoSansKR-Regular.woff') format('woff'),
+    url('../fonts/NotoSansKR-Regular.otf') format('truetype');
+}
+@font-face {
+  font-family: 'NotoM';
+  src: url('../fonts/NotoSansKR-Medium.woff2') format('woff2'),
+    url('../fonts/NotoSansKR-Medium.woff') format('woff'),
+    url('../fonts/NotoSansKR-Medium.otf') format('truetype');
+}
+@font-face {
+  font-family: 'NotoB';
+  src: url('../fonts/NotoSansKR-Bold.woff2') format('woff2'),
+    url('../fonts/NotoSansKR-Bold.woff') format('woff'),
+    url('../fonts/NotoSansKR-Bold.otf') format('truetype');
+}
+@font-face {
+  font-family: 'NotoBL';
+  src: url('../fonts/NotoSansKR-Black.woff2') format('woff2'),
+    url('../fonts/NotoSansKR-Black.woff') format('woff'),
+    url('../fonts/NotoSansKR-Black.otf') format('truetype');
+}
+/* 사전예약 */
+@font-face {
+  font-family: 'SpHsL';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SpoqaHanSansNeo-Light.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SpHsR';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SpoqaHanSansNeo-Regular.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SpHsM';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SpoqaHanSansNeo-Medium.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SpHsB';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SpoqaHanSansNeo-Bold.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GoGoB';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicBold.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'GoGoM';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'WelB';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/OTWelcomeBA.woff2')
+    format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+/* 컨시어지 */
+
+@font-face {
+  font-family: 'OTWelcomeBA';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/OTWelcomeBA.woff2')
+    format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'OTWelcomeRA';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/OTWelcomeRA.woff2')
+    format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'OTWelcomeBA';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/OTWelcomeBA.woff2')
+    format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'OTWelcomeRA';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/OTWelcomeRA.woff2')
+    format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Jal_Haru';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10-21@1.0/Jal_Haru.woff')
+    format('woff');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'PretendardL';
+  src: url('../fonts/Pretendard-Light.woff') format('woff');
+  src: url('../fonts/Pretendard-Light.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'PretendardR';
+  src: url('../fonts/Pretendard-Regular.woff') format('woff');
+  src: url('../fonts/Pretendard-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'PretendardB';
+  src: url('../fonts/Pretendard-Bold.woff') format('woff');
+  src: url('../fonts/Pretendard-Bold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'PretendardM';
+  src: url('../fonts/Pretendard-Medium.woff') format('woff');
+  src: url('../fonts/Pretendard-Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'PretendardEL';
+  src: url('../fonts/Pretendard-ExtraLight.woff') format('woff');
+  src: url('../fonts/Pretendard-ExtraLight.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'pass';
+  font-style: normal;
+  font-weight: 400;
+  src: url(data:application/font-woff;charset=utf-8;base64,d09GRgABAAAAAATsAA8AAAAAB2QAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABGRlRNAAABWAAAABwAAAAcg9+z70dERUYAAAF0AAAAHAAAAB4AJwANT1MvMgAAAZAAAAA/AAAAYH7AkBhjbWFwAAAB0AAAAFkAAAFqZowMx2N2dCAAAAIsAAAABAAAAAQAIgKIZ2FzcAAAAjAAAAAIAAAACAAAABBnbHlmAAACOAAAALkAAAE0MwNYJ2hlYWQAAAL0AAAAMAAAADYPA2KgaGhlYQAAAyQAAAAeAAAAJAU+ATJobXR4AAADRAAAABwAAAAcCPoA6mxvY2EAAANgAAAAEAAAABAA5gFMbWF4cAAAA3AAAAAaAAAAIAAKAE9uYW1lAAADjAAAARYAAAIgB4hZ03Bvc3QAAASkAAAAPgAAAE5Ojr8ld2ViZgAABOQAAAAGAAAABuK7WtIAAAABAAAAANXulPUAAAAA1viLwQAAAADW+JM4eNpjYGRgYOABYjEgZmJgBEI2IGYB8xgAA+AANXjaY2BifMg4gYGVgYVBAwOeYEAFjMgcp8yiFAYHBl7VP8wx/94wpDDHMIoo2DP8B8kx2TLHACkFBkYA8/IL3QB42mNgYGBmgGAZBkYGEEgB8hjBfBYGDyDNx8DBwMTABmTxMigoKKmeV/3z/z9YJTKf8f/X/4/vP7pldosLag4SYATqhgkyMgEJJnQFECcMOGChndEAfOwRuAAAAAAiAogAAQAB//8AD3jaY2BiUGJgYDRiWsXAzMDOoLeRkUHfZhM7C8Nbo41srHdsNjEzAZkMG5lBwqwg4U3sbIx/bDYxgsSNBRUF1Y0FlZUYBd6dOcO06m+YElMa0DiGJIZUxjuM9xjkGRhU2djZlJXU1UDQ1MTcDASNjcTFQFBUBGjYEkkVMJCU4gcCKRTeHCk+fn4+KSllsJiUJEhMUgrMUQbZk8bgz/iA8SRR9qzAY087FjEYD2QPDDAzMFgyAwC39TCRAAAAeNpjYGRgYADid/fqneL5bb4yyLMwgMC1H90HIfRkCxDN+IBpFZDiYGAC8QBbSwuceNpjYGRgYI7594aBgcmOAQgYHzAwMqACdgBbWQN0AAABdgAiAAAAAAAAAAABFAAAAj4AYgI+AGYB9AAAAAAAKgAqACoAKgBeAJIAmnjaY2BkYGBgZ1BgYGIAAUYGBNADEQAFQQBaAAB42o2PwUrDQBCGvzVV9GAQDx485exBY1CU3PQgVgIFI9prlVqDwcZNC/oSPoKP4HNUfQLfxYN/NytCe5GwO9/88+/MBAh5I8C0VoAtnYYNa8oaXpAn9RxIP/XcIqLreZENnjwvyfPieVVdXj2H7DHxPJH/2/M7sVn3/MGyOfb8SWjOGv4K2DRdctpkmtqhos+D6ISh4kiUUXDj1Fr3Bc/Oc0vPqec6A8aUyu1cdTaPZvyXyqz6Fm5axC7bxHOv/r/dnbSRXCk7+mpVrOqVtFqdp3NKxaHUgeod9cm40rtrzfrt2OyQa8fppCO9tk7d1x0rpiQcuDuRkjjtkHt16ctbuf/radZY52/PnEcphXpZOcofiEZNcQAAeNpjYGIAg///GBgZsAF2BgZGJkZmBmaGdkYWRla29JzKggxD9tK8TAMDAxc2D0MLU2NjENfI1M0ZACUXCrsAAAABWtLiugAA)
+    format('woff');
+}
