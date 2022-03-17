@@ -7,7 +7,7 @@ import Search from '../../components/home/Search';
 const Home = () => {
 
   return (
-    <Container>ddddd
+    <Container>
       <Header />
       <Search />
     </Container>
@@ -15,7 +15,7 @@ const Home = () => {
 }
 
 const Container = styled.div`
-  width: 90%;
+  width: 100%;
   height: 100%;
 `;
 
