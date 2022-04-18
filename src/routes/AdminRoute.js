@@ -10,7 +10,7 @@ import {
 import { 
   AdminHome, // 관리자 홈
   AdminInfo  // 관리자정보
-} from "../screens/admin";
+} from "../pages/admin";
 
 const AdminRoute = () => {
   return (

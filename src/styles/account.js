@@ -104,8 +104,8 @@ export const LogoWrap = styled.div`
   justify-content: center;
   cursor: pointer;
   img {
-    margin: 30px 0;
-    max-width: 130px;
+    margin: 20px 0;
+    max-width: 200px;
   }
 `;
 

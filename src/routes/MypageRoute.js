@@ -10,7 +10,7 @@ import {
 import { 
   MypageHome, // 마이페이지 홈
   MyInfo      // 내정보
-} from "../screens/mypage";
+} from "../pages/mypage";
 
 const MypageRoute = () => {
   return (

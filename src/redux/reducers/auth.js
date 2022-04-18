@@ -3,17 +3,15 @@ import * as types from '../actions/AuthTypes';
 const initialState = {
   login: {
     status: 'INIT',
+    result: '',
+    message: '',
   },
-  saveUrlState: false,
-  saveUrl: '',
-  device: '',
   authStatus: {
     isLogIn: false,
     saveId: '',
     userId: '',
+    userName: '',
     userAuth: '',
-    cmsState: 0,
-    userInfo: [{ data: { token: null } }],
   },
 };
 
@@ -38,22 +36,20 @@ export default function auth(state = initialState, action) {
       };
 
     case types.AUTH_LOGIN_SUCCESS:
+      console.log('성공');
       return {
         ...state,
         login: {
           status: 'SUCCESS',
-          userId: action.userId,
-          userAuth: action.userAuth,
-          userInfo: action.userInfo,
-          idSave: action.userId,
+          result: action.result,
+          message: action.message,
         },
         authStatus: {
           ...state.status,
           isLogIn: true,
           userId: action.userId,
+          userName: action.userName,
           userAuth: action.userAuth,
-          userInfo: action.userInfo,
-          cmsState: 0,
         },
       };
 
@@ -62,11 +58,12 @@ export default function auth(state = initialState, action) {
         ...state,
         login: {
           status: 'FAILURE',
+          result: action.result,
+          message: action.message,
         },
         authStatus: {
           ...state.authStatus,
           isLogIn: false,
-          userInfo: action.userInfo,
         },
       };
     /* LOGOUT */
@@ -92,44 +89,16 @@ export default function auth(state = initialState, action) {
         login: {
           status: 'SUCCESS',
           userId: action.userId,
+          userName: action.userName,
           userAuth: action.userAuth,
-          userInfo: action.userInfo,
         },
         authStatus: {
           ...state.authStatus,
           isLogIn: true,
           userId: action.userId,
+          userName: action.userName,
           userAuth: action.userAuth,
-          userInfo: action.userInfo,
         },
-      };
-
-    // CMS 얼럿 상태
-    case types.SET_CMS_STATE:
-      return {
-        ...state,
-        authStatus: {
-          ...state.authStatus,
-          cmsState: action.cmsState,
-        },
-      };
-    /* 로그인전 페이지 확인 */
-    case types.AUTH_SAVE_URL:
-      return {
-        ...state,
-        saveUrl: action.saveUrl,
-      };
-    case types.AUTH_SAVE_URL_STATE:
-      return {
-        ...state,
-        saveUrlState: action.saveUrlState,
-      };
-
-    // 로그인전 디바이스 종류 확인
-    case types.AUTH_SAVE_DEVICE_ASSORT:
-      return {
-        ...state,
-        device: action.device,
       };
     /* DEFAULT */
     default:

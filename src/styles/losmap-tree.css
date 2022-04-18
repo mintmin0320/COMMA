@@ -1,8 +1,0 @@
-.treeview > .toggle {
-  pointer-events: all;
-  cursor: pointer;
-}
-.treeview > .toggle:hover {
-  color: #666666;
-  fill: #666666;
-}

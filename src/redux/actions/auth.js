@@ -5,21 +5,15 @@ import {
   AUTH_LOGIN,
   AUTH_LOGIN_FAILURE,
   AUTH_LOGIN_SUCCESS,
-  AUTH_SAVE_URL,
-  AUTH_SAVE_URL_STATE,
-  AUTH_SAVE_DEVICE_ASSORT,
   // AUTH_LOGOUT,
   ID_SAVE,
-  SET_CMS_STATE,
 } from './AuthTypes';
-
 import _axios from '../../utils/axios';
-import { accountCertify, accountUserInfo } from './account';
 
 /* *************************** 로그인 ************************************* */
 export function idSave(userId) {
   // Storage 저장
-  localStorage.setItem('userId', userId);
+  sessionStorage.setItem('userId', userId);
 
   return {
     type: ID_SAVE,
@@ -33,65 +27,11 @@ export function init() {
   };
 }
 
-export function saveUrl(saveUrl) {
-  return {
-    type: AUTH_SAVE_URL,
-    saveUrl: saveUrl,
-  };
-}
-
-export function saveUrlState(saveUrlState) {
-  return {
-    type: AUTH_SAVE_URL_STATE,
-    saveUrlState: saveUrlState,
-  };
-}
-
-export function saveDeviceAssort(device) {
-  return {
-    type: AUTH_SAVE_DEVICE_ASSORT,
-    device: device,
-  };
-}
-
-export function loginRequest(userName, userHpNo, device, ip, kakao) {
+export function loginRequest(userId, userPw) {
   return (dispatch) => {
     dispatch(login());
 
-    const url = '/api/account/get_login.php';
-    const params = {
-      userName: userName,
-      userHpNo: userHpNo,
-      device: device,
-      connectIP: ip,
-    };
-
-    // API REQUEST
-    return _axios(url, params)
-      .then((response) => {
-        dispatch(accountUserInfo(userName, userHpNo, device, ip));
-
-        if (response.certifyStatus === 'N' && !kakao) {
-          // 새로운 기기 인증 && 카카오로그인 x
-          dispatch(accountCertify(response));
-          dispatch(loginFailure());
-        } else {
-          // SUCCEED
-          dispatch(loginSuccess(response));
-        }
-      })
-      .catch((error) => {
-        // FAILED
-        dispatch(loginFailure());
-      });
-  };
-}
-
-export function adminLoginRequest(userId, userPw) {
-  return (dispatch) => {
-    dispatch(login());
-
-    const url = '/api/admin/get_login.php';
+    const url = '/api/account/get_login_info.php';
     const params = {
       userId: userId,
       userPw: userPw,
@@ -118,47 +58,31 @@ export function login() {
   };
 }
 
-export function setCmsState() {
-  return {
-    type: SET_CMS_STATE,
-    cmsState: 1,
-  };
-}
-
-export function loginSuccess(userInfo) {
-  if (userInfo.result === '0') {
+export function loginSuccess(response) {
+  if (response.result === '0') {
     // 로컬에 저장
     let storageData = {
       isLogIn: true,
-      userId: userInfo.userId,
-      userAuth: userInfo.userAuth,
-      userInfo: {
-        userId: userInfo.userId,
-        userName: encodeURIComponent(userInfo.userName),
-        userAuth: userInfo.userAuth,
-        token: userInfo.token,
-
-        groupCode: userInfo.groupCode,
-        infoStatus: userInfo.infoStatus,
-        mdName: encodeURIComponent(userInfo.mdName),
-        organizeName: encodeURIComponent(userInfo.organizeName),
-        payType: userInfo.payType,
-        cmsStatus: userInfo.cmsStatus,
-      },
+      userId: response.data.userId,
+      userName: encodeURIComponent(response.data.userName),
+      userAuth: response.data.userAuth,
     };
 
-    localStorage.setItem('user', btoa(JSON.stringify(storageData)));
+    sessionStorage.setItem('user', btoa(JSON.stringify(storageData)));
 
     return {
       type: AUTH_LOGIN_SUCCESS,
-      userId: userInfo.userId,
-      userAuth: userInfo.userAuth,
-      userInfo: userInfo,
+      result: response.result,
+      message: response.message,
+      userId: response.data.userId,
+      userName: response.data.userName,
+      userAuth: response.data.userAuth,
     };
   } else {
     return {
       type: AUTH_LOGIN_FAILURE,
-      userInfo: userInfo,
+      result: response.result,
+      message: response.message,
     };
   }
 }
@@ -180,38 +104,23 @@ export function getStatusRequest() {
   return (dispatch) => {
     dispatch(getStatus());
 
-    let storageData = localStorage.getItem('user');
+    let storageData = sessionStorage.getItem('user');
 
     if (storageData === null) {
       dispatch(getStatusFailure());
     } else {
       storageData = JSON.parse(atob(storageData));
-
-      const userInfo = {
-        userId: storageData.userInfo.userId,
-        userName: decodeURIComponent(storageData.userInfo.userName),
-        userAuth: storageData.userInfo.userAuth,
-        token: storageData.userInfo.token,
-
-        groupCode: storageData.userInfo.groupCode,
-        infoStatus: storageData.userInfo.infoStatus,
-        mdName: decodeURIComponent(storageData.userInfo.mdName),
-        organizeName: decodeURIComponent(storageData.userInfo.organizeName),
-        payType: storageData.userInfo.payType,
-        cmsStatus: storageData.userInfo.cmsStatus,
-      };
-
-      dispatch(getStatusSuccess(storageData.userId, storageData.userAuth, userInfo));
+      dispatch(getStatusSuccess(storageData.userId, decodeURIComponent(storageData.userName), storageData.userAuth));
     }
   };
 }
 
-export function getStatusSuccess(userId, userAuth, userInfo) {
+export function getStatusSuccess(userId, userName, userAuth) {
   return {
     type: AUTH_GET_STATUS_SUCCESS,
     userId,
+    userName,
     userAuth,
-    userInfo,
   };
 }
 
