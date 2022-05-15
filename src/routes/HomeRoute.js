@@ -16,14 +16,17 @@ import {
 const AccountRoute = () => {
   return (
     <Routes>
-      <Route 
-        path="/" 
-        element={
-          <PrivateRoute>
-            <Home />
-          </PrivateRoute>
-        }
-      />
+      {
+            <Route 
+            path="/" 
+            element={
+              <PrivateRoute>
+                <Home />
+              </PrivateRoute>
+            }
+          />
+      }
+      {/* <Route path="/" element={<Home />} /> */}
       <Route path="/login" element={<Login />} />
       <Route path="/join" element={<Join />} />
       <Route path="/findId" element={<FindId />} />

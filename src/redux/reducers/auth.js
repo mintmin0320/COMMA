@@ -54,6 +54,7 @@ export default function auth(state = initialState, action) {
       };
 
     case types.AUTH_LOGIN_FAILURE:
+      console.log('성공d');
       return {
         ...state,
         login: {
@@ -105,3 +106,4 @@ export default function auth(state = initialState, action) {
       return state;
   }
 }
+

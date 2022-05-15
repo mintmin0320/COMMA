@@ -31,10 +31,11 @@ export function loginRequest(userId, userPw) {
   return (dispatch) => {
     dispatch(login());
 
-    const url = '/api/account/get_login_info.php';
+    // const url = '/api/account/get_login_info.php';
+    const url = '/signIn';
     const params = {
-      userId: userId,
-      userPw: userPw,
+      user_id: userId,
+      user_password: userPw,
     };
 
     // API REQUEST
@@ -44,7 +45,7 @@ export function loginRequest(userId, userPw) {
         dispatch(loginSuccess(response));
       })
       .catch((error) => {
-        // console.log(error)
+        console.log(error)
 
         // FAILED
         dispatch(loginFailure());
@@ -59,30 +60,31 @@ export function login() {
 }
 
 export function loginSuccess(response) {
-  if (response.result === '0') {
+    if (response.result) {
+      
     // 로컬에 저장
     let storageData = {
       isLogIn: true,
-      userId: response.data.userId,
-      userName: encodeURIComponent(response.data.userName),
-      userAuth: response.data.userAuth,
+      userId: response.user_Id,
+      // userName: encodeURIComponent(response.data.userName), //한글 암호화
+      // userAuth: response.data.userAuth,
     };
-
+    console.log(response.result);
     sessionStorage.setItem('user', btoa(JSON.stringify(storageData)));
 
     return {
       type: AUTH_LOGIN_SUCCESS,
       result: response.result,
-      message: response.message,
-      userId: response.data.userId,
-      userName: response.data.userName,
-      userAuth: response.data.userAuth,
+      // message: response.message,
+      // userId: response.data.userId,
+      // userName: response.data.userName,
+      // userAuth: response.data.userAuth,
     };
   } else {
     return {
       type: AUTH_LOGIN_FAILURE,
-      result: response.result,
-      message: response.message,
+      // result: response.result,
+      // message: response.message,
     };
   }
 }
@@ -147,3 +149,4 @@ export const logout = () => async (dispatch) => {
   // 새로고침
   window.location.reload();
 };
+

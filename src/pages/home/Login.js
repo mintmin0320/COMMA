@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 // 개발자
 import { idSave, init, loginRequest } from '../../redux/actions/auth';
 import _axios from '../../utils/axios';
+import Axios from 'axios';
 //css
 import '../../styles/kendo.css';
 import {
@@ -22,7 +23,7 @@ import CommonButton from '../../components/common/Button';
 import CommonInput from '../../components/common/CommonInput';
 //icon
 import bang from '../../images/account/bang.svg';
-import Logo from '../../images/logo.png';
+import Logo from '../../images/blue_bg.svg';
 
 const Login = (props) => {
   const dispatch = useDispatch();
@@ -50,7 +51,10 @@ const Login = (props) => {
 
   // 입력값이 변할 때
   const _handleInputChange = (e) => {
-    setState({ ...state, [e.target.name]: e.target.value });
+    setState({ 
+      ...state, 
+      [e.target.name]: e.target.value 
+    });
     setRed(false);
     setError('');
   };
@@ -59,9 +63,9 @@ const Login = (props) => {
   const _handleSubmit = (e) => {
     e.preventDefault();
 
-    if (state.idCheck) {
-      dispatch(idSave(btoa(state.userId)));
-    }
+    // if (state.idCheck) {
+    //   dispatch(idSave(btoa(state.userId)));
+    // }
 
     dispatch(loginRequest(state.userId, state.userPw));
   };
@@ -86,7 +90,7 @@ const Login = (props) => {
         ...state,
         success: true,
         visibleDialog: true,
-        message: auth.login.message,
+        // message: auth.login.message,
       });
 
       setTimeout(() => {
@@ -127,7 +131,7 @@ const Login = (props) => {
             inputtype="text"
             width="100%"
             height="60px"
-            margin="20px 0"
+            margin="0 0"
             value={state.userId}
             maxLength={20}
             autoComplete="off"
@@ -151,7 +155,7 @@ const Login = (props) => {
             titlename="비밀번호"
             width="100%"
             height="60px"
-            margin="0 0 40px 0"
+            margin="0 0 0 0"
             placeholder="비밀번호를 입력해주세요."
             src={red ? bang : ''}
             error={error}

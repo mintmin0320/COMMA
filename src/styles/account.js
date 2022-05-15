@@ -243,3 +243,19 @@ export const SmallText = styled.div`
   font-size: 12px;
   text-align: right;
 `;
+
+export const Validation = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 7px 0 9px 0;
+`;
+
+export const CountDown = styled.div`
+  display: flex;
+  justify-content: right;
+  width: 100%;
+  margin: 7px 0 9px 0;
+  color: blue;
+`;
+
