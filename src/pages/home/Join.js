@@ -53,17 +53,13 @@ const Join = () => {
   const _handleButtonClick = (e) => {
     e.preventDefault();
     _postEmail();
-    // setState({
-    //   ...state,
-    //   codeCheck:true,
-    // });
   };
 
   // 저장npm
   const _postEmail = async () => {
     const url = '/mailAuthentication'; 
     const params = {
-      address: state.email,
+      address: state.email + '@m365.dongyang.ac.kr',
     };
     console.log(params);
     const response = await _axios(url, params);
@@ -84,8 +80,8 @@ const Join = () => {
         result: response.result,
         message: response.message,
       })    
+      alert('발급 실패!');
     }
-    alert('발급 실패!');
   };
 
    // 이메일 인증하기 클릭
@@ -321,6 +317,58 @@ const Join = () => {
     });
   };
 
+  // const Timer = () => {
+  //   // const time = useRef(60);
+  //   // const timerId = useRef(null);
+  //   useEffect(() => {
+  //     const countdown = setInterval(() => {
+  //       if (parseInt(state.sec) > 0) {
+  //         setState({
+  //           ...state,
+  //           sec: parseInt(state.sec) - 1,
+  //         });
+  //       }
+
+  //       if (parseInt(state.sec) === 0) {
+  //         if (parseInt(state.min) === 0) {
+  //           clearInterval(countdown);
+  //         } else {
+  //           setState({
+  //             ...state,
+  //             min: parseInt(state.min) - 1,
+  //             sec: 59,
+  //           });
+  //         }
+  //       }
+  //     }, 1000);
+  //     return () => clearInterval(countdown);
+  //   }, [state.min, state.sec]);
+  // }
+  
+
+  // //   useEffect(() => {
+  // //     timerId.current = setInterval(() => {
+  // //       setState({
+  // //         min: parseInt(time.current / 60),
+  // //         sec: time.current % 60,
+  // //       });
+  // //       time.current -= 1;
+  // //     }, 1000);
+  // //     return () => clearInterval(timerId.current);
+  // // }, []);
+  // //   useEffect(() => {
+  // //     if(time.current === 0){
+  // //       console.log("타임 아웃");
+  // //       clearInterval(timerId.current);
+  // //       setState({
+  // //         ...state,
+  // //         })
+  // //       }
+  // //     }, [state.sec]);
+  // // }
+
+ 
+
   return (
     <Container>
     <Wrap>
@@ -406,6 +454,10 @@ const Join = () => {
         <CountDown>
           {state.count}/5
         </CountDown>)}
+        {!state.emailCheck && state.codeCheck && (
+        <h4>
+          {state.min +':' + state.sec}
+        </h4>)}
         {state.emailCheck && !state.success && (
         <Input
           className="input-id"
