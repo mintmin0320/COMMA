@@ -82,7 +82,7 @@ export const Wrap = styled.div`
   }
 
   @media ${({ theme }) => theme.device.desktop} {
-    width: 335px;
+    width: 500px;
     margin: 150px 0 310px;
     align-items: center;
     padding: 0 !important;
@@ -107,6 +107,11 @@ export const LogoWrap = styled.div`
     margin: 20px 0;
     max-width: 200px;
   }
+`;
+
+export const IdBox = styled.div`
+  display: flex;
+  // justify-content: center;
 `;
 
 export const LockLogoWrap = styled.div`
@@ -258,4 +263,6 @@ export const CountDown = styled.div`
   margin: 7px 0 9px 0;
   color: blue;
 `;
+
+
 

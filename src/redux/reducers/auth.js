@@ -8,9 +8,9 @@ const initialState = {
   },
   authStatus: {
     isLogIn: false,
-    saveId: '',
+    // saveId: '',
     userId: '',
-    userName: '',
+    userPw: '',
     userAuth: '',
   },
 };
@@ -54,7 +54,7 @@ export default function auth(state = initialState, action) {
       };
 
     case types.AUTH_LOGIN_FAILURE:
-      console.log('성공d');
+      console.log('실패');
       return {
         ...state,
         login: {
@@ -69,6 +69,7 @@ export default function auth(state = initialState, action) {
       };
     /* LOGOUT */
     case types.AUTH_LOGOUT:
+      console.log('로그아웃');
       return {
         ...state,
         login: {
@@ -78,8 +79,9 @@ export default function auth(state = initialState, action) {
           ...state.authStatus,
           isLogIn: false,
           userId: '',
-          userAuth: '',
-          userInfo: [{ data: { token: null } }],
+          userPw: '',
+          // userAuth: '',
+          // userInfo: [{ data: { token: null } }],
         },
       };
 
@@ -90,15 +92,15 @@ export default function auth(state = initialState, action) {
         login: {
           status: 'SUCCESS',
           userId: action.userId,
-          userName: action.userName,
-          userAuth: action.userAuth,
+          // userName: action.userName,
+          // userAuth: action.userAuth,
         },
         authStatus: {
           ...state.authStatus,
           isLogIn: true,
           userId: action.userId,
-          userName: action.userName,
-          userAuth: action.userAuth,
+          // userName: action.userName,
+          // userAuth: action.userAuth,
         },
       };
     /* DEFAULT */

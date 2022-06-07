@@ -9,12 +9,16 @@ import {
 // 개발자
 import HomeRoute from "./HomeRoute";     // 홈 Route
 import MypageRoute from "./MypageRoute"; // 마이페이지 Route
+import AdminRoute from "./AdminRoute"; // 관리자페이지 Route
+import Rental from '../pages/ rental/ Rental';
 
 const MainRoutes = () => {
   return (
     <Routes>
       <Route path="/*" element={<HomeRoute />} />
       <Route path="/mypage/*" element={<MypageRoute />} />
+      <Route path="/admin/*" element={<AdminRoute />} />
+      <Route path="/rental/*" element={<Rental />} />
     </Routes>
   );
 }

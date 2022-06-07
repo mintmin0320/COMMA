@@ -9,10 +9,11 @@ import {
   Home,   // 홈
   Login,  // 로그인
   Join,   // 회원가입
-  FindId, // 아이디찾기
+  // FindId, // 아이디찾기
   FindPw  // 비밀번호찾기
 } from "../pages/home";
 
+import  FindId from "../components/account/FindId";
 const AccountRoute = () => {
   return (
     <Routes>

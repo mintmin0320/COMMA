@@ -1,30 +1,32 @@
 import React, { useEffect } from 'react';
 import Header from '../../components/Header';
 import MenuBar from '../../components/MenuBar';
-import MyPageInfo from '../../components/mypage/MyPageInfo';
+import RentalPage from '../../components/rental/ RentalPage';
 
 import styled from 'styled-components';
 
 
-const MypageHome = () => {
+const Rental = () => {
 
   return(
     <Container>
         <HeaderBox>
           <Header/>
       </HeaderBox>
-      <MypageBox>
+      <RentalPageBox>
       <MenuBox>
         <MenuBar/>
       </MenuBox>
-        <MyPageInfo/>
-      </MypageBox>
+      <RentalPage/>
+      </RentalPageBox>
     </Container>
   );
 }
 
 const Container = styled.div`
   display: flex;
+  height: 1000px;
+  
 `;
 
 const MenuBox = styled.div`
@@ -37,9 +39,8 @@ const HeaderBox = styled.div`
   
 `;
 
-const MypageBox = styled.div`
+const RentalPageBox = styled.div`
   display: block;
   width: 80%;
 `;
-
-export default MypageHome;
+export default Rental;

@@ -4,7 +4,7 @@ import Axios from 'axios';
 const Domain = 'http://210.121.173.182';
 
 const _axios = async (url, params) => {
-  //console.log(url);
+  console.log(params);
   const headers = {
     headers: {
       "Content-type" : "application/json",
