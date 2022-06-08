@@ -87,7 +87,7 @@ const AdminInfo = () => {
           </div>
           <div className='item-list'>
             <div className='member-tag'>
-              <div className='member-tag-id'>아이디</div>
+              <div className='member-tag-id'>신청목록</div>
               <div className='member-tag-grade'>학번</div>
               <div className='member-tag-name'>학과</div>
               <div className='member-tag-class'>학년</div>

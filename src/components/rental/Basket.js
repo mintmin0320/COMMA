@@ -112,14 +112,15 @@ const Basket = () => {
       <Content>
         {!state.check ?
           <div className='basketOut' onMouseOver={_handleOver}>
-            <img src={basketImg} alt="logo" width="60%" height="60%"></img> 
+            <img src={basketImg} alt="logo" width="70%" height="70%"></img> 
           </div>
           :<div className='basketIn' onMouseOut={_handleOut}>
             <Card/>
             <Button
               className="loginAnchor"
               kind="wideBtn_01"
-              width="30%!important"
+              width="40%!important"
+              
               margin="15px 0 0 0"
               onClickHandler={_handleSetData}
             >
@@ -157,8 +158,8 @@ const Content = styled.div`
   }
 
   .basketIn {
-    width: 85%;
-    height: 85%;
+    width: 90%;
+    height: 90%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -169,7 +170,7 @@ const Content = styled.div`
 
 const CardBox = styled.div`
     width: 200px;
-    height: 50px;
+    height: 43px;
     // margin: 0 0 30px 0;
     display: flex;
     flex-direction: column;

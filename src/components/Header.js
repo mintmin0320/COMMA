@@ -94,7 +94,7 @@ const WeatherBox = styled.div`
 
 const CafeteriaMenuBox = styled.div`
   width: 100%;
-  height: 200px;
+  height: 220px;
 `;
 
 const BasketBox = styled.div`
