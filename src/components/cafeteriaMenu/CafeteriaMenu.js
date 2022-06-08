@@ -53,7 +53,7 @@ const CafeteriaMenu = () => {
           }
         }
       }else{    
-        console.log('식단 조회 실패');
+        console.log('식단 조회 실패입니다');
       }
       console.log(state);
     }
