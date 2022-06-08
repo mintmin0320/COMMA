@@ -8,7 +8,9 @@ export default function basket(state = initialState, action) {
   switch (action.type) {
     /* 장바구니에 담기 */
     case types.BASKET_ADD:
+
       // 장바구니 배열에 추가
+      console.log(state.basketStatus);
       return {
         ...state,
         basketStatus: [...state.basketStatus, action.item],

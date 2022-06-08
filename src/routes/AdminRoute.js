@@ -6,7 +6,7 @@ import {
 // 개발자
 import PrivateRoute from './PrivateRoute '; // 로그인 체크
 import { 
-  AdminHome, // 마이페이지 홈
+  AdminHome, // 관리자페이지 홈
 } from "../pages/admin";
 
 const AdminRoute = () => {
@@ -15,9 +15,9 @@ const AdminRoute = () => {
       <Route 
         path="/" 
         element={
-          // <PrivateRoute>
+          <PrivateRoute>
             <AdminHome />
-          // </PrivateRoute>
+          </PrivateRoute>
         }
       />
       {/* <Route 

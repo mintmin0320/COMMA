@@ -1,29 +1,29 @@
 export default [
   {
-    id : 1,
+    id : 'test1',
     title : '센서1',
     content : '센서1 입니다.',
-    count : 10,
+    count : 1,
   },
 
   {
-    id : 2,
+    id : 'test2',
     title : '센서2',
     content : '센서2 입니다.',
-    count : 120,
+    count : 1,
   },
   
   {
-    id : 3,
+    id : 'test3',
     title : '센서3',
     content : '센서3 입니다.',
-    count : 130,
+    count : 1,
   },
   
   {
-    id : 4,
+    id : 'test4',
     title : '센서4',
     content : '센서4 입니다.',
-    count : 140,
+    count : 1,
   },
 ]

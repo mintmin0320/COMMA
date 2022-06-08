@@ -22,19 +22,19 @@ const MypageRoute = () => {
       <Route 
         path="/" 
         element={
-          // <PrivateRoute>
+          <PrivateRoute>
             <MypageHome />
-          // </PrivateRoute>
+          </PrivateRoute>
         }
       />
-      <Route 
+      {/* <Route 
         path=":myInfo" 
         element={
           // <PrivateRoute>
             <MyInfo />
           // </PrivateRoute>
         }
-      />   
+      />    */}
     </Routes>
   );
 }

@@ -23,8 +23,8 @@ const RentalPage = () => {
   });
 
   // 담기 버튼 클릭
-  const _handleBasketAdd = (itemId, itemTitle) => {
-    dispatch(basketAdd(itemId, itemTitle));
+  const _handleBasketAdd = (itemId, itemTitle, itemCount) => {
+    dispatch(basketAdd(itemId, itemTitle, itemCount));
   }
 
     const Card = () => {
@@ -39,7 +39,7 @@ const RentalPage = () => {
                   className="loginAnchor"
                   kind="wideBtn_01"
                   width="10%!important"
-                  onClickHandler= {() => _handleBasketAdd(data.id, data.title)}
+                  onClickHandler= {() => _handleBasketAdd(data.id, data.title, data.count)}
                 >
                   담기
                 </Button>

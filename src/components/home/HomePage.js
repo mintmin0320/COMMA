@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
 import axios from 'axios';
 import unescape from 'unescape'; // npm install --save unescape
+import MenuBar from '../MenuBar';
+
 
 // const CheckLike = styled.p`
 //     input {
@@ -482,8 +484,9 @@ const HomePage = () => {
         </CheckWrap>
         
         {/*  공지사항 데이터 출력 */}
-        {status==="index" ? renderData(data) : renderData(currentItems)}
-
+        <div>
+            {status==="index" ? renderData(data) : renderData(currentItems)}
+        </div>
         {/*  페이지 이동 버튼 */}
         <PageBtn>
         <ul>

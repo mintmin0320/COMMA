@@ -176,7 +176,7 @@ const StyledInput = styled.input`
   }
   ::placeholder {
     color: ${theme.colors.grey3};
-    font-size: ${(props) => (props.type === 'password' ? '14px' : '14px')};
+    font-size: ${(props) => (props.type === 'password' ? '18px' : '14px')};
     font-family: NotoR;
     /* transform: ${(props) => (props.type === 'password' ? 'translateY(-12px)' : '')}; */
     letter-spacing: ${(props) => (props.type === 'password' ? 'normal' : 'normal')};

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 // 개발자
-import { init, logoutRequest } from '../../redux/actions/auth';
+import {  logoutRequest } from '../../redux/actions/auth'
 import _axios from '../../utils/axios';
 import axios from 'axios';
 // import Alert from '../../components/common/modal/Alert';
@@ -83,6 +83,7 @@ const MypageInfo = () => {
         result: response.result,  
         message: response.message,
         checkPw:true,
+        userPw: '',
       });
       alert('비밀번호 인증 성공');
     }else{
@@ -103,13 +104,13 @@ const MypageInfo = () => {
 
   // 저장npm
   const _postChangePw = async () => {
-    const url = 'http://210.121.173.182/user/password';
+    const url = '/user/find/password';
     const params = {
       user_id: state.userId,
-      user_password: state.userPw,
+      user_password: state.changePw,
     };
     console.log('pw2 check :' + state.user_password);
-    const response = await axios.patch(url, params);
+    const response = await _axios(url, params);
     console.log(response);
     if(response.result){
       setState({
@@ -117,6 +118,7 @@ const MypageInfo = () => {
         result: response.result,  
         message: response.message,
         checkPw: false,
+        changePw:'',
       });
       alert('비밀번호 변경 성공');
     }else{
@@ -137,12 +139,12 @@ const MypageInfo = () => {
 
   // 저장npm
   const _chaneName = async () => {
-    const url = 'http://210.121.173.182/user/nickname';
+    const url = '/user/nickname';
     const params = {
       user_id: state.userId,
-      nickname: state.changeName,
+      user_nickname: state.changeName,
     };
-    const response = await axios.patch(url, params);
+    const response = await _axios(url, params);
     console.log(response);
     if(response.result){
       setState({
@@ -178,6 +180,7 @@ const MypageInfo = () => {
         result: response.result,  
         message: response.message,
       });
+      dispatch(logoutRequest());
       alert('회원 탈퇴 성공');
     }else{
       setState({

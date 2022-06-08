@@ -75,11 +75,12 @@ const JoinPage = () => {
   // 이메일 인증 발급
   const _handleButtonClick = (e) => {
     e.preventDefault();
+    console.log(state.email);
     _postEmail();
-    setState({
-      ...state,
-      codeCheck: true,
-    });
+    // setState({
+    //   ...state,
+    //   codeCheck: true,
+    // });
   };
 
   // 저장npm
@@ -117,10 +118,10 @@ const JoinPage = () => {
     console.log(state.count);
     e.preventDefault();
     _checkCode();
-    setState({
-      ...state,
-      emailCheck: true,
-    });
+    // setState({
+    //   ...state,
+    //   emailCheck: true,
+    // });
   };
 
   // 저장

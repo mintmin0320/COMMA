@@ -30,25 +30,6 @@ const Header = () => {
       </LogoBox>
       <ProfileBox>
         <Profile/>
-        {/* <Profilee>   */}
-        {/* <ProfileButton>
-          <Button
-              width="100%"
-              height="100%"
-              onClickHandler= {_handleLogout}
-          >
-              로그아웃
-          </Button>
-          <Link to="/mypage" style={{ textDecoration: 'none' }}>
-              <Button
-                width="100%"
-                height="100%"
-              >
-                  내정보
-            </Button>
-          </Link>
-        </ProfileButton> */}
-          {/* </Profilee> */}
         </ProfileBox>
         <WeatherBox>
           <Weather/>

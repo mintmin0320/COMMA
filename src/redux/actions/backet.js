@@ -7,12 +7,13 @@ import {
 import _axios from '../../utils/axios';
 
 // 장바구니 담기
-export function basketAdd(itemId, itemTitle) {
+export function basketAdd(itemId, itemTitle, itemCount) {
     return {
       type: BASKET_ADD,
       item: {
         itemId,
         itemTitle,
+        itemCount,
       }
     };
 }

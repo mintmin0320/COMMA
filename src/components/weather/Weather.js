@@ -13,6 +13,8 @@ import sun from '../../images/sun.png';
 const Weather = () => {
   let today = new Date();
   today.setHours(today.getHours() + 1);
+  let time = today.getHours();
+  time = time >= 10 ? time.toString() + '00' : '0' + time.toString() + '00';
   let skydata = '';
   let popdata = '';
   let tmpdata = '';
@@ -36,19 +38,19 @@ const Weather = () => {
       console.log(response.data.result);
       if(response.status === 200){
         for(let i = 0; i < weatherData.length; i++){
-          if(response.data.result[i].fcstTime === today.getHours().toString() + '00' && response.data.result[i].category === 'SKY'){            
+          if(response.data.result[i].fcstTime === time && response.data.result[i].category === 'SKY'){            
             skydata = response.data.result[i].fcstValue;
             console.log('1시간 하늘상태' + skydata); 
           }
-          if(response.data.result[i].fcstTime === today.getHours().toString() + '00' && response.data.result[i].category === 'PTY' && response.data.result[i].fcstValue !== '0'){            
+          if(response.data.result[i].fcstTime === time && response.data.result[i].category === 'PTY' && response.data.result[i].fcstValue !== '0'){            
             ptydata = response.data.result[i].fcstValue;
             console.log('1시간 강수형태' + ptydata); 
           }
-          if(response.data.result[i].fcstTime === today.getHours().toString() + '00' && response.data.result[i].category === 'POP'){            
+          if(response.data.result[i].fcstTime === time && response.data.result[i].category === 'POP'){            
             popdata = response.data.result[i].fcstValue;
             console.log('1시간 강수확률' + popdata); 
           }
-          if(response.data.result[i].fcstTime === today.getHours().toString() + '00' && response.data.result[i].category === 'TMP'){            
+          if(response.data.result[i].fcstTime === time && response.data.result[i].category === 'TMP'){            
             tmpdata = response.data.result[i].fcstValue;
             console.log('1시간 기온' + tmpdata); 
           }
@@ -60,9 +62,9 @@ const Weather = () => {
             tmp: tmpdata
           });
         }
-        console.log('날씨 조회 성공');
+        console.log('날씨 갱신 성공');
       }else{    
-        console.log('날씨 조회 실패');
+        console.log('날씨 갱신 실패');
       }
     }
       _Refresh();
@@ -71,7 +73,6 @@ const Weather = () => {
   const _handleWheather = (e) => {
     e.preventDefault();
     _Refresh();
-    console.log('갱신');
   };
 
   const _Refresh = async () => {
@@ -82,19 +83,19 @@ const Weather = () => {
     console.log(response.data.result);
     if(response.status === 200){
       for(let i = 0; i < weatherData.length; i++){
-        if(response.data.result[i].fcstTime === today.getHours().toString() + '00' && response.data.result[i].category === 'SKY'){            
+        if(response.data.result[i].fcstTime === time && response.data.result[i].category === 'SKY'){            
           skydata = response.data.result[i].fcstValue;
           console.log('1시간 하늘상태' + skydata); 
         }
-        if(response.data.result[i].fcstTime === today.getHours().toString() + '00' && response.data.result[i].category === 'PTY' && response.data.result[i].fcstValue !== '0'){            
+        if(response.data.result[i].fcstTime === time && response.data.result[i].category === 'PTY' && response.data.result[i].fcstValue !== '0'){            
           ptydata = response.data.result[i].fcstValue;
           console.log('1시간 강수형태' + ptydata); 
         }
-        if(response.data.result[i].fcstTime === today.getHours().toString() + '00' && response.data.result[i].category === 'POP'){            
+        if(response.data.result[i].fcstTime === time && response.data.result[i].category === 'POP'){            
           popdata = response.data.result[i].fcstValue;
           console.log('1시간 강수확률' + popdata); 
         }
-        if(response.data.result[i].fcstTime === today.getHours().toString() + '00' && response.data.result[i].category === 'TMP'){            
+        if(response.data.result[i].fcstTime === time && response.data.result[i].category === 'TMP'){            
           tmpdata = response.data.result[i].fcstValue;
           console.log('1시간 기온' + tmpdata); 
         }

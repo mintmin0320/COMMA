@@ -144,13 +144,13 @@ export function logoutRequest() {
 }
 
 export const logout = () => async (dispatch) => {
-  console.log('2');
+  // session 삭제
+  sessionStorage.removeItem('user');
   dispatch({
     type: AUTH_LOGOUT,
   });
 
-  // local 삭제
-  localStorage.removeItem('user');
+  
   // 새로고침
   // window.location.reload();
 };

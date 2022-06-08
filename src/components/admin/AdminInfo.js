@@ -12,6 +12,7 @@ import styled from 'styled-components';
 //input & button
 import Button from '../common/Button';
 import Input from '../common/CommonInput';
+import AdminItem from './AdminItem';
 //icon
 
 const AdminInfo = () => {
@@ -25,133 +26,76 @@ const AdminInfo = () => {
     studentId: '',
     result: false,        // 서버와의 axios 요청 결과   
     message: null,
-    data: [],
+    member: [],
+    itemList: [],
   });
-    
-  // // 회원목록
-  //   useEffect(() => {
-  //     const getMemberData = async () => {
-  //       const url = "http://210.121.173.182/admin/members";
-  //       const response = await axios.get(url);
-  //       console.log(response.data);
-  //       console.log(state.data);
-  //       if(response.status === 200){
-  //         setState({
-  //           ...state,
-  //           userId: response.data.userId,
-  //           major: response.data.major,
-  //           grade: response.data.grade,
-  //           academic: response.data.academic,
-  //           classroom: response.data.classroom,
-  //           nickname: response.data.nickname,
-  //           studentId: response.data.studentId,
-  //         })
-  //         console.log('회원 조회성공');
-  //       } else {
-  //         console.log('회원 조회실패');
-  //       }
-  //     }
-  //     getMemberData()
-  //   },[]);
-    
-  //   // 신청자 목록
-  //   useEffect(() => {
-  //     const getItemData = async () => {
-  //       const url = "http://210.121.173.182/arduino/applicants";
-  //       const response = await axios.get(url);
-  //       console.log(response.data);
-  //       console.log(state.data);
-  //       if(response.status === 200){
-  //         setState({
-  //           ...state,
-  //           userId: response.data.userId,
-  //           major: response.data.major,
-  //           grade: response.data.grade,
-  //           academic: response.data.academic,
-  //           classroom: response.data.classroom,
-  //           studentId: response.data.studentId,
-  //           component: response.data.component,
-  //         })
-  //         console.log('신청자 목록 조회 성공');
-  //       } else {
-  //         console.log('신청자 목록 조회 실패');
-  //       } 
-  //     }
-  //     getItemData()
-  //   },[]);
 
-    // 승인 요청
-    const _handleRequest = (e) => {
-      e.preventDefault();
-      _Request();
-    };
-  
-    const _Request = async () => {
-      const url = 'http://210.121.173.182/admin/arduino/approve';
-      const params = {
-        userId: state.userId,
-      };
-      console.log(params);
-      const response = await _axios(url, params);
-      console.log(response);
-      console.log(response.data);
-      if(response.result){
-        console.log('승인 요청 성공');
-        alert('승인 완료!');
-      }else{    
-        console.log('승인 요청 실패');
-        alert('승인 실패!');
+  // 회원목록
+    useEffect(() => {
+      const getMemberData = async () => {
+        const url = "http://210.121.173.182/admin/members";
+        const response = await axios.get(url);
+        const data = response.data;
+        console.log(data);
+        if(response.status === 200){
+          setState({
+            ...state,
+            member: data,
+          })
+          console.log('회원 조회성공');
+        } else {
+          console.log('회원 조회실패');
+        }
       }
-    }
+      getMemberData()
+    },[]);
 
-  // const Card = () => {
-  //   return (
-  //     <div>
-  //       {basketStatus.map((data, i) => {
-  //         return (   
-  //           <CardBox key={i}>
-  //             <div className='items'>
-  //               <div className='items-title'>{data.itemTitle}</div>
-  //                 <Button
-  //                   kind="wideBtn_01"
-  //                   width="5%!important"
-  //                   onClickHandler= {() => _handleBasketRemove(data.itemId)} 
-  //                 >
-  //                   제거
-  //                 </Button>
-  //               </div>
-  //           </CardBox>    
-  //             )
-  //         })}
-  //     </div>
-  //   );
-  // };
+    const Card = () => {
+      return (
+        <Members>
+          {state.member.map((user, i) => {
+            return (
+              <div className='member-tag' key={i}>  
+                <div className='member-tag-id'>{user.id}</div>
+                <div className='member-tag-grade'>{user.nickname}</div>
+                <div className='member-tag-grade'>{user.studentId}</div>
+                <div className='member-tag-name'>{user.major}</div>
+                <div className='member-tag-class'>{user.grade}</div>
+                <div className='member-tag-class'>{user.classroom}</div>
+                <div className='member-tag-class'>{user.academic}</div>
+              </div>
+              )
+          })}
+        </Members>
+      );
+  };
 
     return(
       <Container>
         <Content>
           <div className='member-list'>
             <div className='member-tag'>
-              <div className='member-tag-name'>아이디</div>
+              <div className='member-tag-id'>아이디</div>
+              <div className='member-tag-grade'>닉네임</div>
               <div className='member-tag-grade'>학번</div>
               <div className='member-tag-name'>학과</div>
-              <div className='member-tag-grade'>학년</div>
-              <div className='member-tag-grade'>반</div>
-              <div className='member-tag-grade'>닉네임</div>
-              <div className='member-tag-grade'>학적</div>
+              <div className='member-tag-class'>학년</div>
+              <div className='member-tag-class'>반</div>
+              <div className='member-tag-class'>학적</div>
             </div>  
+            <Card/>
           </div>
           <div className='item-list'>
             <div className='member-tag'>
-              <div className='member-tag-name'>아이디</div>
+              <div className='member-tag-id'>아이디</div>
               <div className='member-tag-grade'>학번</div>
               <div className='member-tag-name'>학과</div>
-              <div className='member-tag-grade'>학년</div>
-              <div className='member-tag-grade'>반</div>
-              <div className='member-tag-grade'>학적</div>
-              <div className='member-tag-grade'>승인</div>
+              <div className='member-tag-class'>학년</div>
+              <div className='member-tag-class'>반</div>
+              <div className='member-tag-class'>학적</div>
+              <div className='member-tag-grade'></div>
             </div>
-
+            <AdminItem/>
           </div>
         </Content>
       </Container>
@@ -189,7 +133,7 @@ const Content = styled.div`
       height: 300px;
       border: 1px solid #D8D8D8;
       margin: 20px 0 0 0;
-      display: flex;
+      // display: flex;
       overflow: auto
     }
 
@@ -203,7 +147,7 @@ const Content = styled.div`
     }
 
     .member-tag-name {
-      width: 20%;
+      width: 21%;
       height: 100%;
       display: flex;
       justify-content: center;
@@ -221,6 +165,33 @@ const Content = styled.div`
       border-right: 1px solid #D8D8D8;
       border-left: 1px solid #D8D8D8;
     }
+
+    .member-tag-class {
+      width: 10%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-right: 1px solid #D8D8D8;
+      border-left: 1px solid #D8D8D8;
+    }
+
+    .member-tag-id {
+      width: 27%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-right: 1px solid #D8D8D8;
+      border-left: 1px solid #D8D8D8;
+    }
+`;
+
+const Members = styled.div`
+    width: 100%;
+    height: 45px;
+    // display: flex;
+    // justify-content: center;
 `;
 
 export default AdminInfo;

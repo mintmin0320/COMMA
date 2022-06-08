@@ -35,20 +35,6 @@ const LoginPage = (props) => {
   const auth = useSelector((store) => store.auth);
   const storageData = sessionStorage.getItem('userId');
 
-    // bcrypt 불러오기 - commonjs
-  // const bcrypt = require("bcrypt")
-
-  // const password = '1234'
-
-  // 해시 함수로 비밀번호 암호화해서 변수에 저장하기
-  // const encrypted = bcrypt.hash(password, 10)
-  // console.log(encrypted);
-
-  // const encodedPassword = '$2a$10$tUUfk1E0jGr90ntHxl/wE.lzrVvAQfxJ7nRo3RYXi2XqJtlv2h.UW'
-  // const same = bcrypt.compareSync(password, encodedPassword)
-
-  // // 암호화된 내용 확인하기
-  // console.log(encrypted);
 
   // const saveId = storageData === null || storageData === '' ? '' : atob(storageData);
 
@@ -216,7 +202,7 @@ const LoginPage = (props) => {
         </form>
         <FindIDPW>
           <FindIDPWButton to="/join">회원가입 | </FindIDPWButton>
-          <FindIDPWButton to="/findID">아이디찾기 | </FindIDPWButton>
+          {/* <FindIDPWButton to="/findID">아이디찾기 | </FindIDPWButton> */}
           <FindIDPWButton to="/findPW"> 비밀번호찾기</FindIDPWButton>
         </FindIDPW>
       </Wrap>

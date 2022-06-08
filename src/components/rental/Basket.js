@@ -15,11 +15,13 @@ import _axios from '../../utils/axios';
 
 const Basket = () => {
   const dispatch = useDispatch();
-  let myMap = new Map();
+  const userId = useSelector((store) => store.auth.authStatus.userId);
+  // let myMap = new Map();
 
   // 장바구니 상태
   let basketStatus = useSelector((store) => store.basket.basketStatus);
-  // console.log(basketStatus);
+  // console.log(basketStatus[0].itemCount);
+  
 
   // 장바구니 제거 버튼 클릭
   const _handleBasketRemove = (itemId) => {
@@ -27,7 +29,7 @@ const Basket = () => {
   }
 
   const [state, setState] = useState({
-    userId: '',
+    userId: userId,
     check: false,
     out: false,
     component: '',
@@ -57,10 +59,17 @@ const Basket = () => {
   };
 
   const _setData = async () => {
-    const url = 'http://210.121.173.182/arduino/apply';
+    let component = {
+      test1 : '1',
+      test2 : '1',
+      test3 : '1',
+      test4 : '1',
+    }
+
+    const url = '/arduino/apply';
     const params = {
       userId: state.userId,
-      component: state.component,
+      component: component,
     };
     console.log(params);
     const response = await _axios(url, params);
@@ -73,7 +82,6 @@ const Basket = () => {
       console.log('실패');
       alert('주문 실패!');
     }
-    console.log(state);
   }
   
   const Card = () => {

@@ -35,7 +35,7 @@ const FindPw = () => {
     const _handleButtonClick = (e) => {
       e.preventDefault();
       _postEmail();
-      console.log('count :' + state.count);
+
     };
   
     const _signIn = (e) => {
@@ -46,8 +46,7 @@ const FindPw = () => {
     const _postEmail = async () => {
       const url = '/user/password'; 
       const params = {
-        user_id: state.userId,
-        email: state.email + state.selected,
+        user_id: state.email + state.selected,
       };
       console.log(params);
       const response = await _axios(url, params);
@@ -64,9 +63,8 @@ const FindPw = () => {
           ...state,
           result: response.result,
           message: response.message,
-          count: state.count + 1,
         });
-        alert( '실패! ' + state.count +'/3' );
+        alert( '실패!');
         }  
       }
     
@@ -132,29 +130,7 @@ const FindPw = () => {
             <img src={Logo} alt="logo" width="100%"></img>
           </LogoWrap>
         </Link>
-        {!state.result && (
-        <Input
-          className="input-id"
-          inputtype="text"
-          width="100%"
-          height="60px"
-          margin="0 0 0 0"
-          value={state.userId}
-          maxLength={15}
-          autoComplete="off"
-          name="userId"
-          onChange={_handleInputChange}
-          required={true}
-          placeholder="아이디를 입력해주세요"
-          validityStyles={false}
-          titlename="아이디"
-        />)}
-        {!state.result && (
-          <Validation>
-            {state.idValidation}
-          </Validation>)}
           <IdBox>
-        {!state.result && (
         <Input
             idName="typepass"
             inputtype="text"
@@ -170,7 +146,7 @@ const FindPw = () => {
             placeholder="이메일 아이디 입력해주세요."
             validityStyles={false}
             autoComplete="off"
-        />) }
+        /> 
         <SelectBox>
             <div>
               <select onChange={handleSelect} value={state.selected}>
@@ -183,11 +159,9 @@ const FindPw = () => {
             </div>
           </SelectBox>
           </IdBox>
-        {!state.result && (
             <Validation>
               {state.emailValidation}
-            </Validation>)}
-        {!state.result && state.count !== 4 &&(
+            </Validation>
         <Button
             className="loginAnchor"
             kind="wideBtn_01"
@@ -196,7 +170,7 @@ const FindPw = () => {
             disabled={!state.validation}
         >
             확인
-        </Button>)}
+        </Button>
           {state.result && (
             <Button
             className="loginAnchor"

@@ -21,7 +21,7 @@ const MenuBar = () => {
       <Link to="/"><button className='menu-button'>공지사항</button></Link>
       <Link to="/rental"><button className='menu-button'>대여</button></Link>
       <Link to="/"><button className='menu-button'>커뮤니티</button></Link>
-      <Link to="/"><button className='menu-button'>기타</button></Link>
+      <Link to="/admin"><button className='menu-button'>관리자</button></Link>
 
     </Container>
   );

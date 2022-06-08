@@ -63,9 +63,8 @@ const FindId = () => {
           ...state,
           result: response.result,
           message: response.message,
-          count: state.count + 1,
         });
-        alert('발급 실패! 남은 횟수 : ' + state.count + 1);
+        alert('발급 실패 횟수');
       }
   };
 
@@ -85,6 +84,7 @@ const FindId = () => {
         setState({
           ...state,
           validation: false,
+          emailValidation: '잘못된 입력입니다.',
           [e.target.name]: e.target.value 
       })
     };
@@ -143,7 +143,7 @@ const FindId = () => {
           <Validation>
             {state.emailValidation}
           </Validation>)}
-      {!state.result && state.count !== 3 &&(
+      {!state.result &&(
       <Button
           className="loginAnchor"
           kind="wideBtn_01"
