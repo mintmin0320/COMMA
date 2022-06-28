@@ -1,21 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 // 개발자
-import { init, logoutRequest } from '../../redux/actions/auth';
-import _axios from '../../utils/axios';
 import axios from 'axios';
+import titleTab from '../../utils/TitleTab';
 // import Alert from '../../components/common/modal/Alert';
 //css
 import styled from 'styled-components';
 //input & button
-import Button from '../common/Button';
-import Input from '../common/CommonInput';
 import AdminItem from './AdminItem';
 //icon
 
 const AdminInfo = () => {
+  const titleUpdator = titleTab("Loading...");
+  setTimeout(() => titleUpdator("관리자"), 100);
   const [state, setState] = useState({
     userId: '',
     grade: '',

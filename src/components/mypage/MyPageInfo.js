@@ -1,25 +1,21 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // 개발자
 import {  logoutRequest } from '../../redux/actions/auth'
 import _axios from '../../utils/axios';
 import axios from 'axios';
-// import Alert from '../../components/common/modal/Alert';
 //css
 import styled from 'styled-components';
 //input & button
 import Button from '../common/Button';
 import Input from '../common/CommonInput';
+import titleTab from '../../utils/TitleTab';
 //icon
-// import Logo from '../../images/blue_bg.svg';
 
 const MypageInfo = () => {
+  const titleUpdator = titleTab("Loading...");
+  setTimeout(() => titleUpdator("마이페이지"), 100);
   const dispatch = useDispatch();
-  // const storageData = sessionStorage.getItem('user');
-  // console.log(storageData);
-
   const userId = useSelector((store) => store.auth.authStatus.userId);
   const [state, setState] = useState({
     userId: userId,
@@ -46,7 +42,6 @@ const MypageInfo = () => {
     useEffect(() => {
       const getData = async () => {
         const url = "http://210.121.173.182/user/" + state.userId;
-        console.log(url);
         console.log(state.userId);
         const response = await axios.get(url);
         console.log(response);
@@ -348,15 +343,6 @@ const Card = styled.div`
     }
 `;
 
-const InputBox = styled.div`
-    width: 96%;
-    height: 40px;
-    display: flex;
-    margin: 20px 0 0 0;
-    align-items: center;
-    // border: 1px solid #D8D8D8;
-`;
-
 const NameInputBox = styled.div`
     width: 40%;
     height: 40px;
@@ -373,29 +359,5 @@ const Secession = styled.div`
     justify-content: center;
     align-items: flex-end	
 `;
-
-const Info = styled.div`
-  width: 100%;
-  height: 160px;
-  border: 1px solid #D8D8D8;
-  display: flex;
-  justify-content: center;
-
-  .nick {
-    with: 25%;
-    height: 100%
-    border: 1px solid #D8D8D8;
-  }
-  .phone {
-    with: 25%;
-    height: 100%
-    border: 1px solid #D8D8D8;
-  }
-  .id {
-    with: 25%;
-    height: 100%
-    border: 1px solid #D8D8D8;
-  }
-`
 
 export default MypageInfo;

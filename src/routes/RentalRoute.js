@@ -15,9 +15,9 @@ const RentalRoute = () => {
       <Route 
         path="/" 
         element={
-          <PrivateRoute>
+          // <PrivateRoute>
             <Rental />
-          </PrivateRoute>
+          // </PrivateRoute>
         }
       />
       {/* <Route 

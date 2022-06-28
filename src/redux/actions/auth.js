@@ -149,7 +149,6 @@ export const logout = () => async (dispatch) => {
   dispatch({
     type: AUTH_LOGOUT,
   });
-
   
   // 새로고침
   // window.location.reload();

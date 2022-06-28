@@ -10,6 +10,7 @@ export default function basket(state = initialState, action) {
     case types.BASKET_ADD:
 
       // 장바구니 배열에 추가
+      // const overlap = Array.from(new Set(basketStatus));
       console.log(state.basketStatus);
       return {
         ...state,
@@ -19,7 +20,7 @@ export default function basket(state = initialState, action) {
     case types.BASKET_REMOVE:
       // 장바구니 배열에서 해당 index를 삭제
       console.log(action.itemId);
-      const newItem = state.basketStatus.filter((item) => item.itemId !== action.itemId)
+      const newItem = state.basketStatus.filter((item) => item.itemId !== action.itemId);
       console.log(newItem);
       return {
         ...state,

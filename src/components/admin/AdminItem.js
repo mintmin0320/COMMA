@@ -1,9 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 // 개발자
-import { init, logoutRequest } from '../../redux/actions/auth';
 import _axios from '../../utils/axios';
 import axios from 'axios';
 // import Alert from '../../components/common/modal/Alert';
@@ -11,7 +7,6 @@ import axios from 'axios';
 import styled from 'styled-components';
 //input & button
 import Button from '../common/Button';
-import Input from '../common/CommonInput';
 //icon
 
 const AdminItem = () => {
@@ -131,85 +126,6 @@ const Container = styled.div`
     height: 45px;
     display: flex;
     justify-content: center;
-`;
-
-const Content = styled.div`
-    width: 95%;
-    height: 600px;
-    border: 1px solid #D8D8D8;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    .member-list {
-      width: 96%;
-      height: 240px;
-      border: 1px solid #D8D8D8;
-      margin: 20px 0 0 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      overflow: auto
-    }
-
-    .item-list {
-      width: 96%;
-      height: 300px;
-      border: 1px solid #D8D8D8;
-      margin: 20px 0 0 0;
-      // display: flex;
-      overflow: auto
-    }
-
-    .member-tag {
-      width: 100%;
-      height: 45px;
-      border-bottom: 1px solid #D8D8D8;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .member-tag-name {
-      width: 25%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-right: 1px solid #D8D8D8;
-      border-left: 1px solid #D8D8D8;
-    }
-
-    .member-tag-grade {
-      width: 15%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-right: 1px solid #D8D8D8;
-      border-left: 1px solid #D8D8D8;
-    }
-
-    .member-tag-class {
-      width: 10%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-right: 1px solid #D8D8D8;
-      border-left: 1px solid #D8D8D8;
-    }
-
-    .member-tag-id {
-      width: 29%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-right: 1px solid #D8D8D8;
-      border-left: 1px solid #D8D8D8;
-    }
-  
 `;
 
 const Members = styled.div`

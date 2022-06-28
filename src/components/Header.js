@@ -34,9 +34,9 @@ const Header = () => {
         <WeatherBox>
           <Weather/>
         </WeatherBox>
-        <CafeteriaMenuBox>
+        {/* <CafeteriaMenuBox>
           <CafeteriaMenu/>
-        </CafeteriaMenuBox>
+        </CafeteriaMenuBox> */}
         <BasketBox>
           <Basket/>
         </BasketBox>

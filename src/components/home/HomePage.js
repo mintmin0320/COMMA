@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
 import axios from 'axios';
 import unescape from 'unescape'; // npm install --save unescape
-import MenuBar from '../MenuBar';
+import titleTab from '../../utils/TitleTab';
 
 
 // const CheckLike = styled.p`
@@ -209,6 +209,8 @@ const NoticeContent = styled.div`
     }
 `
 const HomePage = () => {
+    const titleUpdator = titleTab("Loading...");
+    setTimeout(() => titleUpdator("공지사항"), 100);
     // const [state, setState] = useState({
     //     data: [],
     //     currentPage: 1,

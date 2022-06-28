@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router';
 import Logo from '../../images/blue_bg.svg';
@@ -8,17 +8,18 @@ import {
   Wrap,
   LogoWrap,
   Validation,
-  CountDown,
   IdBox,
 } from '../../styles/account';
 import styled from 'styled-components';
 //input & button
 import Button from '../common/Button';
 import Input from '../common/CommonInput';
+import titleTab from '../../utils/TitleTab';
 
 const FindPw = () => {
     const navigate = useNavigate(); // 페이지 이동 함수
-  
+    const titleUpdator = titleTab("Loading...");
+    setTimeout(() => titleUpdator("비밀번호 찾기"), 100);
     const [state, setState] = useState({
       email: '',
       userId: '',
@@ -109,6 +110,7 @@ const FindPw = () => {
               [e.target.name]: e.target.value 
             });
           }break;
+          default:
         }
       };
 

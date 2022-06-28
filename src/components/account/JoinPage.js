@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 // 개발자
 import _axios from '../../utils/axios';
+import titleTab from '../../utils/TitleTab';
 // import Alert from '../../components/common/modal/Alert';
 //css
 import '../../styles/kendo.css';
@@ -21,13 +22,17 @@ import Input from '../common/CommonInput';
 // import Timer from './Timer';
 //icon
 import Logo from '../../images/blue_bg.svg';
+import ScrollProgress from '../Scroll/ScrollProgress';
 
 const JoinPage = () => {
+  const titleUpdator = titleTab("Loading...");
+  setTimeout(() => titleUpdator("회원가입"), 100);
+  const ScrollProgress = ScrollProgress();
   const navigate = useNavigate(); // 페이지 이동 함수
     // encrypt 
-  const [min, setMin] = useState(1);
+  const [min, setMin] = useState(5);
   const [sec, setSec] = useState(0);
-  const time = useRef(60);
+  const time = useRef(300);
   const timerId = useRef(null);
   let yClassList = ['YA', 'YB', 'YC', 'YD'];
   let p1_classList = ['PA', 'PB', 'PC'];
@@ -70,6 +75,8 @@ const JoinPage = () => {
     visibleDialog: false,
     reCode: false,
     disInput: false,
+    alertCheck : false,
+    r: 'hi',
   });
 
   // 이메일 인증 발급
@@ -108,8 +115,9 @@ const JoinPage = () => {
         ...state,
         result: response.result,
         message: response.message,
+        alertCheck: true,
       })    
-      alert('발급 실패!');
+      console.log('발급 실패!');
     }
   };
 
@@ -118,10 +126,10 @@ const JoinPage = () => {
     console.log(state.count);
     e.preventDefault();
     _checkCode();
-    // setState({
-    //   ...state,
-    //   emailCheck: true,
-    // });
+    setState({
+      ...state,
+      emailCheck: true,
+    });
   };
 
   // 저장
@@ -325,6 +333,7 @@ const JoinPage = () => {
             [e.target.name]: e.target.value 
             });
       }break;
+      default:
         }
       };
 
@@ -332,6 +341,11 @@ const JoinPage = () => {
   const _handleSubmit = (e) => {
     e.preventDefault();
       _setData();
+      setState({
+        ...state,
+        success: true,
+      })
+
   }
 
   // 저장
@@ -379,15 +393,6 @@ const JoinPage = () => {
   const _signUpSuccess = (e) => {
     e.preventDefault();
     navigate('/login');
-  };
-
-  const _toggleDialog = (e) => {
-    e.preventDefault();
-
-    setState({
-      ...state,
-      visibleDialog: !state.visibleDialog,
-    });
   };
 
   // 이메일 인증 타이머
@@ -500,7 +505,7 @@ const JoinPage = () => {
         );
     };
 
-    const SelectP1_class = () => {
+    const SelectP1Class = () => {
       const handleClass = (e) => {
         setState({
           ...state,
@@ -521,7 +526,7 @@ const JoinPage = () => {
         );
     };
     
-    const SelectP2_class = () => {
+    const SelectP2Class = () => {
       const handleClass = (e) => {
         setState({
           ...state,
@@ -542,7 +547,7 @@ const JoinPage = () => {
       );
     };
     
-    const SelectQ_class = () => {                  
+    const SelectQClass = () => {                  
       const handleClass = (e) => {
         setState({
           ...state,
@@ -591,8 +596,32 @@ const JoinPage = () => {
       setMin(1);
     };
 
+    const Alert = () => {
+      useEffect(() => {
+        let alertTimer = setTimeout(() => {
+        setState({
+          ...state,
+          alertCheck : true,
+        })
+        }, 3000);
+        return () => clearInterval(alertTimer);
+      }, []);
+
+      return (
+        <>
+        {
+          state.alertCheck === false ?
+          <AlertBox>
+            {state.r}
+          </AlertBox> : <div></div>
+        }
+        </>
+      )
+    }
+
   return (
     <Container>
+      <Alert/>
     <Wrap>
       <Link to="/">
         <LogoWrap>
@@ -815,11 +844,11 @@ const JoinPage = () => {
             { state.major === '컴퓨터소프트웨어공학과' ?
               <SelectYClass/>
             : state.major === '컴퓨터정보공학과' && state.grade === '1' ?
-              <SelectP1_class/>
+              <SelectP1Class/>
               : state.major === '컴퓨터정보공학과' && state.grade === '2' ?
-              <SelectP2_class/>
+              <SelectP2Class/>
               : state.major === '인공지능소프트웨어학과' ?
-              <SelectQ_class/>
+              <SelectQClass/>
               : ''
             }
             <SelectAcademic/>
@@ -894,6 +923,13 @@ const ValueBox = styled.div`
   width: 100%;
   height: 60px;
   border: 1px solid #A9A9A9;
+`;
+
+const AlertBox = styled.div`
+  width: 100%;
+  height: 70px;
+  background: #A9A9A9;
+  position: fixed;
 `;
 
 export default JoinPage;

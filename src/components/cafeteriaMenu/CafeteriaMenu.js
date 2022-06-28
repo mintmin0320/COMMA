@@ -26,39 +26,39 @@ const CafeteriaMenu = () => {
     result: false,    // 서버와의 axios 요청 결과
   });
 
-  useEffect(() => {
-    const Refresh = async () => {
-      const url = 'http://210.121.173.182/cafeteriaMenu';
-      const response = await axios.get(url);
-      console.log(response);
-      console.log(response.data);
-      if(response.status === 200){
-        for(let i = 0; i < response.data.length; i++){
-          if(response.data[i].day === date){
-            setState({
-              ...state,
-              korean: response.data[i].koreanFood,
-              good: response.data[i].goodFood,
-            });
-            console.log('식단 조회 성공');
-            break;
-          }
-          if(response.data[i].day !== date){
-            setState({
-              ...state,
-              korean: '오늘은 휴일입니다.',
-              good: '오늘은 휴일입니다.',
-            });
-          console.log('오늘은 휴일입니다.');
-          }
-        }
-      }else{    
-        console.log('식단 조회 실패입니다');
-      }
-      console.log(state);
-    }
-      Refresh();
-  },[]);
+  // useEffect(() => {
+  //   const Refresh = async () => {
+  //     const url = 'http://210.121.173.182/cafeteriaMenu';
+  //     const response = await axios.get(url);
+  //     console.log(response);
+  //     console.log(response.data);
+  //     if(response.status === 200){
+  //       for(let i = 0; i < response.data.length; i++){
+  //         if(response.data[i].day === date){
+  //           setState({
+  //             ...state,
+  //             korean: response.data[i].koreanFood,
+  //             good: response.data[i].goodFood,
+  //           });
+  //           console.log('식단 조회 성공');
+  //           break;
+  //         }
+  //         if(response.data[i].day !== date){
+  //           setState({
+  //             ...state,
+  //             korean: '오늘은 휴일입니다.',
+  //             good: '오늘은 휴일입니다.',
+  //           });
+  //         console.log('오늘은 휴일입니다.');
+  //         }
+  //       }
+  //     }else{    
+  //       console.log('식단 조회 실패입니다');
+  //     }
+  //     console.log(state);
+  //   }
+  //     Refresh();
+  // },[]);
 
 
   return (

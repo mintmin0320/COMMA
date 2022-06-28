@@ -3,12 +3,11 @@
 */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useLocation } from 'react-router';
+import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 // 개발자
-import { idSave, init, loginRequest } from '../../redux/actions/auth';
-import _axios from '../../utils/axios';
-import Axios from 'axios';
+import { init, loginRequest } from '../../redux/actions/auth';
+import titleTab from '../../utils/TitleTab';
 //css
 import '../../styles/kendo.css';
 import {
@@ -29,14 +28,11 @@ import bang from '../../images/account/bang.svg';
 import Logo from '../../images/blue_bg.svg';
 
 const LoginPage = (props) => {
+  const titleUpdator = titleTab("Loading...");
+  setTimeout(() => titleUpdator("로그인"), 100);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
   const auth = useSelector((store) => store.auth);
-  const storageData = sessionStorage.getItem('userId');
-
-
-  // const saveId = storageData === null || storageData === '' ? '' : atob(storageData);
 
   const [error, setError] = useState('');
   const [red, setRed] = useState(false);

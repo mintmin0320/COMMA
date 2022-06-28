@@ -15,9 +15,9 @@ const AdminRoute = () => {
       <Route 
         path="/" 
         element={
-          <PrivateRoute>
+          // <PrivateRoute>
             <AdminHome />
-          </PrivateRoute>
+          // </PrivateRoute>
         }
       />
       {/* <Route 

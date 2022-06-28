@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import axios from 'axios';
+// import axios from 'axios';
 // 개발자
 //input & button
 import Button from '../common/Button';
@@ -10,7 +10,7 @@ import { basketRemove } from '../../redux/actions/backet';
 import styled from 'styled-components';
 //input & button
 //icon
-import basketImg from '../../images/basket.PNG';
+// import basketImg from '../../images/basket.PNG';
 import _axios from '../../utils/axios';
 
 const Basket = () => {
@@ -30,26 +30,8 @@ const Basket = () => {
 
   const [state, setState] = useState({
     userId: userId,
-    check: false,
-    out: false,
     component: '',
   });
-
-  const _handleOver = (e) => {
-    e.preventDefault();
-    setState({
-      ...state,
-      check: true,
-    });
-  };
-
-  const _handleOut = (e) => {
-    e.preventDefault();
-    setState({
-      ...state,
-      check: false,
-    });
-  };
 
   // 주문 + 바구니 초기화
   const _handleSetData = (e) => {
@@ -110,23 +92,22 @@ const Basket = () => {
   return (
     <Container>
       <Content>
-        {!state.check ?
-          <div className='basketOut' onMouseOver={_handleOver}>
-            <img src={basketImg} alt="logo" width="70%" height="70%"></img> 
+        <div className='basketBox'>
+          <div className='basketIn'>
+          <Card/>
           </div>
-          :<div className='basketIn' onMouseOut={_handleOut}>
-            <Card/>
+          <div>
             <Button
               className="loginAnchor"
               kind="wideBtn_01"
-              width="40%!important"
-              
+              width="40%!important"    
               margin="15px 0 0 0"
               onClickHandler={_handleSetData}
             >
               주문
-            </Button> 
-          </div>}
+            </Button>
+          </div>
+        </div> 
       </Content>
     </Container>
   );
@@ -142,26 +123,27 @@ const Container = styled.div`
 
 const Content = styled.div`
   width: 90%;
-  height: 100%;
   display: flex;
   border: 1px solid #D8D8D8;
   justify-content: center;
   align-items: center;
+  overflow: auto;
 
-  .basketOut {
+  .basketBox {
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     // background: red;
   }
 
-  .basketIn {
+  .basketButton {
     width: 90%;
     height: 90%;
     display: flex;
-    flex-direction: column;
+    
     justify-content: center;
     align-items: center;
     // background: blue;

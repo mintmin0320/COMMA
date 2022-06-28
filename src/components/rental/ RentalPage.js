@@ -1,26 +1,25 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+// import { useNavigate } from 'react-router';
+// import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 // 개발자
 import { basketAdd } from '../../redux/actions/backet';
+import titleTab from '../../utils/TitleTab';
 // import Alert from '../../components/common/modal/Alert';
 //css
 import styled from 'styled-components';
 //input & button
 import Button from '../common/Button';
-import Input from '../common/CommonInput';
+// import Input from '../common/CommonInput';
 import data from './data';
 
 //icon
 
 const RentalPage = () => {
+  const titleUpdator = titleTab("Loading...");
+  setTimeout(() => titleUpdator("대여"), 300);
   const dispatch = useDispatch();
-  const [arduino, setData] = useState(data);
-  const [state, setState] = useState({
-    result: false,    // 서버와의 axios 요청 결과
-    message: null,
-  });
+  const [arduino] = useState(data);
 
   // 담기 버튼 클릭
   const _handleBasketAdd = (itemId, itemTitle, itemCount) => {
@@ -62,7 +61,7 @@ const RentalPage = () => {
 
 const Container = styled.div`
     width: 100%;
-    height: 900px;
+    
     display: flex;
     justify-content: center;
 `;
@@ -86,5 +85,6 @@ const Content = styled.div`
     justify-content: center;
     align-items: center;
     border: 1px solid #D8D8D8;
+    overflow: auto;
 `;
 export default RentalPage;
