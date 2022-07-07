@@ -12,7 +12,6 @@ import styled from 'styled-components';
 import Button from '../components/common/Button';
 //icon
 // import Logo from '../../images/blue_bg.svg';
-import Logo from '../images/blue_bg.svg';
 
 const MenuBar = () => {
 
@@ -20,7 +19,7 @@ const MenuBar = () => {
     <Container>
       <Link to="/"><button className='menu-button'>공지사항</button></Link>
       <Link to="/rental"><button className='menu-button'>대여</button></Link>
-      <Link to="/"><button className='menu-button'>커뮤니티</button></Link>
+      <Link to="/community"><button className='menu-button'>커뮤니티</button></Link>
       <Link to="/admin"><button className='menu-button'>관리자</button></Link>
 
     </Container>

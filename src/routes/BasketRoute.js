@@ -1,6 +1,3 @@
-/*  
-  마이페이지 Routes 
-*/
 import React from "react";
 import { 
   Routes, 
@@ -8,21 +5,18 @@ import {
 } from "react-router-dom";
 // 개발자
 import PrivateRoute from './PrivateRoute '; // 로그인 체크
-import { 
-  MypageHome, // 마이페이지 홈
-} from "../pages/mypage";
-// css
+import {
+  BasketList
+} from "../pages/basket"
 
-// icon or images
-
-const MypageRoute = () => {
+const BasketRoute = () => {
   return (
     <Routes>
       <Route 
         path="/" 
         element={
           // <PrivateRoute>
-            <MypageHome />
+            <BasketList />
           // </PrivateRoute>
         }
       />
@@ -30,4 +24,4 @@ const MypageRoute = () => {
   );
 }
 
-export default MypageRoute;
+export default BasketRoute;

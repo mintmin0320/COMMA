@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 // 개발자
 //input & button
@@ -99,7 +98,7 @@ const MenuBox = styled.div`
 
   .textBox {
     width: 100%;
-    border: 1px solid #D8D8D8;
+    
     height: 20%;
     align-items: center;
     display: flex;
@@ -119,6 +118,7 @@ const MenuBox = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    
   }
 `;
 

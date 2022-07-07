@@ -22,12 +22,10 @@ import Input from '../common/CommonInput';
 // import Timer from './Timer';
 //icon
 import Logo from '../../images/blue_bg.svg';
-import ScrollProgress from '../Scroll/ScrollProgress';
 
 const JoinPage = () => {
   const titleUpdator = titleTab("Loading...");
   setTimeout(() => titleUpdator("회원가입"), 100);
-  const ScrollProgress = ScrollProgress();
   const navigate = useNavigate(); // 페이지 이동 함수
     // encrypt 
   const [min, setMin] = useState(5);
@@ -66,7 +64,7 @@ const JoinPage = () => {
     codeValidation: '',
     validation: false,    // 유효성 검사 결과 
     result: false,        // 서버와의 axios 요청 결과
-    emailCheck:false,    // 이메일 인증여부 확인
+    emailCheck:true,    // 이메일 인증여부 확인
     codeCheck:false,      // 인증번호 인풋창
     checkButton: false,   // 다른 이메일 인증하기
     count: 0,             // 남은 인증번호 입력가능 횟수

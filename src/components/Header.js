@@ -34,12 +34,12 @@ const Header = () => {
         <WeatherBox>
           <Weather/>
         </WeatherBox>
-        {/* <CafeteriaMenuBox>
+        <CafeteriaMenuBox>
           <CafeteriaMenu/>
-        </CafeteriaMenuBox> */}
-        <BasketBox>
+        </CafeteriaMenuBox>
+        {/* <BasketBox>
           <Basket/>
-        </BasketBox>
+        </BasketBox> */}
       </Container>
   );
 }
@@ -75,21 +75,15 @@ const LogoBox = styled.div`
 
 const ProfileBox = styled.div`
   width: 100%;
-  height: 140px;
+  height: 160px;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
-const Profilee = styled.div`
-  width: 90%;
-  height: 100px;
-  border: 1px solid #D8D8
-`;
-
 const WeatherBox = styled.div`
   width: 100%;
-  height: 150px;
+  height: 55px;
 `;
 
 const CafeteriaMenuBox = styled.div`

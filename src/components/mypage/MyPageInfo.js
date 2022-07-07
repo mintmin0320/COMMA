@@ -11,6 +11,8 @@ import Button from '../common/Button';
 import Input from '../common/CommonInput';
 import titleTab from '../../utils/TitleTab';
 //icon
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight  } from '@fortawesome/free-solid-svg-icons';
 
 const MypageInfo = () => {
   const titleUpdator = titleTab("Loading...");
@@ -158,34 +160,34 @@ const MypageInfo = () => {
     }
   };
 
-  const _handleWithdrawal = (e) => {
-    e.preventDefault();
-    _Withdrawal();
-  };
+  // const _handleWithdrawal = (e) => {
+  //   e.preventDefault();
+  //   _Withdrawal();
+  // };
 
-  // 회원탈퇴
-  const _Withdrawal = async () => {
-    const url = '/user' + state.userId;
-    console.log(state.userId);
-    const response = await axios.delete(url);
-    console.log(response);
-    if(response.result){
-      setState({
-        ...state,
-        result: response.result,  
-        message: response.message,
-      });
-      dispatch(logoutRequest());
-      alert('회원 탈퇴 성공');
-    }else{
-      setState({
-        ...state,
-        result: response.result,
-        message: response.message,
-      })    
-      alert('회원탈퇴 실패');
-    }
-  };
+  // // 회원탈퇴
+  // const _Withdrawal = async () => {
+  //   const url = '/user' + state.userId;
+  //   console.log(state.userId);
+  //   const response = await axios.delete(url);
+  //   console.log(response);
+  //   if(response.result){
+  //     setState({
+  //       ...state,
+  //       result: response.result,  
+  //       message: response.message,
+  //     });
+  //     dispatch(logoutRequest());
+  //     alert('회원 탈퇴 성공');
+  //   }else{
+  //     setState({
+  //       ...state,
+  //       result: response.result,
+  //       message: response.message,
+  //     })    
+  //     alert('회원탈퇴 실패');
+  //   }
+  // };
 
     return(
       <Container>
@@ -204,6 +206,14 @@ const MypageInfo = () => {
               <div className='member-data'>{state.phone}</div>
             </div>
           </Card>
+          <div>
+            <div>
+              <div>주문목록</div>
+              <div>날짜</div>
+              <div>완료</div>
+            </div>  
+          </div>
+      
           <NameInputBox>
             <Input
               idName="typepass"
@@ -277,7 +287,7 @@ const MypageInfo = () => {
               확인
             </Button>
           </NameInputBox>
-          <Secession>
+          {/* <Secession>
             <Button
               className="loginAnchor"
               kind="wideBtn_01"
@@ -286,7 +296,7 @@ const MypageInfo = () => {
             >
               회원탈퇴
             </Button>
-          </Secession>
+          </Secession> */}
           </Content>
         </Container>
     )
@@ -301,11 +311,13 @@ const Container = styled.div`
 
 const Content = styled.div`
     width: 95%;
-    height: 600px;
+    height: 800px;
     border: 1px solid #D8D8D8;
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    
 `;
 
 const Card = styled.div`

@@ -1,24 +1,24 @@
 import React, { useEffect } from 'react';
 import Header from '../../components/Header';
 import MenuBar from '../../components/MenuBar';
-import RentalPage from '../../components/rental/RentalPage';
+import BasketPage from '../../components/basket/BasketPage';
 
 import styled from 'styled-components';
 
 
-const Rental = () => {
+const BasketList = () => {
 
   return(
     <Container>
         <HeaderBox>
           <Header/>
       </HeaderBox>
-      <RentalPageBox>
+      <BasketPageBox>
       <MenuBox>
         <MenuBar/>
       </MenuBox>
-      <RentalPage/>
-      </RentalPageBox>
+      <BasketPage/>
+      </BasketPageBox>
     </Container>
   );
 }
@@ -39,8 +39,9 @@ const HeaderBox = styled.div`
   
 `;
 
-const RentalPageBox = styled.div`
+const BasketPageBox = styled.div`
   display: block;
   width: 80%;
+  
 `;
-export default Rental;
+export default BasketList;
