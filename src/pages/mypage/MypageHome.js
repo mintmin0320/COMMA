@@ -30,6 +30,9 @@ const Container = styled.div`
 const MenuBox = styled.div`
   width: 80%;
   height: 80px;
+  // position: sticky;
+  // top: 0;
+  // background: #8a4baf;
 `;
 
 const HeaderBox = styled.div`
@@ -38,7 +41,6 @@ const HeaderBox = styled.div`
 `;
 
 const MypageBox = styled.div`
-  display: block;
   width: 80%;
 `;
 

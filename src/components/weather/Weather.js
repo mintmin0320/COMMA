@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSun } from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios';
 // 개발자
 //input & button
@@ -158,17 +160,17 @@ const WeatherBox = styled.div`
     justify-content: center;
     align-items: center;
     // border: 1px solid #D8D8D8;
-    animation: 0.9s ease-in-out loadEffect1;
-    @keyframes loadEffect1 {
-      0%{
-        opacity: 0.1;
-        transform: translateY(10px);
-      }
-      100%{
-        opacity: 1;
-        transform: translateY(0px);
-      }
-    }
+  //   animation: 0.9s ease-in-out loadEffect1;
+  //   @keyframes loadEffect1 {
+  //     0%{
+  //       opacity: 0.1;
+  //       transform: translateY(10px);
+  //     }
+  //     100%{
+  //       opacity: 1;
+  //       transform: translateY(0px);
+  //     }
+  //   }
   }
 
   .popdBox {  
@@ -177,17 +179,17 @@ const WeatherBox = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    animation: 0.9s ease-in-out loadEffect2;
-    @keyframes loadEffect2 {
-      0%{
-        opacity: 0.1;
-        transform: translateY(10px);
-      }
-      100%{
-        opacity: 1;
-        transform: translateY(0px);
-      }
-    }
+    // animation: 0.9s ease-in-out loadEffect2;
+    // @keyframes loadEffect2 {
+    //   0%{
+    //     opacity: 0.1;
+    //     transform: translateY(10px);
+    //   }
+    //   100%{
+    //     opacity: 1;
+    //     transform: translateY(0px);
+    //   }
+    // }
   }
   `;
 

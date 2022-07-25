@@ -34,7 +34,7 @@ const Profile = () => {
         <div className='photo-box'>
           <img src={Logo} alt="logo" width="40%" height="60%"></img>
         </div> 
-        <div className='photo-name'>dd</div>
+        <div className='photo-name'>닉네임</div>
         <div className='button-items'>
           <Link to="/mypage" style={{ textDecoration: 'none', width: '100%'}}>
             <div className='button-box'>
@@ -98,6 +98,7 @@ const ProfileBox = styled.div`
     height: 100%;
     display: flex;
     justify-content: center;
+    border-radius: 20px 20px 20px 20px;
   }
 
   .button-box:hover{

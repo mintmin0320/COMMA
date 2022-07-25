@@ -7,8 +7,7 @@ import axios from 'axios';
 //css
 import styled from 'styled-components';
 //input & button
-import Button from '../common/Button';
-import Input from '../common/CommonInput';
+
 import titleTab from '../../utils/TitleTab';
 //icon
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,8 +15,10 @@ import { faArrowRight  } from '@fortawesome/free-solid-svg-icons';
 
 const MypageInfo = () => {
   const titleUpdator = titleTab("Loading...");
-  setTimeout(() => titleUpdator("마이페이지"), 100);
+  setTimeout(() => titleUpdator("마이페이지 - COMMA"), 100);
+
   const dispatch = useDispatch();
+  
   const userId = useSelector((store) => store.auth.authStatus.userId);
   const [state, setState] = useState({
     userId: userId,
@@ -34,28 +35,28 @@ const MypageInfo = () => {
   
   // 입력값이 변할 때
   const _handleInputChange = (e) => {
-      setState({ 
-        ...state, 
-        [e.target.name]: e.target.value 
-      });
-    }
+    setState({ 
+      ...state, 
+      [e.target.name]: e.target.value 
+    });
+  }
     
     // 회원정보 조회
-    useEffect(() => {
-      const getData = async () => {
-        const url = "http://210.121.173.182/user/" + state.userId;
-        console.log(state.userId);
-        const response = await axios.get(url);
-        console.log(response);
-        setState({
-          ...state,
-          email: response.data.user.email,
-          nickname: response.data.user.user_nickname,
-          phone: response.data.user.phone,
-        })
-      }
-      getData()
-    },[]);
+    // useEffect(() => {
+    //   const getData = async () => {
+    //     const url = "http://210.121.173.182/user/" + state.userId;
+    //     console.log(state.userId);
+    //     const response = await axios.get(url);
+    //     console.log(response);
+    //     setState({
+    //       ...state,
+    //       email: response.data.user.email,
+    //       nickname: response.data.user.user_nickname,
+    //       phone: response.data.user.phone,
+    //     })
+    //   }
+    //   getData()
+    // },[]);
 
     // 비밀번호 변경 확인
   const _handlePwCheck = (e) => {
@@ -160,61 +161,73 @@ const MypageInfo = () => {
     }
   };
 
-  // const _handleWithdrawal = (e) => {
-  //   e.preventDefault();
-  //   _Withdrawal();
-  // };
+  const _handleWithdrawal = (e) => {
+    e.preventDefault();
+    _Withdrawal();
+  };
 
-  // // 회원탈퇴
-  // const _Withdrawal = async () => {
-  //   const url = '/user' + state.userId;
-  //   console.log(state.userId);
-  //   const response = await axios.delete(url);
-  //   console.log(response);
-  //   if(response.result){
-  //     setState({
-  //       ...state,
-  //       result: response.result,  
-  //       message: response.message,
-  //     });
-  //     dispatch(logoutRequest());
-  //     alert('회원 탈퇴 성공');
-  //   }else{
-  //     setState({
-  //       ...state,
-  //       result: response.result,
-  //       message: response.message,
-  //     })    
-  //     alert('회원탈퇴 실패');
-  //   }
-  // };
+  // 회원탈퇴
+  const _Withdrawal = async () => {
+    const url = '/user' + state.userId;
+    console.log(state.userId);
+    const response = await axios.delete(url);
+    console.log(response);
+    if(response.result){
+      setState({
+        ...state,
+        result: response.result,  
+        message: response.message,
+      });
+      dispatch(logoutRequest());
+      alert('회원 탈퇴 성공');
+    }else{
+      setState({
+        ...state,
+        result: response.result,
+        message: response.message,
+      })    
+      alert('회원탈퇴 실패');
+    }
+  };
 
-    return(
-      <Container>
-        <Content>
-          <Card>
-            <div className='member-box'>
-              <div className='member-list'>아이디</div>
-              <div className='member-data'>{state.userId}</div>
+  return(
+    <Container>
+      <Content>
+        <MyInfo>
+          <div className='info'>
+            <div className='info-text'>
+              <div className='info-id'>아이디</div>
+              <div className='info-nick'>닉네임</div>
+              <div className='info-phone'>전화번호</div>
             </div>
-            <div className='member-box'>
-              <div className='member-list'>닉네임</div>
-              <div className='member-data'>{state.nickname}</div>
+            <div className='info-data'>
+              <div className='id'>아이디</div>
+              <div className='nick'>닉네임</div>
+              <div className='phone'>전화번호</div>
             </div>
-            <div className='member-box'>
-              <div className='member-list'>전화번호</div>
-              <div className='member-data'>{state.phone}</div>
-            </div>
-          </Card>
-          <div>
-            <div>
-              <div>주문목록</div>
-              <div>날짜</div>
-              <div>완료</div>
-            </div>  
           </div>
-      
-          <NameInputBox>
+          <div className='info-correction'>
+            비밀번호변경자리
+          </div>
+        </MyInfo>
+        <OrederList>
+          <div className='order-text'>
+            주문목록
+          </div>
+          <div className='order-data'>
+
+          </div>
+        </OrederList>
+        <Withdrawal>
+          <button
+            className='withdrawal-button'
+            onClick={_handleWithdrawal}
+          >
+            <div className='login-text'>회원탈퇴</div>
+          </button>
+        </Withdrawal>
+
+          {/* <NameInputBox>
             <Input
               idName="typepass"
               inputtype="password"
@@ -286,90 +299,170 @@ const MypageInfo = () => {
             >
               확인
             </Button>
-          </NameInputBox>
-          {/* <Secession>
-            <Button
-              className="loginAnchor"
-              kind="wideBtn_01"
-              width="15%!important"
-              onClickHandler={_handleWithdrawal}
-            >
-              회원탈퇴
-            </Button>
-          </Secession> */}
+          </NameInputBox> */}
           </Content>
         </Container>
     )
 }
 
 const Container = styled.div`
-    width: 100%;
-    height: 750px;
-    display: flex;
-    justify-content: center;
+  width: 100%;
+  height: 750px; //나중에 auto로 바꾸자
+  display: flex;
+  justify-content: center;
 `;
 
 const Content = styled.div`
-    width: 95%;
-    height: 800px;
-    border: 1px solid #D8D8D8;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  width: 100%;
+  height: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
+const MyInfo = styled.div`
+  width: 98%;
+  height: 180px;
+  margin: 20px 0 0 0;
+  display: flex;
+  justify-content: space-around;
+  // flex-direction: column; 
+  // align-items: center;
+
+  .info {
+    width: 48%;
+    height: 100%;
+    display: flex;
+    border: 1px solid #D8D8D8;
+    
+
+  }
+
+  .info-text {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    flex-direction: column; 
+    
+    
+
+  }
+
+  .info-id {
+    width: 100%;
+    height: 33%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #D8D8D8;
+    border-right: 1px solid #D8D8D8;
+  }
+
+  .info-nick {
+    width: 100%;
+    height: 33%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #D8D8D8;
+    border-right: 1px solid #D8D8D8;
+  }
+
+    .info-phone {
+    width: 100%;
+    height: 33%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #D8D8D8;
+  }
+
+  .info-data {
+    width: 70%;
+    height: 100%;
+    display: flex;
+    flex-direction: column; 
+    
+
+  }
+
+  .id {
+    width: 100%;
+    height: 33%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #D8D8D8;
+  }
+
+  .nick {
+    width: 100%;
+    height: 33%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #D8D8D8;
+  }
+
+  .phone {
+    width: 100%;
+    height: 33%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .info-correction {
+    width: 48%;
+    height: 100%;
+    border: 1px solid #D8D8D8;
+
+  }
     
 `;
 
-const Card = styled.div`
-    width: 96%;
-    height: 160px;
-    border: 1px solid #D8D8D8;
-    margin: 20px 0 0 0;
-    display: flex;
-    flex-direction: column; 
-    // align-items: center;
+const OrederList = styled.div`
+  width: 96%;
+  height: 240px;
+  margin: 20px 0 0 0;
+  display: flex;
+  border: 1px solid #D8D8D8;
+  flex-direction: column; 
+  align-items: center;
+  justify-content: center;
 
-    .member-list {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width : 15%;
-      height: 100%;
-      border-right: 1px solid #D8D8D8;
-      border-bottom: 1px solid #D8D8D8;
-    }
+  .order-text {
+    width: 100%;
+    height: 20%;
+    border-bottom: 1px solid #D8D8D8;
+  }
 
-    .member-data {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width : 85%;
-      height: 100%;
-      border-bottom: 1px solid #D8D8D8;
-    }
-
-    .member-box {
-      display: flex;
-      width : 100%;
-      height: 34%;
-    }
+  .order-data {
+    width: 100%;
+    height: 80%;
+    overflow: auto;
+  }
 `;
 
-const NameInputBox = styled.div`
-    width: 40%;
-    height: 40px;
-    display: flex;
-    margin: 20px 0 0 0;
-    justify-content: center;
-    // border: 1px solid #D8D8D8;
-`;
+const Withdrawal = styled.div`
+  width: 96%;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0 0 0;
 
-const Secession = styled.div`
-    width: 96%;
-    height: 280px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end	
+  .withdrawal-button {
+    width: 20%;
+    height: 50px;
+    background: #0064ff;
+    border-radius: 10px 10px 10px 10px;
+  }
+
+  .login-text {
+    font-size: 18px;
+    color: white;
+  }
 `;
 
 export default MypageInfo;

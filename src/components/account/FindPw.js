@@ -1,53 +1,54 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router';
-import Logo from '../../images/blue_bg.svg';
-import _axios from '../../utils/axios';
+
 import {
   Container,
-  Wrap,
   LogoWrap,
-  Validation,
-  IdBox,
 } from '../../styles/account';
+import theme from '../../styles/theme';
 import styled from 'styled-components';
-//input & button
-import Button from '../common/Button';
-import Input from '../common/CommonInput';
+
 import titleTab from '../../utils/TitleTab';
+import _axios from '../../utils/axios';
+
+//input & button
+import Logo from '../../images/white_bg.svg';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
 const FindPw = () => {
-    const navigate = useNavigate(); // 페이지 이동 함수
-    const titleUpdator = titleTab("Loading...");
-    setTimeout(() => titleUpdator("비밀번호 찾기"), 100);
-    const [state, setState] = useState({
-      email: '',
-      userId: '',
-      emailCode:'',   // 인증번호
-      selected: '@m365.dongyang.ac.kr',
-      idValidation: '',  // 회원가입 인풋창 유효성 검사
-      validation: false,    // 유효성 검사 결과 
-      result: false,        // 서버와의 axios 요청 결과
-      message: null,
-      count: 1,
-    });
-  
-    // 이메일 인증 발급
-    const _handleButtonClick = (e) => {
-      e.preventDefault();
-      _postEmail();
+  const navigate = useNavigate();
+  const titleUpdator = titleTab("Loading...");
+  setTimeout(() => titleUpdator("비밀번호 찾기 - COMMA"), 100);
 
-    };
+  const regString = /^[a-zA-Z0-9]{5,15}$/; // 영문, 5~15 글자수
+  const selectList = ['@m365.dongyang.ac.kr', '@dongyang.ac.kr']; 
+
+  const [state, setState] = useState({
+    userId: '',
+    selected: '@m365.dongyang.ac.kr',
+    idValidation: '',  // 회원가입 인풋창 유효성 검사
+    validation: false,    // 유효성 검사 결과 
+    result: false,        // 서버와의 axios 요청 결과
+    message: null,
+    });
   
     const _signIn = (e) => {
       e.preventDefault();
       navigate('/login');
     };
+    
+    // 이메일로 비밀번호 발급
+    const _handleButtonClick = (e) => {
+      e.preventDefault();
+      _postEmail();
+    };
   
     const _postEmail = async () => {
-      const url = '/user/password'; 
+      const url = '/user/find/password'; 
       const params = {
-        user_id: state.email + state.selected,
+        user_id: state.userId + state.selected,
       };
       console.log(params);
       const response = await _axios(url, params);
@@ -58,63 +59,37 @@ const FindPw = () => {
           result: response.result,
           message: response.message,
         });
-        alert('발급 되었습니다.');
+        console.log('발급 되었습니다.');
       }else{
         setState({
           ...state,
-          result: response.result,
+          idValidation: '잘못된 이메일입니다.',
           message: response.message,
         });
-        alert( '실패!');
+        console.log( '실패!');
         }  
-      }
+      };
     
-  
-    let regString = /^[a-zA-Z0-9]{0,15}$/; // 영문, 2~15 글자수
     // 입력값이 변할 때
     const _handleInputChange = (e) => {
-      switch(e.target.name){
-        case 'email' :
-          if (regString.test(e.target.value)) {
-            console.log("올바른 형식입니다.");
-            setState({
-              ...state,
-              emailValidation: '',
-              validation: true,
-              [e.target.name]: e.target.value 
-            });
-          }else {
-            console.log("특수문자를 제외한 아이디만 입력해주세요.");
-            setState({
-              ...state,
-              validation: false,
-              emailValidation: '잘못된 형식입니다.',
-              [e.target.name]: e.target.value 
-            });
-          }break;
-        case 'userId' :
-          if (regString.test(e.target.value)) {
-            console.log("올바른 형식입니다.");
-            setState({
-              ...state,
-              idValidation: '',
-              validation: true,
-              [e.target.name]: e.target.value 
-            });
-          }else {
-            console.log("특수문자를 제외한 아이디만 입력해주세요.");
-            setState({
-              ...state,
-              validation: false,
-              idValidation: '잘못된 형식입니다.',
-              [e.target.name]: e.target.value 
-            });
-          }break;
-          default:
-        }
-      };
+      if (regString.test(e.target.value)) {
+        console.log("올바른 형식입니다.");
+        setState({
+          ...state,
+          idValidation: '',
+          validation: true,
+          [e.target.name]: e.target.value 
+        });
+      }else {
+        console.log("실패");
+        setState({
+          ...state,
+          validation: false,
+          idValidation: '5~15자의 영문과 숫자만 입력해주세요.',
+          [e.target.name]: e.target.value 
+        });
+    }};
 
-  const selectList = ['@m365.dongyang.ac.kr', '@dongyang.ac.kr'];
   const handleSelect = (e) => {
     setState({
       ...state,
@@ -123,77 +98,189 @@ const FindPw = () => {
     console.log(e.target.value);
   };
 
-  
-    return (
-      <Container>
-        <Wrap>
-        <Link to="/">
+  return (
+    <Container>
+      <Wrap>
+        <Link to="/login">
           <LogoWrap>
             <img src={Logo} alt="logo" width="100%"></img>
           </LogoWrap>
         </Link>
-          <IdBox>
-        <Input
-            idName="typepass"
-            inputtype="text"
-            name="email"
-            value={state.email}
-            maxLength={20}
-            onChange={_handleInputChange}
-            required={true}
-            titlename="이메일"
-            width="100%"
-            height="60px"
-            margin="0 0 0 0"
-            placeholder="이메일 아이디 입력해주세요."
-            validityStyles={false}
-            autoComplete="off"
-        /> 
-        <SelectBox>
-            <div>
-              <select onChange={handleSelect} value={state.selected}>
-                {selectList.map((item) => (
-                  <option value={item} key={item}>
-                    {item}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </SelectBox>
-          </IdBox>
+          <EmailBox>
+            <IdBox>
+              <TitleBox>
+                <FontAwesomeIcon icon={faEnvelope} size="1x"/>
+              </TitleBox>
+              <input
+                placeholder='아이디를 입력해주세요.'
+                maxLength={15}
+                value={state.userId}
+                onChange={_handleInputChange}
+                required={true}
+                type='text'
+                name='userId'
+              />
+              <SelectBox>
+                <div>
+                  <select onChange={handleSelect} value={state.selected}>
+                    {selectList.map((item) => (
+                      <option value={item} key={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </SelectBox>
+            </IdBox>
             <Validation>
-              {state.emailValidation}
+              <div className='validation-text'>{state.idValidation}</div>
             </Validation>
-        <Button
-            className="loginAnchor"
-            kind="wideBtn_01"
-            width="100%!important"
-            onClickHandler= {_handleButtonClick}
-            disabled={!state.validation}
-        >
-            확인
-        </Button>
-          {state.result && (
-            <Button
-            className="loginAnchor"
-            kind="wideBtn_01"
-            width="100%!important"
-            onClickHandler={_signIn}
-          >
-            로그인하기
-          </Button>)}
+            <button
+              className='login-button'
+              disabled={!state.validation || state.userId === ''}
+              onClick={_handleButtonClick}
+            >
+              <div className='login-text'>확인</div>
+            </button>
+            {state.result && (
+              <button
+                className='login-button'
+                onClick={_signIn}
+              >
+              <div className='login-text'>로그인하기</div>
+            </button>)}
+            <a href='https://account.live.com/username/recover' className='join-button'>
+              <div className='button-text1'>이메일을 잊으셨나요?</div>
+              <div className='button-text2'>&nbsp;이메일찾기</div>
+            </a>
+          </EmailBox>
         </Wrap>
-        </Container>
+      </Container>
     );
   }
 
-  const SelectBox = styled.div`
-    width: 236px;
-    height: 60px;
-    display: flex;
+const Wrap = styled.div`
+  height: auto;
+  padding: 0 20px;
+  object-fit: contain;
+  background-color: ${theme.colors.white};
+  box-shadow: 2px 4px 30px rgba(0, 0, 0, 0.25);
+  border-radius: 20px 20px 20px 20px;
+  
+  @media ${({ theme }) => theme.device.mobile} {
+    width: 100%;
+    padding-top: 0px;
+    padding-bottom: 30px;
+  }
+
+  @media ${({ theme }) => theme.device.desktop} {
+    width: 500px;
+    margin: 30px 0 80px;
     align-items: center;
-    border: 1px solid #A9A9A9;
-  
+    padding: 0 !important;
+  }
+
+  .loginAnchor {
+    margin-right: 0;
+  }
+
+  .wideBtn_01,
+  .wideBtn_02 {
+    width: 100%;
+    margin: 0;
+  }
 `;
+
+  const EmailBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // border: 1px solid #A9A9A9;
+
+  .login-button {
+    width: 80%;
+    height: 50px;
+    background: #0064ff;
+    border-radius: 10px 10px 10px 10px;
+    margin: 0 0 16px 0;
+  }
+
+  .login-text {
+    font-size: 18px;
+    color: white;
+  }
+
+  .join-button {
+    background: #f5f5f5;
+    width: 80%;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    text-decoration-line: none;
+    align-items: center;
+    border-radius: 10px 10px 10px 10px;
+    margin: 0 0 25px 0;
+  }
+
+  .button-text1{
+    font-size: 16px;
+    color: #969696;
+  }
+
+  .button-text2{
+    font-size: 16px;
+    color: #0064ff;
+  }
+`;
+
+const IdBox = styled.div`
+  width: 80%;
+  height: 60px;
+  display: flex;
   
+  input {
+    font-size: 16px;
+    background: #f5f5f5;
+    width: 35%;
+  }
+
+  input::placeholder{
+    font-size: 13px;
+    color:rightgray;
+  }
+  margin: 0 0 10px 0;
+  border-radius: 10px 10px 10px 10px;
+  background: #f5f5f5;
+`;
+
+const SelectBox = styled.div`
+  height: 60px;
+  width: 40%;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  // border: 1px solid #A9A9A9;
+
+  select {
+    background: #f5f5f5;
+  }
+`;
+
+const TitleBox = styled.div`
+  width: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Validation = styled.div`
+  width: 80%;
+  height: 30px;  
+  display: flex;
+  justify-content: center;
+  
+  .validation-text {
+    color: red;
+  }
+`;
   export default FindPw;

@@ -33,8 +33,9 @@ const Container = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  border: 1px solid #D8D8D8;
-  background: #CEE3F6;
+  
+  
+  border-bottom: 1px solid #D8D8D8;
 
   .menu-button {
     width: 150px;

@@ -1,98 +1,114 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
+
 // 개발자
 import _axios from '../../utils/axios';
 import titleTab from '../../utils/TitleTab';
 // import Alert from '../../components/common/modal/Alert';
+
 //css
 import '../../styles/kendo.css';
+import theme from '../../styles/theme';
 import {
   Container,
-  Wrap,
   LogoWrap,
-  Validation,
-  CountDown,
-  IdBox,
 } from '../../styles/account';
 import styled from 'styled-components';
-//input & button
-import Button from '../common/Button';
-import Input from '../common/CommonInput';
-// import Timer from './Timer';
+
 //icon
-import Logo from '../../images/blue_bg.svg';
+import Logo from '../../images/white_bg.svg';
 
 const JoinPage = () => {
-  const titleUpdator = titleTab("Loading...");
-  setTimeout(() => titleUpdator("회원가입"), 100);
-  const navigate = useNavigate(); // 페이지 이동 함수
-    // encrypt 
-  const [min, setMin] = useState(5);
-  const [sec, setSec] = useState(0);
-  const time = useRef(300);
-  const timerId = useRef(null);
-  let yClassList = ['YA', 'YB', 'YC', 'YD'];
-  let p1_classList = ['PA', 'PB', 'PC'];
-  let p2_classList = ['PA', 'PB', 'PC', 'PE'];
-  let qClassList = ['QA', 'QB'];
-  let majorList = ['컴퓨터소프트웨어공학과', '컴퓨터정보공학과', '인공지능소프트웨어학과'];
-  let gradeList = ['1', '2', '3'];
-  let academicList = ['재학', '휴학', '졸업'];
+  const navigate = useNavigate();
 
+  const titleUpdator = titleTab("Loading...");
+  setTimeout(() => titleUpdator("회원가입 - COMMA"), 100);
+
+  // 유효성 검사
+  const regEng = /^[a-zA-Z0-9]{5,15}$/;         // 영문, 2~15 글자수
+  const regNum = /^[0-9]{10,11}$/;            // 숫자, 10~11 자릿수
+  const regCodeNum = /^[0-9]{6,6}$/;          // 숫자, 6자릿수
+  const regStudentNum = /^[0-9]{8,8}$/;          // 숫자, 6자릿수
+  const regString = /^[가-힣a-zA-Z0-9ㄱ-ㅎ]+$/; // 한글, 영문
+  const regName = /^[가-힣]+$/; // 한글
+  const regPw = /^[a-zA-Z0-9?!@#$%^&~]*$/;  // 영문, 숫자, 특수문자 !@#$%^&~ 가능
+
+  // selectbox
+  const yClassList = ['YA', 'YB', 'YC', 'YD'];
+  const p1_classList = ['PA', 'PB', 'PC'];
+  const p2_classList = ['PA', 'PB', 'PC', 'PE'];
+  const qClassList = ['QA', 'QB'];
+  const majorList = ['컴퓨터소프트웨어공학과', '컴퓨터정보공학과', '인공지능소프트웨어학과'];
+  const gradeList = ['1', '2', '3'];
+  const academicList = ['재학', '휴학', '졸업'];
+
+  // selected
+  const selectList = ['@m365.dongyang.ac.kr', '@dongyang.ac.kr']; 
+
+  //타이머 
+  const time = useRef(120)
+  const timerId = useRef(null);
+  const [min, setMin] = useState(2);
+  const [sec, setSec] = useState(0);
+  
   const [state, setState] = useState({
     userId: '',
     userPw: '',
-    email: '',
+    checkPw: '',
     emailCode:'',   // 인증번호
-    nickname:'',
-    name: '',
-    phone:'',
-    studentId: '',
-    selected: '@m365.dongyang.ac.kr',
+    nickname:'',  
+    name: '', // 이름
+    phone:'', 
+    studentId: '',  // 학번
+    selected: '@m365.dongyang.ac.kr', // 이메일 확장자
     major: '컴퓨터소프트웨어공학과', // 학과
     grade: '1', // 학년
     classroom: 'YA',  // 반
-    academic: '재학',
-    idValidation: '',     // 회원가입 인풋창 유효성 검사
+    academic: '재학', //학적
+    idValidation: '', // id 유효성 검사
     pwValidation: '',
+    checkPwValidation: '',
     nicknameValidation: '',
     studentIdValidation: '',
     nameValidation: '',
     phoneValidation: '',
     emailValidation: '',
     codeValidation: '',
-    validation: false,    // 유효성 검사 결과 
+    validation: false,    // 회원가입을 위한 유효성 검사
+    validationPw: false,    
+    validationCheckPw: false,
+    validationNickname: false,
+    validationName: false,    
+    validationPhone: false,   
+    validationStudent: false, 
     result: false,        // 서버와의 axios 요청 결과
-    emailCheck:true,    // 이메일 인증여부 확인
-    codeCheck:false,      // 인증번호 인풋창
+    emailCheck: false,    // 이메일 인증여부 확인 (첫 번째 순서)
+    emailCodeCheck: false,      // 인증번호 인증 확인 (두 번째 순서)
     checkButton: false,   // 다른 이메일 인증하기
     count: 0,             // 남은 인증번호 입력가능 횟수
     message: null,
     success: false,       // 회원가입 성공/실패
-    visibleDialog: false,
     reCode: false,
     disInput: false,
-    alertCheck : false,
-    r: 'hi',
   });
 
   // 이메일 인증 발급
-  const _handleButtonClick = (e) => {
+  const _handleRequest = (e) => {
     e.preventDefault();
     console.log(state.email);
     _postEmail();
-    // setState({
-    //   ...state,
-    //   codeCheck: true,
-    // });
+    setState({
+      ...state,
+      emailCodeCheck: true,
+    });
   };
 
   // 저장npm
   const _postEmail = async () => {
     const url = '/mailAuthentication'; 
     const params = {
-      address: state.email + state.selected,
+      address: state.userId + state.selected,
     };
     console.log(params);
     const response = await _axios(url, params);
@@ -119,24 +135,31 @@ const JoinPage = () => {
     }
   };
 
+  // 인증코드 재요청 버튼 클릭
+  const _handleReRequest = (e) => {
+    e.preventDefault();
+    _postEmail();
+    time.current = 120;
+    setMin(2);
+    };
+
    // 이메일 인증하기 클릭
-  const _handleButtonCheck = (e) => {
+  const _handleEmailCheck = (e) => {
     console.log(state.count);
     e.preventDefault();
-    _checkCode();
+    _codeCheck();
     setState({
       ...state,
       emailCheck: true,
     });
   };
-
+  
   // 저장
-  const _checkCode = async () => {
-    console.log(state);
+  const _codeCheck = async () => {
     const url = '/confirmation';
     const params = {
       id: state.emailCode,
-      address: state.email + state.selected,
+      address: state.userId + state.selected,
     };
     console.log(params);
     const response = await _axios(url, params);
@@ -171,43 +194,14 @@ const JoinPage = () => {
       alert('횟수 초과입니다.');
         }
     }
-    console.log(state.result, state.message);
   };
   
-  // 유효성 검사
-  let regEng = /^[a-zA-Z0-9]{2,15}$/;         // 영문, 2~15 글자수
-  let regNum = /^[0-9]{10,11}$/;            // 숫자, 10~11 자릿수
-  let regCodeNum = /^[0-9]{6,6}$/;          // 숫자, 6자릿수
-  let regStudentNum = /^[0-9]{8,8}$/;          // 숫자, 6자릿수
-  let regString = /^[가-힣a-zA-Z0-9ㄱ-ㅎ]+$/; // 한글, 영문
-  let regName = /^[가-힣]+$/; // 한글
-  let regPw = /^[a-zA-Z0-9?!@#$%^&~]*$/;  // 영문, 숫자, 특수문자 !@#$%^&~ 가능
-
   // 입력값이 변할 때
   const _handleInputChange = (e) => {
     console.log(e.target.value);
     switch(e.target.name){
-      case 'email' :
-        if (regEng.test(e.target.value)) {
-          console.log("올바른 형식입니다.");
-          setState({
-            ...state,
-            emailValidation: '',
-            validation: true,
-            [e.target.name]: e.target.value 
-          });
-        }else {
-          console.log("특수문자를 제외한 아이디만 입력해주세요.");
-          setState({
-            ...state,
-            validation: false,
-            emailValidation: '잘못된 형식입니다.',
-            [e.target.name]: e.target.value 
-          });
-        }break;
       case 'userId' :
         if (regEng.test(e.target.value)) {
-          console.log("올바른 형식입니다.");
           setState({
             ...state,
             idValidation: '',
@@ -219,34 +213,34 @@ const JoinPage = () => {
           setState({
             ...state,
             validation: false,
-            idValidation: '잘못된 형식입니다.',
+            idValidation: '5~15자의 영문과 숫자만 입력해주세요.',
             [e.target.name]: e.target.value 
           });
         }break;
       case 'userPw' :
         if (regPw.test(e.target.value)) {
-          console.log("올바른 형식입니다.");
+          console.log("올바른 비밀번호 형식입니다.");
           setState({
             ...state,
-            validation: true,
+            validationPw: true,
             pwValidation: '',
             [e.target.name]: e.target.value 
           });
         }else {
-          console.log("특수문자를 제외한 아이디만 입력해주세요.");
+          console.log("비밀번호만 입력해주세요.");
           setState({
             ...state,
-            validation: false,
+            validationPw: false,
             pwValidation: '잘못된 형식입니다.',
             [e.target.name]: e.target.value 
           });
-        }break;    
+        }break;     
       case 'nickname' :
         if (regString.test(e.target.value)) {
           console.log("올바른 형식입니다.");
           setState({
             ...state,
-            validation: true,
+            validationNickname: true,
             nicknameValidation: '',
             [e.target.name]: e.target.value 
           });
@@ -254,7 +248,7 @@ const JoinPage = () => {
           console.log("특수문자를 제외한 아이디만 입력해주세요.");
           setState({
             ...state,
-            validation: false,
+            validationNickname: false,
             nicknameValidation: '잘못된 형식입니다.',
             [e.target.name]: e.target.value 
           });
@@ -264,7 +258,7 @@ const JoinPage = () => {
           console.log("올바른 형식입니다.");
           setState({
             ...state,
-            validation: true,
+            validationName: true,
             nameValidation: '',
             [e.target.name]: e.target.value 
           });
@@ -272,7 +266,7 @@ const JoinPage = () => {
           console.log("특수문자를 제외한 아이디만 입력해주세요.!");
           setState({
             ...state,
-            validation: false,
+            validationName: false,
             nameValidation: '잘못된 형식입니다.',
             [e.target.name]: e.target.value 
           });
@@ -282,7 +276,7 @@ const JoinPage = () => {
           console.log("10~11자리 수를 입력하세요.");
           setState({
             ...state,
-            validation: true,
+            validationPhone: true,
             phoneValidation: '',
             [e.target.name]: e.target.value 
           });
@@ -290,7 +284,7 @@ const JoinPage = () => {
           console.log("잘못된 형식입니다.");
           setState({
             ...state,
-            validation: false,
+            validationPhone: false,
             phoneValidation: '잘못된 형식입니다.',
             [e.target.name]: e.target.value 
           });
@@ -300,7 +294,7 @@ const JoinPage = () => {
           console.log("8자리 수를 입력하세요.");
           setState({
             ...state,
-            validation: true,
+            validationStudent: true,
             studentIdValidation: '',
             [e.target.name]: e.target.value 
           });
@@ -308,7 +302,7 @@ const JoinPage = () => {
           console.log("잘못된 형식입니다.");
           setState({
             ...state,
-            validation: false,
+            validationStudent: false,
             studentIdValidation: '잘못된 형식입니다.',
             [e.target.name]: e.target.value 
           });
@@ -327,23 +321,41 @@ const JoinPage = () => {
           setState({
             ...state,
             validation: false,
-            codeValidation: '잘못된 형식입니다.',
+            codeValidation: '6자리의 숫자만 입력해주세요.',
             [e.target.name]: e.target.value 
             });
       }break;
       default:
-        }
-      };
+    }
+  };
+
+  const _handlePwchange = (e) => {
+    console.log(e.target.value);
+    if(state.userPw === e.target.value) {
+      setState({
+        ...state,
+        validationCheckPw: true,
+        checkPwValidation: '',
+        [e.target.name]: e.target.value 
+      });
+    } else {
+      setState({
+        ...state,
+        validationCheckPw: false,
+        checkPwValidation: '비밀번호가 일치하지 않습니다..',
+        [e.target.name]: e.target.value 
+      });
+    }
+  }
 
   // 회원가입 버튼 클릭
   const _handleSubmit = (e) => {
     e.preventDefault();
-      _setData();
-      setState({
-        ...state,
-        success: true,
-      })
-
+    _setData();
+    setState({
+      ...state,
+      success: true,
+    });
   }
 
   // 저장
@@ -353,7 +365,6 @@ const JoinPage = () => {
     const params = {
       id: state.email + state.selected,
       password: state.userPw,
-      // email: state.email + state.selected,
       nickname: state.nickname,
       phone: state.phone,
       name: state.name,
@@ -396,11 +407,11 @@ const JoinPage = () => {
   // 이메일 인증 타이머
   const Timer = () => {
     useEffect(() => {
-        timerId.current = setInterval(() => {
-        setMin(parseInt(time.current / 60));
-        setSec(time.current % 60);
-        time.current -= 1;
-      }, 1000);
+      timerId.current = setInterval(() => {
+      setMin(parseInt(time.current / 60));
+      setSec(time.current % 60);
+      time.current -= 1;
+    }, 1000);
       return () => clearInterval(timerId.current);
     },[timerId.current]);
 
@@ -412,522 +423,708 @@ const JoinPage = () => {
         clearInterval(timerId.current);
         }
       }, [sec]);
-      
       return(
         <Time>
           {min}:{sec}
-        </Time>
-      );
+        </Time>       
+      )
     };
-
-    const SelectEmail = () => {
-      const selectList = ['@m365.dongyang.ac.kr', '@dongyang.ac.kr'];
-      const handleSelect = (e) => {
-        setState({
-          ...state,
-          selected: e.target.value,
-        });
-        console.log(e.target.value);
-      };
-        return(
-          <select onChange={handleSelect} value={state.selected} disabled={state.disInput}>
-            {selectList.map((item) => (
-              <option value={item} key={item}>
-                {item}
-              </option>
-            ))}
-        </select>
-        );
-      };
+  
+  const handleSelect = (e) => {
+    setState({
+      ...state,
+      selected: e.target.value,
+    });
+    console.log(e.target.value);
+  };
     
-    const SelectMajor = () => {
-      const handleMajor = (e) => {
-        setState({
-          ...state,
-          major: e.target.value,
-        });
-        console.log(e.target.value);
-      };
-        return(
-          <Selectvalues>
-            <select onChange={handleMajor} value={state.major}>
-              {majorList.map((item)  => (
-                <option value={item} key={item}>
-                  {item}
-                </option>
-              ))}  
-            </select> 
-          </Selectvalues>
-          );
-        };
+  const SelectMajor = () => {
+    const handleMajor = (e) => {
+      setState({
+        ...state,
+        major: e.target.value,
+      });
+      console.log(e.target.value);
+    };
+    return(
+      <Selectvalues>
+        <select onChange={handleMajor} value={state.major} className='select-major-box '>
+          {majorList.map((item)  => (
+            <option value={item} key={item}>
+              {item}
+            </option>
+          ))}  
+        </select> 
+      </Selectvalues>
+    );
+  };
 
-    const SelectGrade = () => {
-      const handleGrade = (e) => {
-        setState({
-          ...state,
-          grade: e.target.value,
-        });
-        console.log(e.target.value);
-      };
-        return(
-          <Selectvalues>
-            <select onChange={handleGrade} value={state.grade}>
-              {gradeList.map((item) => (
-                <option value={item} key={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
-          </Selectvalues>
-        );
+  const SelectGrade = () => {
+    const handleGrade = (e) => {
+      setState({
+        ...state,
+        grade: e.target.value,
+      });
+      console.log(e.target.value);
     };
-
-    const SelectYClass = () => {
-      const handleClass = (e) => {
-        setState({
-          ...state,
-          classroom: e.target.value,
-        });
-        console.log(e.target.value);  
-      }
-        return(
-          <Selectvalues>
-            <select onChange={handleClass} value={state.classroom}> 
-              {yClassList.map((item) => (
-                <option value={item} key={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
-          </Selectvalues>
-        );
-    };
-
-    const SelectP1Class = () => {
-      const handleClass = (e) => {
-        setState({
-          ...state,
-          classroom: e.target.value,
-        });
-        console.log(e.target.value);  
-      }
-        return(
-          <Selectvalues>
-            <select onChange={handleClass} value={state.classroom}> 
-              {p1_classList.map((item) => (
-                <option value={item} key={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
-          </Selectvalues>
-        );
-    };
-    
-    const SelectP2Class = () => {
-      const handleClass = (e) => {
-        setState({
-          ...state,
-          classroom: e.target.value,
-        });
-        console.log(e.target.value);  
-      }
-      return(
-        <Selectvalues>
-          <select onChange={handleClass} value={state.classroom}> 
-            {p2_classList.map((item) => (
-              <option value={item} key={item}>
-                {item}
-              </option>
-            ))}
-          </select>
-        </Selectvalues>
-      );
-    };
-    
-    const SelectQClass = () => {                  
-      const handleClass = (e) => {
-        setState({
-          ...state,
-          classroom: e.target.value,
-        });
-        console.log(e.target.value);  
-      }
-      return(
-        <Selectvalues>
-          <select onChange={handleClass} value={state.classroom}> 
-            {qClassList.map((item) => (
-          <option value={item} key={item}>
-            {item}
-          </option>
+    return(
+      <Selectvalues>
+        <select onChange={handleGrade} value={state.grade} className='select-box'>
+          {gradeList.map((item) => (
+            <option value={item} key={item}>
+              {item}
+            </option>
           ))}
         </select>
       </Selectvalues>
-      );
-    };
-    const SelectAcademic = () => {
-      const handleAcademic = (e) => {
-        setState({
-          ...state,
-          academic: e.target.value,
-        });
-        console.log(e.target.value);
-      };
-      return(
-        <Selectvalues>
-          <select onChange={handleAcademic} value={state.academic}>
-            {academicList.map((item) => (
-              <option value={item} key={item}>
-                {item}
-              </option>
-            ))}
-          </select>
-        </Selectvalues>
-      );
-    };
+    );
+  };
 
-    // 인증코드 재요청 버튼 클릭
-    const _handleReRequest = (e) => {
-      e.preventDefault();
-      _postEmail();
-      time.current = 60;
-      setMin(1);
-    };
-
-    const Alert = () => {
-      useEffect(() => {
-        let alertTimer = setTimeout(() => {
-        setState({
-          ...state,
-          alertCheck : true,
-        })
-        }, 3000);
-        return () => clearInterval(alertTimer);
-      }, []);
-
-      return (
-        <>
-        {
-          state.alertCheck === false ?
-          <AlertBox>
-            {state.r}
-          </AlertBox> : <div></div>
-        }
-        </>
-      )
+  const SelectYClass = () => {
+    const handleClass = (e) => {
+      setState({
+        ...state,
+        classroom: e.target.value,
+      });
+      console.log(e.target.value);  
     }
+    return(
+      <Selectvalues>
+        <select onChange={handleClass} value={state.classroom} className='select-box'> 
+          {yClassList.map((item) => (
+            <option value={item} key={item}>
+              {item}
+            </option>
+          ))}
+        </select>
+      </Selectvalues>
+    );
+  };
+
+  const SelectP1Class = () => {
+    const handleClass = (e) => {
+      setState({
+        ...state,
+        classroom: e.target.value,
+      });
+      console.log(e.target.value);  
+    }
+    return(
+      <Selectvalues>
+        <select onChange={handleClass} value={state.classroom} className='select-box'> 
+          {p1_classList.map((item) => (
+            <option value={item} key={item}>
+              {item}
+            </option>
+          ))}
+        </select>
+      </Selectvalues>
+    );
+  };
+    
+  const SelectP2Class = () => {
+    const handleClass = (e) => {
+      setState({
+        ...state,
+        classroom: e.target.value,
+      });
+      console.log(e.target.value);  
+    }
+    return(
+      <Selectvalues>
+        <select onChange={handleClass} value={state.classroom} className='select-box'> 
+          {p2_classList.map((item) => (
+            <option value={item} key={item}>
+              {item}
+            </option>
+          ))}
+        </select>
+      </Selectvalues>
+    );
+  };
+    
+  const SelectQClass = () => {                  
+    const handleClass = (e) => {
+      setState({
+        ...state,
+        classroom: e.target.value,
+      });
+      console.log(e.target.value);  
+    }
+    return(
+      <Selectvalues>
+        <select onChange={handleClass} value={state.classroom} className='select-box'> 
+          {qClassList.map((item) => (
+            <option value={item} key={item}>
+              {item}
+            </option>
+          ))}
+        </select>
+      </Selectvalues>
+    );
+  };
+  const SelectAcademic = () => {
+    const handleAcademic = (e) => {
+      setState({
+        ...state,
+        academic: e.target.value,
+      });
+      console.log(e.target.value);
+    };
+    return(
+      <Selectvalues>
+        <select onChange={handleAcademic} value={state.academic} className='select-box'>
+          {academicList.map((item) => (
+            <option value={item} key={item}>
+              {item}
+            </option>
+          ))}
+        </select>
+      </Selectvalues>
+    );
+  };
 
   return (
     <Container>
-      <Alert/>
-    <Wrap>
-      <Link to="/">
-        <LogoWrap>
-          <img src={Logo} alt="logo" width="100%"></img>
-        </LogoWrap>
-      </Link>
-      <form onSubmit={_handleSubmit}>
-      <IdBox>
-        {!state.emailCheck && (
-        <Input
-          idName="typepass"
-          inputtype="text"
-          name="email"
-          value={state.email}
-          maxLength={20}
-          onChange={_handleInputChange}
-          required={true}
-          titlename="이메일"
-          width="100%"
-          height="60px"
-          margin="0 0 10px 0"
-          placeholder="이메일 아이디 입력해주세요."
-          validityStyles={false}
-          autoComplete="off"
-          disabled={state.disInput}
-        />)}
-        {!state.emailCheck && (
-          <SelectBox>
-            <SelectEmail/>
-          </SelectBox>)}
-          </IdBox>
-        {!state.emailCheck && (
-          <Validation>
-            {state.emailValidation}
-          </Validation>)}
-        <IdBox>
-        {!state.emailCheck && state.codeCheck && ( 
-        <Input
-            idName="typepass"
-            inputtype="text"
-            name="emailCode"
-            value={state.emailCode}
-            maxLength={6}
-            onChange={_handleInputChange}
-            titlename="인증번호"
-            width="100%"
-            height="60px"
-            margin="0 0 0 0"
-            placeholder="인증번호를 입력해주세요."
-            validityStyles={false}
-            autoComplete="off"
-          />)}
-        {!state.emailCheck && state.codeCheck && ( 
-          <StateBox>
-            <Timer/>
-              {!state.emailCheck && state.codeCheck && !state.checkButton && time.current === 0 &&(
-                <Button
-                  margin="0 20px 0 0"
-                  width="70%"
-                  height="50%"
-                  onClickHandler= {_handleReRequest}
+      <Wrap>
+        <Link to="/login">
+          <LogoWrap>
+            <img src={Logo} alt="logo" width="100%"></img>
+          </LogoWrap>
+        </Link>
+        <form onSubmit={_handleSubmit}>
+          <JoinBox>
+            {!state.emailCheck && !state.emailCodeCheck && !state.success && (
+              <IdBox>
+                <TitleBox>
+                  이메일
+                </TitleBox>
+                  <input
+                    value={state.userId}
+                    type='text'
+                    name='userId'
+                    onChange={_handleInputChange}
+                    required={true}
+                    // disabled={state.disInput}
+                  />
+                  <SelectBox>
+                    <div>
+                      <select onChange={handleSelect} value={state.selected}>
+                        {selectList.map((item) => (
+                          <option value={item} key={item}>
+                            {item}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </SelectBox>
+              </IdBox>
+            )}
+            {!state.emailCheck && !state.emailCodeCheck && !state.success && (
+              <Validation>
+                <div className='validation-text'>{state.idValidation}</div>
+              </Validation>
+            )}
+            {!state.emailCheck && !state.emailCodeCheck && !state.success && (
+              <button
+                className='login-button'
+                disabled={!state.validation || state.userId === ''}
+                onClick={_handleRequest}
+              >
+                <div className='login-text'>인증하기</div>
+              </button>
+            )}
+          {!state.emailCheck && state.emailCodeCheck && !state.success && (
+            <CodeBox>
+              <TitleBox>
+                인증번호
+              </TitleBox>
+              <input
+                value={state.emailCode}
+                type='text'
+                name='emailCode'
+                onChange={_handleInputChange}
+                required={true}            
+                maxLength={6}
+              />
+              <StateBox>
+                <Timer/>
+                {/* !state.emailCheck && state.codeCheck && !state.checkButton && time.current === 0 &&( */}
+                {!state.emailCheck && state.emailCodeCheck && !state.success && time.current === 0 && ( 
+                <button
+                  className='reset-button'
+                  onClick={_handleReRequest}
                 >
-                  재요청
-                </Button>)}
-          </StateBox>)}
-          </IdBox>
-          {!state.emailCheck && state.codeCheck && (
-          <Validation>
-            {state.codeValidation}
-          </Validation>)}
-        {!state.emailCheck && !state.codeCheck && !state.checkButton && (
-        <Button
-            className="loginAnchor"
-            kind="wideBtn_01"
-            width="100%!important"
-            onClickHandler= {_handleButtonClick}
-            disabled={!state.validation}
-        >
-            인증번호 발급
-        </Button>)}
-        {!state.emailCheck && state.codeCheck && !state.checkButton &&(
-        <Button
-            className="loginAnchor"
-            kind="wideBtn_01"
-            width="100%!important"
-            onClickHandler= {_handleButtonCheck}
-            disabled={!state.validation}
-        >
-            인증완료
-        </Button>)}
-        {!state.emailCheck && state.codeCheck && !state.checkButton &&(
-        <CountDown>
-            {state.count}/5
-        </CountDown>)}
-        {state.emailCheck && !state.success && (
-        <Input
-          className="input-id"
-          inputtype="text"
-          width="100%"
-          height="60px"
-          margin="0 0"
-          value={state.email + state.selected}
-          maxLength={15}
-          autoComplete="off"
-          name="userId"
-          onChange={_handleInputChange}
-          required={true}
-          validityStyles={false}
-          titlename="아이디"
-          disabled={true}
-        />)}
-        {state.emailCheck && (
-          <Validation>
-            {state.idValidation}
-          </Validation>)}
-        {state.emailCheck && !state.success && (
-        <Input
-          inputtype="password"
-          name="userPw"
-          value={state.userPw}
-          maxLength={15}
-          onChange={_handleInputChange}
-          required={true}
-          titlename="비밀번호"
-          width="100%"
-          height="60px"
-          margin="10px 0 0 0"
-          placeholder="비밀번호를 입력해주세요."
-          validityStyles={false}
-          autoComplete="off"
-        />)}
-        {state.emailCheck && (
-          <Validation>
-            {state.pwValidation}
-          </Validation>)} 
-        {state.emailCheck && !state.success && (
-        <Input
-          inputtype="text"
-          name="name"
-          value={state.name}
-          maxLength={10}
-          onChange={_handleInputChange}
-          required={true}
-          titlename="이름"
-          width="100%"
-          height="60px"
-          margin="10px 0 0 0"
-          placeholder="이름을 입력해주세요."
-          validityStyles={false}
-          autoComplete="off"
-        />)}
-        {state.emailCheck && (
-          <Validation>
-            {state.nameValidation}
-          </Validation>)}
-        {state.emailCheck && !state.success && (
-        <Input
-          inputtype="text"
-          name="studentId"
-          value={state.studentId}
-          maxLength={8}
-          onChange={_handleInputChange}
-          required={true}
-          titlename="학번"
-          width="100%"
-          height="60px"
-          margin="10px 0 0 0"
-          placeholder="학번을 입력해주세요."
-          validityStyles={false}
-          autoComplete="off"
-        />)}
-        {state.emailCheck && (
-          <Validation>
-            {state.studentIdValidation}
-          </Validation>)}
-        {state.emailCheck && !state.success && (
-        <Input
-          inputtype="text"
-          name="nickname"
-          value={state.nickname}
-          maxLength={15}
-          onChange={_handleInputChange}
-          required={true}
-          titlename="닉네임"
-          width="100%"
-          height="60px"
-          margin="10px 0 0 0"
-          placeholder="닉네임을 입력해주세요."
-          validityStyles={false}
-          autoComplete="off"
-        />)}
-        {state.emailCheck && (
-          <Validation>
-            {state.nicknameValidation}
-          </Validation>)}
-        {state.emailCheck && !state.success && (
-        <Input
-          inputtype="text"
-          name="phone"
-          value={state.phone}
-          maxLength={11}
-          onChange={_handleInputChange}
-          required={true}
-          titlename="전화번호"
-          width="100%"
-          height="60px"
-          margin="10px 0 0 0"
-          placeholder="-을 제외한 전화번호를 입력해주세요."
-          validityStyles={false}
-          autoComplete="off"
-        />)}
-        {state.emailCheck && (
-          <Validation>
-            {state.phoneValidation}
-          </Validation>)}
-        {state.emailCheck && !state.success && (
-          <ValueBox>
-            <SelectMajor/>
-            <SelectGrade/>
-            { state.major === '컴퓨터소프트웨어공학과' ?
-              <SelectYClass/>
-            : state.major === '컴퓨터정보공학과' && state.grade === '1' ?
-              <SelectP1Class/>
-              : state.major === '컴퓨터정보공학과' && state.grade === '2' ?
-              <SelectP2Class/>
-              : state.major === '인공지능소프트웨어학과' ?
-              <SelectQClass/>
-              : ''
-            }
-            <SelectAcademic/>
-          </ValueBox>)}
-        {state.emailCheck && !state.success &&(
-        <Button
-          type={'submit'}
-          className="loginAnchor"
-          kind="wideBtn_01"
-          width="100%!important"
-          disabled={!state.validation}
-        >
-          회원가입
-        </Button>)}
-        {state.emailCheck && state.success && (
-        <Button
-          className="loginAnchor"
-          kind="wideBtn_01"
-          width="100%!important"
-          onClickHandler={_signUpSuccess}
-        >
-          로그인하기
-        </Button>)}
+                  <div className='login-text'><div className='reset-font'>재인증</div></div>
+                </button>)}
+              </StateBox>  
+            </CodeBox>
+          )}
+          {!state.emailCheck && state.emailCodeCheck && !state.success && (
+            <Validation>
+              <div className='validation-text'>{state.codeValidation}</div>
+            </Validation>
+          )}
+          {!state.emailCheck && state.emailCodeCheck && !state.success && (
+            <button
+              className='login-button'
+              disabled={!state.validation || state.emailCode === ''}
+              onClick={_handleEmailCheck}
+            >
+              <div className='login-text'>확인</div>
+            </button>
+          )}
+          {state.emailCheck && !state.success && (
+            <IdBox>
+              <TitleBox>
+                아이디
+              </TitleBox>
+              <input
+                value={state.userId + state.selected}
+                type='text'
+                name='userId'
+                disabled={true}
+              />
+            </IdBox>
+          )}
+          {state.emailCheck && !state.success && (
+            <Validation>
+              <div className='validation-text'>{state.idValidation}</div>
+            </Validation>
+          )}
+          {state.emailCheck && !state.success && (
+            <IdBox>
+              <TitleBox>
+                비밀번호
+              </TitleBox>
+              <input
+                style={{fontSize: '24px'}}
+                value={state.userPw}
+                type='password'
+                name='userPw'
+                onChange={_handleInputChange}
+                required={true}            
+                maxLength={15}
+              />
+            </IdBox>
+          )}
+          {state.emailCheck && !state.success && (
+            <Validation>
+              <div className='validation-text'>{state.pwValidation}</div>
+            </Validation>
+          )}
+          {state.emailCheck && !state.success && (
+            <IdBox>
+              <TitleBox>
+                비밀번호 확인
+              </TitleBox>
+              <input
+                style={{fontSize: '24px'}}
+                value={state.checkPw}
+                type='password'
+                name='checkPw'
+                onChange={_handlePwchange}
+                required={true}            
+                maxLength={15}
+              />
+            </IdBox>
+          )} 
+          {state.emailCheck && !state.success && (
+            <Validation>
+              
+                <div className='validation-text'>{state.checkPwValidation}</div>
+            
+            </Validation>
+          )}
+          {state.emailCheck && !state.success && (
+            <IdBox>
+              <TitleBox>
+                이름
+              </TitleBox>
+              <input
+                value={state.name}
+                type='text'
+                name='name'
+                onChange={_handleInputChange}
+                required={true}            
+                maxLength={10}
+              />
+            </IdBox>
+          )}
+          {state.emailCheck && !state.success && (
+            <Validation>
+              <div className='validation-text'>{state.nameValidation}</div>
+            </Validation>
+          )}
+          {state.emailCheck && !state.success && (
+            <IdBox>
+              <TitleBox>
+                별명
+              </TitleBox>
+              <input
+                value={state.nickname}
+                type='text'
+                name='nickname'
+                onChange={_handleInputChange}
+                required={true}            
+                maxLength={10}
+              />
+              <TitleBox>
+                <button
+                  className='reset-button'
+                  // onClick={_handleReRequest}
+                >
+                  중복검사
+                </button>
+              </TitleBox>
+            </IdBox>
+          )}
+          {state.emailCheck && !state.success && (
+            <Validation>
+              <div className='validation-text'>{state.nicknameValidation}</div>
+            </Validation>
+          )}
+          {state.emailCheck && !state.success && (
+            <IdBox>
+              <TitleBox>
+                전화번호
+              </TitleBox>
+              <input
+                value={state.phone}
+                type='text'
+                name='phone'
+                onChange={_handleInputChange}
+                required={true}            
+                maxLength={11}
+              />
+            </IdBox>
+          )}
+          {state.emailCheck && !state.success && (
+            <Validation>
+              <div className='validation-text'>{state.phoneValidation}</div>
+            </Validation>
+          )}
+          {state.emailCheck &&!state.success && (
+            <IdBox>
+              <TitleBox>
+                학번
+              </TitleBox>
+              <input
+                value={state.studentId}
+                type='text'
+                name='studentId'
+                onChange={_handleInputChange}
+                required={true}            
+                maxLength={8}
+              />
+            </IdBox>
+          )}
+          {state.emailCheck && !state.success && (
+            <Validation>
+              <div className='validation-text'>{state.studentIdValidation}</div>
+            </Validation>
+          )}
+          {state.emailCheck && !state.success && (
+            <ValueBox>
+              <SelectMajor/>
+              <SelectGrade/>
+                { state.major === '컴퓨터소프트웨어공학과' ?
+                  <SelectYClass/>
+                  : state.major === '컴퓨터정보공학과' && state.grade === '1' ?
+                  <SelectP1Class/>
+                  : state.major === '컴퓨터정보공학과' && state.grade === '2' ?
+                  <SelectP2Class/>
+                  : state.major === '인공지능소프트웨어학과' ?
+                  <SelectQClass/>
+                  : ''
+                }
+              <SelectAcademic/>
+            </ValueBox>
+          )}
+          {state.emailCheck && !state.success && (
+            <Validation>
+              <div className='validation-text'>{state.idValidation}</div>
+            </Validation>
+          )}
+          {state.emailCheck && !state.success && (
+            <button
+              className='login-button'
+              disabled={!state.validationPw || !state.validationCheckPw || !state.validationNickname || !state.validationName || !state.validationPhone || !state.validationStudent}
+            >
+              <div className='login-text'>회원가입</div>
+            </button>
+          )}
+          {state.emailCheck && state.success && (
+            <button
+              className='login-button'
+              onClick={_signUpSuccess}
+            >
+              <div className='login-text'>로그인하기</div>
+            </button>
+          )}
+        </JoinBox>
       </form>
-      
-      {/* {state.success && state.visibleDialog && (
-        <Alert
-          kind="alert-4"
-          sub1={state.message}
-          onClick2={_toggleDialog}
-        ></Alert>
-      )} */}
     </Wrap>
   </Container>
 );
 };
 
-const SelectBox = styled.div`
-    width: 236px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #A9A9A9;
+const Wrap = styled.div`
+  height: auto;
+  padding: 0 20px;
+  object-fit: contain;
+  background-color: ${theme.colors.white};
+  box-shadow: 2px 4px 30px rgba(0, 0, 0, 0.25);
+  border-radius: 20px 20px 20px 20px;
 
+  @media ${({ theme }) => theme.device.mobile} {
+    width: 100%;
+    padding-top: 0px;
+    padding-bottom: 30px;
+  }
+
+  @media ${({ theme }) => theme.device.desktop} {
+    width: 560px;
+    // height: 800px;
+    margin: 30px 0 80px;
+    align-items: center;
+    padding: 0 !important;
+  }
+
+  .loginAnchor {
+    margin-right: 0;
+  }
+
+  .wideBtn_01,
+  .wideBtn_02 {
+    width: 100%;
+    margin: 0;
+  }
+`;
+
+const JoinBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 0 20px 0;
+
+  .login-button {
+    width: 80%;
+    height: 54px;
+    background: #0064ff;
+    border-radius: 10px 10px 10px 10px;
+    margin: 0 0 16px 0;
+  }
+
+  .join-button {
+    background: #f5f5f5;
+    width: 80%;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    text-decoration-line: none;
+    align-items: center;
+    border-radius: 10px 10px 10px 10px;
+    margin: 0 0 25px 0;
+  }
+
+  .login-text {
+    font-size: 18px;
+    color: white;
+  }
+
+  .button-text1{
+    font-size: 16px;
+    color: #969696;
+  }
+
+  .button-text2{
+    font-size: 16px;
+    color: #0064ff;
+  }
+
+  .banner {
+    width: 80%;
+    height: 80px;
+    border-radius: 10px 10px 10px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #0064ff;
+    font-size: 24px;
+    text-decoration-line: none;
+  }
+
+  .banner-img {
+    width: 35%;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+  }
+
+  .banner-text {
+    width: 90%;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+  }
+
+  .banner-font {
+    font-size: 24px;
+  }
+`;
+
+const SelectBox = styled.div`
+  height: 60px;
+  width: 40%;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  // border: 1px solid #A9A9A9;
+
+  select {
+    background: #f5f5f5;
+  }
 `;
 
 const StateBox = styled.div`
-    width: 275px;
+    width: 35%;
     height: 60px;
     display: flex;
     align-items: center;
-    border: 1px solid #A9A9A9;
+    justify-content: space-evenly;
+    border-radius: 0 10px 10px 0;
 
+    .reset-button {
+      width: 38%;
+      height: 55%;
+      background: #0064ff;
+      border-radius: 10px 10px 10px 10px;
+      margin-right: 5px;
+    }
+
+    .reset-font {
+      font-size: 12.5px;
+    }
 `;
 
 const Time = styled.div`
   display: flex;
-  justify-content: right;
-  width: 100%;
+  justify-content: center;
+  align-items: center;
+  height: 55%;
+  background: #0064ff;
+  border-radius: 10px 10px 10px 10px;
+  border: 1px solid #0064ff;
+  width: 35%;
+  color: white;
 `;
 
 const Selectvalues = styled.div`
   display: flex;
-  justify-content: space-evenly;
-  width: 100%;
+  justify-content: center;
+  width: 80%;
+  
+  .select-major-box {
+    display: flex;
+    justify-content: center;
+    background: #f5f5f5;
+    height: 60px;
+    width: 100%;
+    border-radius: 10px 10px 10px 10px; 
+  }
+
+  .select-box {
+    display: flex;
+    justify-content: center;
+    background: #f5f5f5;
+    height: 60px;
+    width: 80%;
+    border-radius: 10px 10px 10px 10px;
+    margin-left: 10px;
+  }
 `;
 
 const ValueBox = styled.div`
   display: flex;
+  
   align-items: center;
-  width: 100%;
+  width: 80%;
   height: 60px;
-  border: 1px solid #A9A9A9;
+  // background: #f5f5f5;
+  // border-radius: 10px 10px 10px 10px;
 `;
 
-const AlertBox = styled.div`
-  width: 100%;
-  height: 70px;
-  background: #A9A9A9;
-  position: fixed;
+const IdBox = styled.div`
+  width: 80%;
+  height: 60px;
+  display: flex;
+  
+  input {
+    font-size: 16px;
+    background: #f5f5f5;
+    width: 50%;
+  }
+
+  margin: 0 0 10px 0;
+  border-radius: 10px 10px 10px 10px;
+  background: #f5f5f5;
+`;
+
+const CodeBox = styled.div`
+  width: 80%;
+  height: 60px;
+  display: flex;
+
+  input {
+    font-size: 16px;
+    background: #f5f5f5;
+    width:55%;
+  }
+
+  margin: 0 0 10px 0;
+  border-radius: 10px 10px 10px 10px;
+  background: #f5f5f5;
+`;
+
+const TitleBox = styled.div`
+  width: 22%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+
+  .reset-button {
+    width: 75%;
+    height: 50%;
+    background: #0064ff;
+    border-radius: 10px 10px 10px 10px;
+    // margin-left: 15px;
+    color: white;
+  }
+`;
+
+const Validation = styled.div`
+  width: 80%;
+  height: 30px;  
+  display: flex;
+  justify-content: center;
+  
+  .validation-text {
+    color: red;
+  }
+`;
+
+const CountDown = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 10%;
+  color: blue;
+  margin-right: 14px;
 `;
 
 export default JoinPage;

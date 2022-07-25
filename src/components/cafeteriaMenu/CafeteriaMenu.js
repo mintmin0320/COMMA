@@ -66,11 +66,11 @@ const CafeteriaMenu = () => {
         <div className='textBox'>
           {str} 학식 메뉴
         </div>
-        <div className='food'>
-          <div className='foodCategory'>
+        <div className='food-box'>
+          <div className='korean-food'>
             {state.korean}
           </div>
-          <div className='foodCategory'>
+          <div className='good-food'>
             {state.good}
           </div>
         </div>
@@ -94,26 +94,35 @@ const MenuBox = styled.div`
   align-items: center;
   width: 90%;
   height: 180px;
-  border: 1px solid #D8D8D8;
-
+  
   .textBox {
     width: 100%;
-    
+    border: 1px solid #D8D8D8; 
     height: 20%;
     align-items: center;
     display: flex;
     justify-content: center;
   }
-  .food {
+  .food-box {
     width: 100%;
-    
     height: 80%;
     // display: flex;
     // justify-content: center;
+    border-left: 1px solid #D8D8D8;
+    border-right: 1px solid #D8D8D8;
+    border-bottom: 1px solid #D8D8D8;
   }
-  .foodCategory {
+  .korean-food {
     width: 100%;
-    border: 1px solid #D8D8D8;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #D8D8D8;
+  }
+  
+  .good-food {
+    width: 100%;
     height: 50%;
     display: flex;
     align-items: center;

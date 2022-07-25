@@ -48,7 +48,7 @@ const Container = styled.div`
   position: fixed;
   width: 20%;
   height: 100%;
-  border: 2px solid #D8D8D8;
+  border-right: 1px solid #D8D8D8;
   
 `;
 

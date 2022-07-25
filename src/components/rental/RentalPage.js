@@ -17,7 +17,7 @@ import data from './data';
 
 const RentalPage = () => {
   const titleUpdator = titleTab("Loading...");
-  setTimeout(() => titleUpdator("대여"), 300);
+  setTimeout(() => titleUpdator("대여 - COMMA"), 300);
   const dispatch = useDispatch();
   const [arduino] = useState(data);
 

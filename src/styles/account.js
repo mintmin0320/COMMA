@@ -5,7 +5,6 @@ import theme from './theme';
 export const Container = styled.div`
   display: flex;
   justify-content: center;
-  width: 100%;
 
   h3 {
     ${theme.H3}
@@ -74,6 +73,10 @@ export const Wrap = styled.div`
   padding: 0 20px;
   object-fit: contain;
   background-color: ${theme.colors.white};
+  box-shadow: 2px 4px 30px rgba(0, 0, 0, 0.25);
+  border-radius: 20px 20px 20px 20px;
+  
+  
 
   @media ${({ theme }) => theme.device.mobile} {
     width: 100%;
@@ -83,7 +86,8 @@ export const Wrap = styled.div`
 
   @media ${({ theme }) => theme.device.desktop} {
     width: 500px;
-    margin: 150px 0 310px;
+    height: 680px;
+    margin: 30px 0 80px;
     align-items: center;
     padding: 0 !important;
   }
@@ -102,7 +106,7 @@ export const Wrap = styled.div`
 export const LogoWrap = styled.div`
   display: flex;
   justify-content: center;
-  cursor: pointer;
+  // cursor: pointer;
   img {
     margin: 20px 0;
     max-width: 200px;
@@ -115,15 +119,16 @@ export const IdBox = styled.div`
 `;
 
 export const LockLogoWrap = styled.div`
-  width: 80px;
+  width: 90px;
   margin: 0 auto;
 `;
 
 export const FindIDPW = styled.div`
   display: flex;
+  width: 80%;
   display: ${(props) => props.display};
   justify-content: flex-end;
-  margin: 30px 0 40px;
+  margin: 0 0 20px 0;
 `;
 
 export const FindIDPWButton = styled(Link)`
