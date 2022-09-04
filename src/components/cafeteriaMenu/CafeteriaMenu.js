@@ -81,10 +81,11 @@ const CafeteriaMenu = () => {
 
 const Container = styled.div`
   width: 100%;
-  height: 200px;
+  height: 180px;
   display: flex;
   // border: 1px solid #D8D8D8;
   justify-content: center;
+  background: white;
 `;
 
 const MenuBox = styled.div`
@@ -92,12 +93,15 @@ const MenuBox = styled.div`
   // justify-content: center;
   flex-direction: column;
   align-items: center;
-  width: 90%;
+  border-right: 2px solid #D8D8D8; 
+  border-left: 2px solid #D8D8D8; 
+  width: 100%;
   height: 180px;
   
   .textBox {
     width: 100%;
-    border: 1px solid #D8D8D8; 
+    border-top: 2px solid #D8D8D8; 
+    border-bottom: 2px solid #D8D8D8; 
     height: 20%;
     align-items: center;
     display: flex;
@@ -108,9 +112,9 @@ const MenuBox = styled.div`
     height: 80%;
     // display: flex;
     // justify-content: center;
-    border-left: 1px solid #D8D8D8;
-    border-right: 1px solid #D8D8D8;
-    border-bottom: 1px solid #D8D8D8;
+    // border-left: 1px solid #D8D8D8;
+    // border-right: 1px solid #D8D8D8;
+    border-bottom: 2px solid #D8D8D8;
   }
   .korean-food {
     width: 100%;
@@ -118,7 +122,7 @@ const MenuBox = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    border-bottom: 1px solid #D8D8D8;
+    border-bottom: 2px solid #D8D8D8;
   }
   
   .good-food {
@@ -127,7 +131,6 @@ const MenuBox = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    
   }
 `;
 

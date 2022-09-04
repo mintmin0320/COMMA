@@ -10,90 +10,69 @@ import styled from 'styled-components';
 //input & button
 import Button from '../components/common/Button';
 //icon
-// import Logo from '../../images/blue_bg.svg';
 import Logo from '../images/blue_bg.svg';
 import Weather from './weather/Weather';
 import CafeteriaMenu from './cafeteriaMenu/CafeteriaMenu';
-import Basket from './rental/Basket';
 import Profile from './profile/Profile';
+import Banner from './banner/Banner';
 
 const Header = () => {
-
   return (
     <Container>
-      <LogoBox>
-        <Link to="/" style={{ textDecoration: 'none' }}>
-          <LogoText>
-            <h2 className='textLogo'>COMMA</h2>
-          </LogoText>
-        </Link>
-      </LogoBox>
       <ProfileBox>
         <Profile/>
-        </ProfileBox>
-        <WeatherBox>
-          <Weather/>
-        </WeatherBox>
-        <CafeteriaMenuBox>
-          <CafeteriaMenu/>
-        </CafeteriaMenuBox>
-        {/* <BasketBox>
-          <Basket/>
-        </BasketBox> */}
-      </Container>
+      </ProfileBox>
+      <WeatherBox>
+        <Weather/>
+      </WeatherBox>
+      <CafeteriaMenuBox>
+        <CafeteriaMenu/>
+      </CafeteriaMenuBox>
+      <BannerBox>        
+          <Banner/>
+      </BannerBox>
+    </Container>
   );
 }
 
 const Container = styled.div`
   position: fixed;
-  width: 20%;
+  width: 18%;
   height: 100%;
-  border-right: 1px solid #D8D8D8;
-  
-`;
-
-const LogoText = styled.div`
+  // background: red;
+  // border: 2px solid #D8D8D8;
+  margin-top: 20px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 120px;
-
-  .textLogo {
-    font-size: 2.5em;
-    font-family: Georgia;
-    font-weight: bold; 
-  }
-`;
-
-const LogoBox = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  height: 110px;
+  flex-direction: column;
+  border-radius: 10px 10px 10px 10px;
+  background: white;
 `;
 
 const ProfileBox = styled.div`
-  width: 100%;
-  height: 160px;
+  width: 95%;
+  height: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 15px;
 `;
 
 const WeatherBox = styled.div`
-  width: 100%;
-  height: 55px;
+  width: 85%;
+  height: 70px;
+  margin-top: 20px;
 `;
 
 const CafeteriaMenuBox = styled.div`
-  width: 100%;
-  height: 220px;
+  width: 85%;
+  height: 200px;  
+  margin-top: 20px;
 `;
 
-const BasketBox = styled.div`
-  width: 100%;
-  height: 250px;
+const BannerBox = styled.div`
+  width: 85%;
+  height: 170px;
 `;
 
 

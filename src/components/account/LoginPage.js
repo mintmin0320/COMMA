@@ -244,7 +244,6 @@ const LoginBox = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    
   }
 
   .banner-text {
@@ -253,7 +252,6 @@ const LoginBox = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    
   }
 
   .banner-font {

@@ -1,35 +1,50 @@
 export default [
   {
-    id : 'test1',
-    title : '센서1',
-    content : '센서1 입니다.',
-    count : 1,
+    arduinoId : '1',
+    arduino_component_type_id : '1',
+    arduino_name : 'A센서',
+    count : 10,
   },
 
   {
-    id : 'test2',
-    title : '센서2',
-    content : '센서2 입니다.',
-    count : 1,
+    arduinoId : '2',
+    arduino_component_type_id : '2',
+    arduino_name : 'B센서',
+    count : 10,
   },
   
   {
-    id : 'test3',
-    title : '센서3',
-    content : '센서3 입니다.',
-    count : 1,
+    arduinoId : '3',
+    arduino_component_type_id : '3',
+    arduino_name : 'A모듈',
+    count : 10,
   },
-  
+
   {
-    id : 'test4',
-    title : '센서4',
-    content : '센서4 입니다.',
-    count : 1,
+    arduinoId : '4',
+    arduino_component_type_id : '4',
+    arduino_name : 'A조명',
+    count : 10,
   },
+
   {
-    id : 'test5',
-    title : '센서5',
-    content : '센서5 입니다.',
-    count : 1,
+    arduinoId : '5',
+    arduino_component_type_id : '5',
+    arduino_name : 'B모듈',
+    count : 10,
+  },
+
+  {
+    arduinoId : '6',
+    arduino_component_type_id : '6',
+    arduino_name : 'C센서.',
+    count : 10,
+  },
+
+  {
+    arduinoId : '7',
+    arduino_component_type_id : '7',
+    arduino_name : 'B조명.',
+    count : 10,
   },
 ]

@@ -5,27 +5,32 @@ import CommunityPage from '../../components/community/CommunityPage';
 import styled from 'styled-components';
 
 const Community = () => {
-    return(
-      <Container>
+  return(
+    <Container>
+      <MenuBox>
+        <MenuBar/>
+      </MenuBox>
+      <div className='container-box'>
         <HeaderBox>
           <Header/>
         </HeaderBox>
-        <CommunityBox>
-          <MenuBox>
-            <MenuBar/>
-          </MenuBox>
+        <CommunityBox> 
           <CommunityPage/>
         </CommunityBox>
-  </Container>
-    );
+      </div>
+    </Container>
+  );
 }
 
 const Container = styled.div`
-  display: flex;
+  .container-box {
+    display: flex;
+    width:100%;
+  }
 `;
 
 const MenuBox = styled.div`
-  width: 80%;
+  width: 100%;
   height: 80px;
 `;
 
@@ -34,7 +39,6 @@ const HeaderBox = styled.div`
 `;
 
 const CommunityBox = styled.div`
-  display: block;
   width: 80%;
 `;
 

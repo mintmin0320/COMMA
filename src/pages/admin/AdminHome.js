@@ -2,42 +2,50 @@ import React, { useEffect } from 'react';
 import Header from '../../components/Header';
 import MenuBar from '../../components/MenuBar';
 import AdminInfo from '../../components/admin/AdminInfo';
-
+import ScrollIndiactor from '../../components/ScrollIndicator';
 import styled from 'styled-components';
 
 const AdminHome = () => {
 
   return(
     <Container>
-        <HeaderBox>
-          <Header/>
-      </HeaderBox>
-      <AdminPageBox>
+      <ScrollIndiactor/>
       <MenuBox>
         <MenuBar/>
       </MenuBox>
-        <AdminInfo/>
-      </AdminPageBox>
+      <div className='container-box'>
+        <HeaderBox>
+          <Header/>
+        </HeaderBox>
+        <AdminPageBox>
+          <AdminInfo/>
+        </AdminPageBox>
+      </div>
     </Container>
   );
 }
 
 const Container = styled.div`
-  display: flex;
+  .container-box {
+    display: flex;
+  }
 `;
 
 const MenuBox = styled.div`
-  width: 80%;
+  width: 100%;
   height: 80px;
+  display: flex;
+  justify-content: center;
 `;
 
 const HeaderBox = styled.div`
-  width: 20%;
-  
+  width: 25%;
+  display: flex;
+  justify-content: center;
 `;
 
 const AdminPageBox = styled.div`
-  display: block;
-  width: 80%;
+  width: 75%;
+  display: flex;
 `;
 export default AdminHome;

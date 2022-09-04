@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React from 'react';
 import styled from 'styled-components';
 import Header from '../../components/Header';
 import MenuBar from '../../components/MenuBar';
-import HomePage from '../../components/home/HomePage';
-import TopButton from '../../components/TopButton';
+import FeedbackBoard from '../../components/feedback/FeedbackBoard';
 import ScrollIndiactor from '../../components/ScrollIndicator';
+import TopButton from '../../components/TopButton';
 
-const Home = () => {
-  return (
+const FeedbackPage = () => {
+  return(
     <Container>
       <ScrollIndiactor/>
       <MenuBox>
         <MenuBar/>
-      </MenuBox>  
+      </MenuBox>
       <div className='container-box'>
         <HeaderBox>
           <Header/>
         </HeaderBox>
-        <HomeBox>        
-          {/* <HomePage/> */}
-        </HomeBox>
+        <FeedbackPageBox>
+          <FeedbackBoard/>
+        </FeedbackPageBox>
       </div>
       <TopButton/>
     </Container>
-  )
+  );
 }
 
 const Container = styled.div`
@@ -46,10 +46,10 @@ const HeaderBox = styled.div`
   justify-content: flex-end;
 `;
 
-const HomeBox = styled.div`
+const FeedbackPageBox = styled.div`
   width: 70%;
   display: flex;
   justify-content: center;
 `;
 
-export default Home;
+export default FeedbackPage;

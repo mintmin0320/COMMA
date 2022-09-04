@@ -1,46 +1,53 @@
 import React, { useEffect } from 'react';
+import styled from 'styled-components';
 import Header from '../../components/Header';
 import MenuBar from '../../components/MenuBar';
 import RentalPage from '../../components/rental/RentalPage';
-
-import styled from 'styled-components';
-
+import ScrollIndiactor from '../../components/ScrollIndicator';
+import TopButton from '../../components/TopButton';
 
 const Rental = () => {
-
   return(
     <Container>
-        <HeaderBox>
-          <Header/>
-      </HeaderBox>
-      <RentalPageBox>
+      <ScrollIndiactor/>
       <MenuBox>
         <MenuBar/>
       </MenuBox>
-      <RentalPage/>
-      </RentalPageBox>
+      <div className='container-box'>
+        <HeaderBox>
+          <Header/>
+        </HeaderBox>
+        <RentalPageBox>
+          <RentalPage/>
+        </RentalPageBox>
+      </div>
+      <TopButton/>
     </Container>
   );
 }
 
 const Container = styled.div`
-  display: flex;
-  height: 1000px;
-  
+  .container-box {
+    display: flex;
+  }
 `;
 
 const MenuBox = styled.div`
-  width: 80%;
+  width: 100%;
   height: 80px;
+  display: flex;
+  justify-content: center;
 `;
 
 const HeaderBox = styled.div`
-  width: 20%;
-  
+  width: 30%;
+  display: flex;
+  justify-content: center;
 `;
 
 const RentalPageBox = styled.div`
-  display: block;
-  width: 80%;
+  width: 70%;
+  display: flex;
+  
 `;
 export default Rental;

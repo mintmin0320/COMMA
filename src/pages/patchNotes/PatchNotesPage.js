@@ -1,35 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import Header from '../../components/Header';
 import MenuBar from '../../components/MenuBar';
-import HomePage from '../../components/home/HomePage';
-import TopButton from '../../components/TopButton';
+import PatchNotes from '../../components/patchNotes/PatchNotes'
 import ScrollIndiactor from '../../components/ScrollIndicator';
+import TopButton from '../../components/TopButton';
 
-const Home = () => {
-  return (
+const PatchNotesPage = () => {
+  return(
     <Container>
       <ScrollIndiactor/>
       <MenuBox>
         <MenuBar/>
-      </MenuBox>  
+      </MenuBox>
       <div className='container-box'>
         <HeaderBox>
           <Header/>
         </HeaderBox>
-        <HomeBox>        
-          {/* <HomePage/> */}
-        </HomeBox>
+        <PatchNotesPageBox>
+          <PatchNotes/>
+        </PatchNotesPageBox>
       </div>
       <TopButton/>
     </Container>
-  )
+  );
 }
 
 const Container = styled.div`
   .container-box {
     display: flex;
-    width:100%;
   }
 `;
 
@@ -41,15 +40,14 @@ const MenuBox = styled.div`
 `;
 
 const HeaderBox = styled.div`
-  width: 25%;
-  display: flex;
-  justify-content: flex-end;
-`;
-
-const HomeBox = styled.div`
-  width: 70%;
+  width: 30%;
   display: flex;
   justify-content: center;
 `;
 
-export default Home;
+const PatchNotesPageBox = styled.div`
+  width: 70%;
+  display: flex;
+  
+`;
+export default PatchNotesPage;

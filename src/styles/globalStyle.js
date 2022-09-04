@@ -20,6 +20,10 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Noto Sans KR', sans-serif;
   } 
 
+  div {
+    font-family: 'Cafe24Ssurround';
+  }
+
   select,
   input, 
   button,
@@ -30,7 +34,7 @@ const GlobalStyle = createGlobalStyle`
 
 
   input[type="password"] {
-    font-family: 'pass', 'Roboto', Helvetica, Arial, sans-serif ;
+    font-family: 'pass', 'Roboto', Helvetica, Arial, sans-serif;
     font-size: 25px;
     letter-spacing: -3px;
 

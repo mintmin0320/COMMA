@@ -44,7 +44,7 @@ const JoinPage = () => {
   const academicList = ['재학', '휴학', '졸업'];
 
   // selected
-  const selectList = ['@m365.dongyang.ac.kr', '@dongyang.ac.kr']; 
+  const selectList = ['@@m365.dongyang.ac.kr', '@dongyang.ac.kr']; 
 
   //타이머 
   const time = useRef(120)

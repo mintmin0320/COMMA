@@ -1,18 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {  logoutRequest } from '../../redux/actions/auth';
 // 개발자
-//input & button
-import Button from '../../components/common/Button';
 //css
 import styled from 'styled-components';
-//input & button
 //icon
-import Logo from '../../images/blue_bg.svg';
+import Logo from '../../images/white_bg.svg';
+import banner from '../../images/banner.png';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faArrowRightFromBracket, faBasketShopping } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faArrowRightFromBracket, faCartShopping, faGear } from "@fortawesome/free-solid-svg-icons";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -21,34 +19,37 @@ const Profile = () => {
   const _handleLogout = (e) => {
     e.preventDefault();
     dispatch(logoutRequest());
+    alert('로그아웃 되었습니다.');
   };
-  
-  const [state, setState] = useState({
-    result: false,    // 서버와의 axios 요청 결과
-    message: null,
-  });
 
   return (
     <Container>
       <ProfileBox>
         <div className='photo-box'>
-          <img src={Logo} alt="logo" width="40%" height="60%"></img>
-        </div> 
-        <div className='photo-name'>닉네임</div>
+          <div className='right-profile'>
+            <div className='top-profile'>
+              <img src={banner} alt="logo" className='profile'/>
+              <div className='nick-box'>하민님</div>
+              <div className='logout-box'>로그아웃</div>
+            </div>
+            <div className='bottom-profile'>
+              <div className='my-post'>내가 쓴 글&nbsp;1</div>
+              <div className='my-comment'>내가 쓴 댓글&nbsp;4</div>
+            </div>
+          </div>
+          
+        </div>
         <div className='button-items'>
-          <Link to="/mypage" style={{ textDecoration: 'none', width: '100%'}}>
-            <div className='button-box'>
+          <Link to="/mypage" className='button-box'>
               <FontAwesomeIcon icon={faUser} />
-            </div>
+              {/* <FontAwesomeIcon icon={faGear} /> */}
           </Link>
-          <Link to="/basket" style={{ textDecoration: 'none', width: '100%'}}>
-            <div className='button-box'>
-              <FontAwesomeIcon icon={faBasketShopping} />
-            </div>
+          <Link to="/basket" className='button-box'>
+              <FontAwesomeIcon icon={faCartShopping} />
           </Link>
           <button
             style={{ textDecoration: 'none', width: '100%', backgroundColor: 'transparent' }} 
-            onClick={_handleLogout}
+            // onClick={_handleLogout}
           >
             <FontAwesomeIcon icon={faArrowRightFromBracket} color="#0064FF" />
           </button>
@@ -59,8 +60,9 @@ const Profile = () => {
 }
 
 const Container = styled.div`
-  width: 90%;
-  height: 130px;
+  width: 100%;
+  height: 200px;
+  // margin-top: 20px;
   
   .reButton {
     width: 95%;
@@ -71,26 +73,92 @@ const Container = styled.div`
 `;
 const ProfileBox = styled.div`
   width: 100%;
-  height: 140px;
+  height: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid #D8D8D8;
+  // border: 1px solid #D8D8D8;
 
   .photo-box {
+    width: 90%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    border: 2px solid #D8D8D8;
+    // background: red;
+  }
+
+  .right-profile {
+    width: 90%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .top-profile {
     width: 100%;
-    height: 65%;
+    height: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #D8D8D8;
+  }
+
+  .nick-box {
+    width: 50%;
+    height: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #D8D8D8;
+  }
+
+  .logout-box {
+    width: 50%;
+    height: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    color: gray;
+  }
+
+  .bottom-profile {
+    width: 100%;
+    height: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  
-  .photo-name {
-    width: 100%;
-    height: 15%;
+
+  .my-post {
+    width: 50%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 14px;
+  }
+
+  .my-comment {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+  }
+
+  .profile {
+    width: 50%;
+    height: 70%;
+    border: 1px solid #D8D8D8;
+    border-radius: 50%;
+    background: white;
   }
 
   .button-box {
@@ -98,7 +166,9 @@ const ProfileBox = styled.div`
     height: 100%;
     display: flex;
     justify-content: center;
-    border-radius: 20px 20px 20px 20px;
+    align-items: center;
+    // border-radius: 20px 20px 20px 20px;
+    textDecoration: 'none'
   }
 
   .button-box:hover{
@@ -106,12 +176,15 @@ const ProfileBox = styled.div`
   }
 
   .button-items {
-    width: 100%;
-    height: 20%;
+    width: 90%;
+    height: 40%;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-top: 1px solid #D8D8D8;
+    background: white;
+    border: 2px solid #D8D8D8;
+    // border-radius: 30px 30px 30px 30px;
+    // box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   }
 `;
 

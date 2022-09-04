@@ -1,35 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 // 개발자
 import {  logoutRequest } from '../../redux/actions/auth'
 import _axios from '../../utils/axios';
-import axios from 'axios';
+import titleTab from '../../utils/TitleTab';
+import TopButton from '../TopButton';
 //css
 import styled from 'styled-components';
-//input & button
-
-import titleTab from '../../utils/TitleTab';
-//icon
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight  } from '@fortawesome/free-solid-svg-icons';
 
 const MypageInfo = () => {
   const titleUpdator = titleTab("Loading...");
   setTimeout(() => titleUpdator("마이페이지 - COMMA"), 100);
-
   const dispatch = useDispatch();
-  
   const userId = useSelector((store) => store.auth.authStatus.userId);
   const [state, setState] = useState({
-    userId: userId,
     userPw: '',
     email: '',
     nickname:'',
     phone:'',
     changePw:'',
     changeName: '',
+    orderList: [],
     checkPw: false,
-    result:  false,        // 서버와의 axios 요청 결과
+    result:  false,        
     message: null,
   });
   
@@ -41,24 +35,23 @@ const MypageInfo = () => {
     });
   }
     
-    // 회원정보 조회
-    // useEffect(() => {
-    //   const getData = async () => {
-    //     const url = "http://210.121.173.182/user/" + state.userId;
-    //     console.log(state.userId);
-    //     const response = await axios.get(url);
-    //     console.log(response);
-    //     setState({
-    //       ...state,
-    //       email: response.data.user.email,
-    //       nickname: response.data.user.user_nickname,
-    //       phone: response.data.user.phone,
-    //     })
-    //   }
-    //   getData()
-    // },[]);
+  //회원정보 조회
+  useEffect(() => {
+    const getData = async () => {
+      const url = `http://210.121.173.182/user/${userId}`;
+      console.log(userId);
+      const response = await axios.get(url);
+      console.log(response);
+      setState({
+        ...state,
+        userId: response.data.user.user_id,
+        nickname: response.data.user.user_nickname,
+      })
+    }
+    getData()
+  },[]);
 
-    // 비밀번호 변경 확인
+  // 비밀번호 확인
   const _handlePwCheck = (e) => {
     e.preventDefault();
     _postPw();
@@ -68,11 +61,10 @@ const MypageInfo = () => {
   const _postPw = async () => {
     const url = '/user/password/check';
     const params = {
-      user_id: state.userId,
-      user_password: state.userPw,
+      id: userId,
+      password: state.userPw,
     };
     console.log(state.userPw);
-    console.log('pw check :' + state.user_password);
     const response = await _axios(url, params);
     console.log(response);
     if(response.result){
@@ -104,10 +96,9 @@ const MypageInfo = () => {
   const _postChangePw = async () => {
     const url = '/user/find/password';
     const params = {
-      user_id: state.userId,
-      user_password: state.changePw,
+      id: userId,
+      password: state.changePw,
     };
-    console.log('pw2 check :' + state.user_password);
     const response = await _axios(url, params);
     console.log(response);
     if(response.result){
@@ -126,38 +117,6 @@ const MypageInfo = () => {
         message: response.message,
       })    
       alert('비밀번호 변경 실패');
-    }
-  };
-
-  // 닉네임 변경
-  const _handleChangeName = (e) => {
-    e.preventDefault();
-    _chaneName();
-  };
-
-  // 저장npm
-  const _chaneName = async () => {
-    const url = '/user/nickname';
-    const params = {
-      user_id: state.userId,
-      user_nickname: state.changeName,
-    };
-    const response = await _axios(url, params);
-    console.log(response);
-    if(response.result){
-      setState({
-        ...state,
-        result: response.result,  
-        message: response.message,
-      });
-      alert('닉네임 변경 성공');
-    }else{
-      setState({
-        ...state,
-        result: response.result,
-        message: response.message,
-      })    
-      alert('닉네임 변경 실패');
     }
   };
 
@@ -190,34 +149,112 @@ const MypageInfo = () => {
     }
   };
 
+  useEffect(() => {
+    const getMemberData = async () => {
+      const url = `http://210.121.173.182/user/arduino`;
+      const params = {
+        id: userId,
+      };
+      const response = await axios.get(url, params);
+      console.log(response);
+        setState({
+          ...state,
+          orderList: response.data,
+        })
+        console.log('회원 주문목록 조회성공');
+    }
+    getMemberData()
+  },[]);
+
+  const Card = () => {
+    console.log(state.orderList);
+    return (
+      <OrederList>
+        {state.orderList.map((item, index) => {
+          return (
+            <div className='order-data' key={index}>
+              <div className='date-data'>신청날짜</div>
+              <div className='list-data'>신청목록</div>
+              <div className='approve-data'>승인</div>
+            </div>
+          )
+        })}
+      </OrederList>
+    );
+  };
+
   return(
     <Container>
       <Content>
+        <div className='title1'>내정보</div>
         <MyInfo>
           <div className='info'>
             <div className='info-text'>
               <div className='info-id'>아이디</div>
               <div className='info-nick'>닉네임</div>
-              <div className='info-phone'>전화번호</div>
+              {/* <div className='info-phone'>전화번호</div> */}
             </div>
             <div className='info-data'>
-              <div className='id'>아이디</div>
-              <div className='nick'>닉네임</div>
-              <div className='phone'>전화번호</div>
+              <div className='id'>{state.userId}</div>
+              <div className='nick'>{state.nickname}</div>
+              {/* <div className='phone'>전화번호</div> */}
             </div>
           </div>
           <div className='info-correction'>
-            비밀번호변경자리
+            <div className='pwd'>
+              <TitleBox>
+                현재 비밀번호
+              </TitleBox>
+              <input
+                style={{fontSize: '24px'}}
+                value={state.userPw}
+                type='password'
+                name='userPw'
+                onChange={_handleInputChange}
+                required={true}            
+                maxLength={15}
+                disabled={state.checkPw}
+              />
+              <button
+                className='reset-button'
+                type='button'
+                onClick={_handlePwCheck}
+              >
+                확인
+              </button>
+            </div>
+            <div className='change-pwd'>
+              <TitleBox>
+                변경 비밀번호
+              </TitleBox>
+              <input
+                  style={{fontSize: '24px'}}
+                  value={state.changePw}
+                  type='password'
+                  name='changePw'
+                  onChange={_handleInputChange}
+                  required={true}            
+                  maxLength={15}
+                />
+              <button
+                className='reset-button'
+                // onClick={_handleReRequest}
+              >
+                변경
+              </button>
+            </div>
+            
           </div>
         </MyInfo>
-        <OrederList>
+        <div className='title2'>신청목록</div>
+        <div className='order-box'>
           <div className='order-text'>
-            주문목록
-          </div>
-          <div className='order-data'>
-
-          </div>
-        </OrederList>
+            <div className='date'>신청날짜</div>
+              <div className='list'>신청목록</div>
+              <div className='approve'>승인</div>
+            </div>
+            {/* <Card/> */}
+        </div>
         <Withdrawal>
           <button
             className='withdrawal-button'
@@ -226,98 +263,93 @@ const MypageInfo = () => {
             <div className='login-text'>회원탈퇴</div>
           </button>
         </Withdrawal>
-
-          {/* <NameInputBox>
-            <Input
-              idName="typepass"
-              inputtype="password"
-              name="userPw"
-              value={state.userPw}
-              maxLength={11}
-              onChange={_handleInputChange}
-              required={true}
-              titlename="현재 비밀번호"
-              width="100%"
-              height="40px"
-              validityStyles={false}
-              autoComplete="off"
-            />
-            <Button
-              className="loginAnchor"
-              height="40px"
-              width="30%"
-              onClickHandler= {_handlePwCheck}
-            >
-              확인
-            </Button>
-          </NameInputBox>
-          <NameInputBox>
-            <Input
-              inputtype="password"
-              name="changePw"
-              value={state.changePw}
-              maxLength={11}
-              onChange={_handleInputChange}
-              required={true}
-              titlename="변경 비밀번호"
-              width="100%"
-              height="40px"
-              validityStyles={false}
-              autoComplete="off"
-              disabled={!state.checkPw}
-            />
-            <Button
-              type={'submit'}
-              className="loginAnchor"
-              height="40px"
-              width="30%"
-              onClickHandler={_handleChangePw}
-              disabled={!state.checkPw}
-            >
-              확인
-            </Button>
-          </NameInputBox>
-          <NameInputBox>
-            <Input
-              inputtype="text"
-              name="changeName"
-              value={state.changeName}
-              maxLength={11}
-              onChange={_handleInputChange}
-              required={true}
-              titlename="변경 닉네임"
-              width="100%"
-              height="40px"
-              alidityStyles={false}
-              autoComplete="off"
-            />
-            <Button
-              className="loginAnchor"
-              height="40px"
-              width="30%"
-              onClickHandler={_handleChangeName}
-            >
-              확인
-            </Button>
-          </NameInputBox> */}
-          </Content>
-        </Container>
-    )
+      </Content>
+      <TopButton/>
+    </Container>
+  )
 }
 
 const Container = styled.div`
-  width: 100%;
-  height: 750px; //나중에 auto로 바꾸자
+  width: 85%;
+  height: 100%; 
   display: flex;
   justify-content: center;
+  background: white;
+  margin-top: 20px;
 `;
 
 const Content = styled.div`
   width: 100%;
-  height: 800px;
+  // height: 800px;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  .title1 {
+    width: 96%;
+    height: 5%;
+    border-bottom: 2px solid black;
+    display:flex;
+    align-items: center;
+    font-size: 25px;
+    margin: 10px 0 0 0;
+  }
+
+  .title2 {
+    width: 96%;
+    height: 5%;
+    border-bottom: 2px solid black;
+    display:flex;
+    align-items: center;
+    font-size: 25px;
+    margin: 5px 0 0 0;
+  }
+
+  .order-box {
+    width: 100%;
+    display:flex;
+    flex-direction: column;  
+    align-items: center;  
+  }
+
+  .order-text {
+    width: 96%;
+    height: 20%;
+    display: flex;
+    margin-top: 20px;
+  }
+
+  .date {
+    width: 25%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #D8D8D8;
+    border-left: 1px solid #D8D8D8;
+    border-top: 1px solid #D8D8D8;
+  }
+
+  .list {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #D8D8D8;
+    border-top: 1px solid #D8D8D8;
+  }
+
+  .approve {
+    width: 25%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid #D8D8D8;
+    border-right: 1px solid #D8D8D8;
+  }
+
 `;
 
 const MyInfo = styled.div`
@@ -333,19 +365,14 @@ const MyInfo = styled.div`
     width: 48%;
     height: 100%;
     display: flex;
-    border: 1px solid #D8D8D8;
-    
-
+    // border: 1px solid #D8D8D8;
   }
 
   .info-text {
     width: 30%;
     height: 100%;
     display: flex;
-    flex-direction: column; 
-    
-    
-
+    flex-direction: column;   
   }
 
   .info-id {
@@ -354,8 +381,7 @@ const MyInfo = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    border-bottom: 1px solid #D8D8D8;
-    border-right: 1px solid #D8D8D8;
+    border: 1px solid #D8D8D8;
   }
 
   .info-nick {
@@ -366,9 +392,10 @@ const MyInfo = styled.div`
     justify-content: center;
     border-bottom: 1px solid #D8D8D8;
     border-right: 1px solid #D8D8D8;
+    border-left: 1px solid #D8D8D8;
   }
 
-    .info-phone {
+  .info-phone {
     width: 100%;
     height: 33%;
     display: flex;
@@ -382,8 +409,6 @@ const MyInfo = styled.div`
     height: 100%;
     display: flex;
     flex-direction: column; 
-    
-
   }
 
   .id {
@@ -392,7 +417,9 @@ const MyInfo = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    border-top: 1px solid #D8D8D8;
     border-bottom: 1px solid #D8D8D8;
+    border-right: 1px solid #D8D8D8;
   }
 
   .nick {
@@ -402,6 +429,7 @@ const MyInfo = styled.div`
     align-items: center;
     justify-content: center;
     border-bottom: 1px solid #D8D8D8;
+    border-right: 1px solid #D8D8D8;
   }
 
   .phone {
@@ -415,32 +443,109 @@ const MyInfo = styled.div`
   .info-correction {
     width: 48%;
     height: 100%;
-    border: 1px solid #D8D8D8;
-
-  }
+    display: flex;
+    flex-direction: column; 
     
+  }
+
+  .pwd {
+    border: 1px solid #D8D8D8;
+    height: 33%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center; 
+
+    input {
+      font-size: 16px;
+      background: #f5f5f5;
+      width: 50%;
+      border-radius: 10px 10px 10px 10px;
+    }
+  }
+
+  .change-pwd {
+    border-right: 1px solid #D8D8D8;
+    border-bottom: 1px solid #D8D8D8;
+    border-left: 1px solid #D8D8D8;
+    height: 33%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center; 
+
+    input {
+      font-size: 16px;
+      background: #f5f5f5;
+      width: 50%;
+      border-radius: 10px 10px 10px 10px;
+    }
+  }
+
+  .reset-button {
+    width: 10%;
+    height: 50%;
+    background: #0064ff;
+    border-radius: 10px 10px 10px 10px;
+    // margin-left: 15px;
+    color: white;
+  }
+`;
+
+const TitleBox = styled.div`
+  width: 23%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const OrederList = styled.div`
   width: 96%;
   height: 240px;
-  margin: 20px 0 0 0;
   display: flex;
   border: 1px solid #D8D8D8;
   flex-direction: column; 
   align-items: center;
-  justify-content: center;
+  // justify-content: center;
+  overflow: scroll;
 
-  .order-text {
-    width: 100%;
-    height: 20%;
-    border-bottom: 1px solid #D8D8D8;
-  }
+  ::-webkit-scrollbar {
+    display: none;
+    }
 
   .order-data {
     width: 100%;
     height: 80%;
-    overflow: auto;
+    display: flex;
+    border-bottom: 1px solid #D8D8D8;
+    background: red;
+  }
+  
+  .date-data {
+    width: 25%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #D8D8D8;
+    border-bottom: 1px solid #D8D8D8;
+  }
+
+  .list-data {
+    width: 50%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #D8D8D8;
+    border-bottom: 1px solid #D8D8D8;
+  }
+
+  .approve-data {
+    width: 25%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #D8D8D8;
   }
 `;
 

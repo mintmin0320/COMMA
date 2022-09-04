@@ -35,8 +35,8 @@ export function loginRequest(userId, userPw) {
     // let encrypted = CryptoJS.AES.encrypt((userPw), secretKey).toString();
     const url = '/signIn';
     const params = {
-      user_id: userId,
-      user_password: userPw,
+      id: userId,
+      password: userPw,
     };
     // encrypt
 
@@ -66,7 +66,7 @@ export function loginSuccess(response, params) {
     // 로컬에 저장
     let storageData = {
       isLogIn: true,
-      userId: params.user_id,
+      userId: params.id,
       // userName: encodeURIComponent(response.data.userName), //한글 암호화
       // userAuth: response.data.userAuth,
     };

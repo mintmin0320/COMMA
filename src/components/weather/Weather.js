@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSun } from "@fortawesome/free-solid-svg-icons";
+import React, { useState, useEffect, Fragment } from 'react';
 import axios from 'axios';
 // 개발자
 //input & button
@@ -8,6 +6,8 @@ import axios from 'axios';
 import styled from 'styled-components';
 //input & button
 //icon
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLocationDot  } from '@fortawesome/free-solid-svg-icons';
 
 const Weather = () => {
   let today = new Date();
@@ -85,33 +85,37 @@ const Weather = () => {
   // },[]);
 
   const TopWidget = () => {
-    setTimeout(() => 
-    setState({
-      ...state,
-      change: false,
-    }), 8000);
+    let timerId = setTimeout(() => {
+      setState({
+        ...state,
+        change: false,
+      });
+      return () => clearInterval(timerId);
+    }, 8000);
     return(
-      <>
+      <Fragment>
         <div className='popBox'>{(state.sky === '1') ? '맑음' : (state.sky === '3') ? '구름많음' : (state.sky === '4') ? '흐림' : '갱신필요'}
         {state.pty === '/1' ? '/비' : (state.pty === '/2') ? '/(비,눈)' : (state.pty === '/3') ? '/눈' : (state.pty === '/5') ? '/빗방울'
         : (state.pty === '/6') ? '/빗방울눈날림' : (state.pty === '/7') ? '/눈날림' : (state.pty === '/4') ? '/소나기' : ''} </div>  
         <div className='popBox'>{state.tmp}℃</div>
-        <div className='popBox'>고척동</div>
-      </>
+        <div className='popBox'><FontAwesomeIcon icon={faLocationDot}/>&nbsp;고척동</div>
+      </Fragment>
     ); 
   }
 
   const BottomWidget = () => {
-    setTimeout(() =>
-    setState({
-      ...state,
-      change: true,
-    }), 8000);
+    let timerId = setTimeout(() => {
+      setState({
+        ...state,
+        change: true,
+      });
+      return () => clearInterval(timerId);
+    }, 8000);
     return(
-    <>
+    <Fragment>
       <div className='popdBox'>습도 {state.reh}%</div>
       <div className='popdBox'>강수확률 {state.pop}%</div>
-    </>
+    </Fragment>
     );  
   }
 
@@ -128,7 +132,14 @@ const Weather = () => {
 
 const Container = styled.div`
   width: 100%;
-  height: 30px;
+  height: 70px;
+  border: 2px solid #D8D8D8;
+  // border-radius: 10px 10px 10px 10px;
+  // border-top: 2px solid #D8D8D8;
+  // border-right: 2px solid #D8D8D8;
+  // border-left: 2px solid #D8D8D8;
+  background: white;
+
   .reButton {
     width: 100%;
     display: flex;
@@ -142,16 +153,16 @@ const WeatherBoxTop = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-  
 `;
 
 const WeatherBox = styled.div`
-  width: 90%;
+  width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #D8D8D8;
+  // border-top: 1px solid #D8D8D8;
+  // border-bottom: 1px solid #D8D8D8;
   
   .popBox {  
     width: 100%;

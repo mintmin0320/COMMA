@@ -196,7 +196,7 @@ const Container = styled.div`
     // margin: 10px;
     // padding-top: 80px;
     padding-left: 10%;
-    width: 90%;
+    width: 85%;
 `
 
 // 공지사항 목록의 내용
@@ -468,9 +468,9 @@ const HomePage = () => {
         }
     }
 
-    useEffect(() => {
-        getData();
-    }, []);
+    // useEffect(() => {
+    //     getData();
+    // }, []);
 
     return (
         <>

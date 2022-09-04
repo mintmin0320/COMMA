@@ -1,47 +1,55 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import styled from 'styled-components';
 import Header from '../../components/Header';
 import MenuBar from '../../components/MenuBar';
 import BasketPage from '../../components/basket/BasketPage';
-
-import styled from 'styled-components';
-
+import ScrollIndiactor from '../../components/ScrollIndicator';
+import TopButton from '../../components/TopButton';
 
 const BasketList = () => {
-
   return(
     <Container>
-        <HeaderBox>
-          <Header/>
-      </HeaderBox>
-      <BasketPageBox>
+      <ScrollIndiactor/>
       <MenuBox>
         <MenuBar/>
       </MenuBox>
-      <BasketPage/>
-      </BasketPageBox>
+      <div className='container-box'>
+        <HeaderBox>
+          <Header/>
+        </HeaderBox>
+        <BasketPageBox>
+          <BasketPage/>
+        </BasketPageBox>
+      </div>
+      <TopButton/>
     </Container>
   );
 }
 
 const Container = styled.div`
-  display: flex;
-  height: 1000px;
-  
+  .container-box {
+    display: flex;
+    width:100%;
+  }
 `;
 
 const MenuBox = styled.div`
-  width: 80%;
+  width: 100%;
   height: 80px;
+  display: flex;
+  justify-content: center;
 `;
 
 const HeaderBox = styled.div`
-  width: 20%;
-  
+  width: 25%;
+  display: flex;
+  justify-content: flex-end;
 `;
 
 const BasketPageBox = styled.div`
-  display: block;
-  width: 80%;
-  
+  width: 70%;
+  display: flex;
+  justify-content: center;
 `;
+
 export default BasketList;
