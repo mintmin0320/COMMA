@@ -29,7 +29,7 @@ const Header = () => {
         <CafeteriaMenu/>
       </CafeteriaMenuBox>
       <BannerBox>        
-          <Banner/>
+        <Banner/>
       </BannerBox>
     </Container>
   );
@@ -38,7 +38,7 @@ const Header = () => {
 const Container = styled.div`
   position: fixed;
   width: 18%;
-  height: 100%;
+  height: 1v;
   // background: red;
   // border: 2px solid #D8D8D8;
   margin-top: 20px;
@@ -60,19 +60,18 @@ const ProfileBox = styled.div`
 
 const WeatherBox = styled.div`
   width: 85%;
-  height: 70px;
+  height: 50px;
   margin-top: 20px;
 `;
 
 const CafeteriaMenuBox = styled.div`
   width: 85%;
-  height: 200px;  
-  margin-top: 20px;
+  height: 140px;  
 `;
 
 const BannerBox = styled.div`
   width: 85%;
-  height: 170px;
+  height: 180px;
 `;
 
 

@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Header from '../../components/Header';
 import MenuBar from '../../components/MenuBar';
-import PatchNotes from '../../components/patchNotes/PatchNotes'
+import GuidePage from '../../components/guide/GuidePage';
 import ScrollIndiactor from '../../components/ScrollIndicator';
 import TopButton from '../../components/TopButton';
 
-const PatchNotesPage = () => {
+const FeedbackPage = () => {
   return(
     <Container>
       <ScrollIndiactor/>
@@ -17,9 +17,9 @@ const PatchNotesPage = () => {
         <HeaderBox>
           <Header/>
         </HeaderBox>
-        <PatchNotesPageBox>
-          <PatchNotes/>
-        </PatchNotesPageBox>
+        <GuidePageBox>
+          <GuidePage/>
+        </GuidePageBox>
       </div>
       <TopButton/>
     </Container>
@@ -32,6 +32,7 @@ const Container = styled.div`
 
   .container-box {
     display: flex;
+    width:100%;
   }
 `;
 
@@ -43,14 +44,15 @@ const MenuBox = styled.div`
 `;
 
 const HeaderBox = styled.div`
-  width: 30%;
+  width: 25%;
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const GuidePageBox = styled.div`
+  width: 70%;
   display: flex;
   justify-content: center;
 `;
 
-const PatchNotesPageBox = styled.div`
-  width: 70%;
-  display: flex;
-  
-`;
-export default PatchNotesPage;
+export default FeedbackPage;

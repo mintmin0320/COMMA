@@ -11,7 +11,6 @@ import titleTab from '../../utils/TitleTab';
 import '../../styles/kendo.css';
 import theme from '../../styles/theme';
 import {
-  Container,
   LogoWrap,
 } from '../../styles/account';
 import styled from 'styled-components';
@@ -44,7 +43,7 @@ const JoinPage = () => {
   const academicList = ['재학', '휴학', '졸업'];
 
   // selected
-  const selectList = ['@@m365.dongyang.ac.kr', '@dongyang.ac.kr']; 
+  const selectList = ['@m365.dongyang.ac.kr', '@dongyang.ac.kr']; 
 
   //타이머 
   const time = useRef(120)
@@ -83,8 +82,8 @@ const JoinPage = () => {
     validationPhone: false,   
     validationStudent: false, 
     result: false,        // 서버와의 axios 요청 결과
-    emailCheck: false,    // 이메일 인증여부 확인 (첫 번째 순서)
-    emailCodeCheck: false,      // 인증번호 인증 확인 (두 번째 순서)
+    emailCodeCheck: false,      // 인증번호 인증 확인 (첫 번째 순서)
+    emailCheck: false,    // 이메일 인증여부 확인 (두 번째 순서)
     checkButton: false,   // 다른 이메일 인증하기
     count: 0,             // 남은 인증번호 입력가능 횟수
     message: null,
@@ -655,7 +654,11 @@ const JoinPage = () => {
                   className='reset-button'
                   onClick={_handleReRequest}
                 >
-                  <div className='login-text'><div className='reset-font'>재인증</div></div>
+                  <div className='login-text'>
+                    <div className='reset-font'>
+                      재인증
+                    </div>
+                  </div>
                 </button>)}
               </StateBox>  
             </CodeBox>
@@ -869,8 +872,14 @@ const JoinPage = () => {
 );
 };
 
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+`
+
 const Wrap = styled.div`
-  height: auto;
+  height: 100%;
   padding: 0 20px;
   object-fit: contain;
   background-color: ${theme.colors.white};
@@ -900,6 +909,12 @@ const Wrap = styled.div`
     width: 100%;
     margin: 0;
   }
+
+  @media screen and (max-width: 430px) {
+    border-radius: 0 0 0 0;
+    height: 100%;
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+  }
 `;
 
 const JoinBox = styled.div`
@@ -914,6 +929,10 @@ const JoinBox = styled.div`
     background: #0064ff;
     border-radius: 10px 10px 10px 10px;
     margin: 0 0 16px 0;
+
+    @media screen and (max-width: 430px) {
+      width: 95%;
+    }
   }
 
   .join-button {
@@ -989,6 +1008,12 @@ const SelectBox = styled.div`
   select {
     background: #f5f5f5;
   }
+
+  @media screen and (max-width: 430px) {
+    font-size: 14px;
+    width: 50%;
+    border-radius: 0 10px 10px 0;
+  }
 `;
 
 const StateBox = styled.div`
@@ -1005,6 +1030,11 @@ const StateBox = styled.div`
       background: #0064ff;
       border-radius: 10px 10px 10px 10px;
       margin-right: 5px;
+      margin-left: 5px;
+      
+      @media screen and (max-width: 430px) {
+        width: 65%;
+      }
     }
 
     .reset-font {
@@ -1022,6 +1052,10 @@ const Time = styled.div`
   border: 1px solid #0064ff;
   width: 35%;
   color: white;
+
+  @media screen and (max-width: 430px) {
+    width: 50%;
+  }
 `;
 
 const Selectvalues = styled.div`
@@ -1051,12 +1085,16 @@ const Selectvalues = styled.div`
 
 const ValueBox = styled.div`
   display: flex;
-  
   align-items: center;
   width: 80%;
   height: 60px;
   // background: #f5f5f5;
   // border-radius: 10px 10px 10px 10px;
+
+  @media screen and (max-width: 430px) {
+    width: 95%;
+    font-size: 13px;
+  }
 `;
 
 const IdBox = styled.div`
@@ -1073,6 +1111,16 @@ const IdBox = styled.div`
   margin: 0 0 10px 0;
   border-radius: 10px 10px 10px 10px;
   background: #f5f5f5;
+
+  @media screen and (max-width: 430px) {
+    width: 95%;
+    font-size: 13px;
+    input {
+      font-size: 13px;
+      background: #f5f5f5;
+      width: 50%;
+    }
+  }
 `;
 
 const CodeBox = styled.div`
@@ -1089,6 +1137,11 @@ const CodeBox = styled.div`
   margin: 0 0 10px 0;
   border-radius: 10px 10px 10px 10px;
   background: #f5f5f5;
+
+  @media screen and (max-width: 430px) {
+    width: 95%;
+    font-size: 13px;
+  }
 `;
 
 const TitleBox = styled.div`
@@ -1105,6 +1158,10 @@ const TitleBox = styled.div`
     border-radius: 10px 10px 10px 10px;
     // margin-left: 15px;
     color: white;
+
+    @media screen and (max-width: 430px) {
+      width: 100%;
+    }
   }
 `;
 

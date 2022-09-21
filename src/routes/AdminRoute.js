@@ -7,6 +7,8 @@ import {
 import PrivateRoute from './PrivateRoute '; // 로그인 체크
 import { 
   AdminHome, // 관리자페이지 홈
+  AdminOrder,
+  AdminFeed,
 } from "../pages/admin";
 
 const AdminRoute = () => {
@@ -20,14 +22,22 @@ const AdminRoute = () => {
           // </PrivateRoute>
         }
       />
-      {/* <Route 
-        path=":myInfo" 
+      <Route 
+        path="feedback" 
         element={
           // <PrivateRoute>
-            <MyInfo />
+            <AdminFeed />
           // </PrivateRoute>
         }
-      />    */}
+      />   
+      <Route 
+        path="orderlist" 
+        element={
+          // <PrivateRoute>
+            <AdminOrder />
+          // </PrivateRoute>
+        }
+      />   
     </Routes>
   );
 }

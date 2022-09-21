@@ -57,6 +57,10 @@ const Container = styled.div`
     font-weight: bold;
     letter-spacing: -0.06em;
     cursor: pointer;
+
+    @media screen and (max-width: 430px) {
+      display: none;
+    }
   }
 
   .topBtn:hover,

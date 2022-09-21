@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react';
-import Header from '../../components/Header';
 import MenuBar from '../../components/MenuBar';
-import MyPageInfo from '../../components/mypage/MyPageInfo';
+import AdminFeedback from '../../components/admin/AdminFeedback';
 import ScrollIndiactor from '../../components/ScrollIndicator';
 import styled from 'styled-components';
-import TopButton from '../../components/TopButton';
-import ResponsiveBtn from '../../components/ResponsiveBtn';
+import AdminBar from '../../components/AdminBar';
+import AdminRB from '../../components/AdminRB';
 
-const MypageHome = () => {
+const AdminFeed = () => {
 
   return(
     <Container>
@@ -17,24 +16,20 @@ const MypageHome = () => {
       </MenuBox>
       <div className='container-box'>
         <HeaderBox>
-          <Header/>
+          <AdminBar/>
         </HeaderBox>
-        <MypageBox>
-          <MyPageInfo/>
-        </MypageBox>
-      </div>  
-      <RpsBtnBox>
-        <ResponsiveBtn/>
-      </RpsBtnBox>
-      <TopButton/>
+        <RpsBtnBox>
+          <AdminRB/>
+        </RpsBtnBox>
+        <AdminPageBox>
+          <AdminFeedback/>
+        </AdminPageBox>
+      </div>
     </Container>
   );
 }
 
-const Container = styled.div`  
-  background: #F5F5F5;
-  height: 100vh;
-  
+const Container = styled.div`
   .container-box {
     display: flex;
   }
@@ -45,16 +40,16 @@ const MenuBox = styled.div`
   height: 80px;
   display: flex;
   justify-content: center;
-  
+
   @media screen and (max-width: 430px) {
     height: 60px;
   }
 `;
 
 const HeaderBox = styled.div`
-  width: 25%;
-  display: flex;
-  justify-content: flex-end;
+  width: 15%;
+  // display: flex;
+  // justify-content: center;
 
   @media screen and (max-width: 430px) {
     display: none;
@@ -72,8 +67,8 @@ const RpsBtnBox = styled.div`
   }
 `
 
-const MypageBox = styled.div`
-  width: 70%;
+const AdminPageBox = styled.div`
+  width: 85%;
   display: flex;
   justify-content: center;
 
@@ -82,4 +77,4 @@ const MypageBox = styled.div`
   }
 `;
 
-export default MypageHome;
+export default AdminFeed;

@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import Header from '../../components/Header';
 import MenuBar from '../../components/MenuBar';
 import AdminInfo from '../../components/admin/AdminInfo';
 import ScrollIndiactor from '../../components/ScrollIndicator';
 import styled from 'styled-components';
+import AdminBar from '../../components/AdminBar';
+import AdminRB from '../../components/AdminRB';
 
 const AdminHome = () => {
 
@@ -15,8 +16,11 @@ const AdminHome = () => {
       </MenuBox>
       <div className='container-box'>
         <HeaderBox>
-          <Header/>
+          <AdminBar/>
         </HeaderBox>
+        <RpsBtnBox>
+          <AdminRB/>
+        </RpsBtnBox>
         <AdminPageBox>
           <AdminInfo/>
         </AdminPageBox>
@@ -39,13 +43,34 @@ const MenuBox = styled.div`
 `;
 
 const HeaderBox = styled.div`
-  width: 25%;
-  display: flex;
-  justify-content: center;
+  width: 15%;
+  // display: flex;
+  // justify-content: center;
+
+  @media screen and (max-width: 430px) {
+    display: none;
+  }
 `;
 
+const RpsBtnBox = styled.div`
+  display: none;
+
+  @media screen and (max-width: 430px) {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+  }
+`
+
 const AdminPageBox = styled.div`
-  width: 75%;
+  width: 85%;
   display: flex;
+  justify-content: center;
+
+  @media screen and (max-width: 430px) {
+    width: 100%;
+  }
 `;
+
 export default AdminHome;

@@ -37,14 +37,56 @@ export default [
   {
     arduinoId : '6',
     arduino_component_type_id : '6',
-    arduino_name : 'C센서.',
+    arduino_name : 'C센서',
     count : 10,
   },
 
   {
     arduinoId : '7',
     arduino_component_type_id : '7',
-    arduino_name : 'B조명.',
+    arduino_name : 'B조명',
+    count : 10,
+  },
+  {
+    arduinoId : '7',
+    arduino_component_type_id : '7',
+    arduino_name : 'B조명',
+    count : 10,
+  },
+  {
+    arduinoId : '7',
+    arduino_component_type_id : '7',
+    arduino_name : 'B조명',
+    count : 10,
+  },
+  {
+    arduinoId : '7',
+    arduino_component_type_id : '7',
+    arduino_name : 'B조명',
+    count : 10,
+  },
+  {
+    arduinoId : '7',
+    arduino_component_type_id : '7',
+    arduino_name : 'B조명',
+    count : 10,
+  },
+  {
+    arduinoId : '7',
+    arduino_component_type_id : '7',
+    arduino_name : 'B조명',
+    count : 10,
+  },
+  {
+    arduinoId : '7',
+    arduino_component_type_id : '7',
+    arduino_name : 'B조명',
+    count : 10,
+  },
+  {
+    arduinoId : '7',
+    arduino_component_type_id : '7',
+    arduino_name : 'B조명',
     count : 10,
   },
 ]

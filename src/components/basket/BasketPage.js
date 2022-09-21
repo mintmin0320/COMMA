@@ -275,7 +275,7 @@ const BasketPage = () => {
             </div>
             <div className='text-box-right'>
               <button
-                className=''
+                className='all-delete'
                 type='button'
                 onClick={_allItemDelete}
               >
@@ -306,10 +306,10 @@ const BasketPage = () => {
 
 const Container = styled.div`
   width: 85%;
-  // height: 750px;
   display: flex;
   justify-content: center;
   margin-top: 20px;
+  background: white;
 
   .main-content {
     width: 94%;
@@ -318,7 +318,12 @@ const Container = styled.div`
     flex-direction: column;
     // justify-content: center;
     align-items: center;  
-    border: 1px solid #D8D8D8;
+    // border: 1px solid #D8D8D8;
+
+    @media screen and (max-width: 430px) {
+      border: 1px solid #D8D8D8;
+      width: 100%;
+    }
   }
 
   .top-box {
@@ -335,6 +340,7 @@ const Container = styled.div`
   .text-box {
     width: 92%;
     display: flex;
+    margin-top: 10px;
   }
 
   .text-box-left {
@@ -350,6 +356,11 @@ const Container = styled.div`
     width: 60%;
     height: 15px;
     margin-bottom: 10px;
+
+    @media screen and (max-width: 430px) {
+      width: 100%;
+      // font-size: 13px;
+    }
   }
 
   .text-box-right {
@@ -396,6 +407,10 @@ const Container = styled.div`
     align-items: center;
     border: 0.5px solid black; 
     background: #CEE3F6;
+
+    @media screen and (max-width: 430px) {
+      font-size: 14px;
+    }
   }
 
   .name-input {
@@ -403,6 +418,11 @@ const Container = styled.div`
     height: 100%;
     border-top: 0.5px solid black; 
     border-bottom: 0.5px solid black; 
+    
+    @media screen and (max-width: 430px) {
+      font-size: 14px;
+      border-radius: 0px 0px 0px 0px;
+    }
   }
 
   .info {
@@ -415,6 +435,10 @@ const Container = styled.div`
     border-bottom: 0.5px solid black;  
     border-left: 0.5px solid black;
     background: #CEE3F6;  
+
+    @media screen and (max-width: 430px) {
+      font-size: 14px;
+    }
   }
 
   .info-input {
@@ -422,6 +446,11 @@ const Container = styled.div`
     height: 100%;
     border-bottom: 0.5px solid black;
     border-right: 0.5px solid black; 
+
+    @media screen and (max-width: 430px) {
+      font-size: 14px;
+      border-radius: 0px 0px 0px 0px;
+    }
   }
 
   .second-box {
@@ -430,12 +459,22 @@ const Container = styled.div`
     border-bottom: 0.5px solid black; 
     border-right: 0.5px solid black; 
     border-top: 0.5px solid black; 
+
+    @media screen and (max-width: 430px) {
+      font-size: 14px;
+      border-radius: 0px 0px 0px 0px;
+    }
   }
 
   .third-box {
     width: 50%;
     height: 100%;
     border-bottom: 0.5px solid black; 
+
+    @media screen and (max-width: 430px) {
+      font-size: 14px;
+      border-radius: 0px 0px 0px 0px;
+    }
   }
 
   .input-form {
@@ -456,6 +495,10 @@ const Container = styled.div`
     align-items: center;
     justify-content: center;
     border-right: 1px solid #D8D8D8; 
+
+    @media screen and (max-width: 430px) {
+      font-size: 14px;
+    }
   }
 
   .item-count {
@@ -464,6 +507,10 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+
+    @media screen and (max-width: 430px) {
+      font-size: 14px;
+    }
   }
 
   .item-count-box {
@@ -500,6 +547,7 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color:transparent;
     // background: red;
   }
 
@@ -537,6 +585,22 @@ const Container = styled.div`
     border-left: 1px solid #D8D8D8;
     margin: 0 0 7px 0;
   }
+
+  @media screen and (max-width: 430px) {
+    width: 100%;
+    height: 100vh;
+    margin-top: 0px;
+  }
+
+  .all-delete{
+    width: 50%;
+    border: 1px solid #D8D8D8;
+    font-size: 13px;
+
+    @media screen and (max-width: 430px) {
+      width: 70%;
+    }
+  }
 `;
 
 const OrderBox = styled.div`
@@ -549,6 +613,10 @@ const OrderBox = styled.div`
   border-right: 1px solid #D8D8D8;
   border-left: 1px solid #D8D8D8;
   overflow: auto;
+
+  @media screen and (max-width: 430px) {
+    font-size: 14px;
+  }
 
   .item-box {
     width: 100%;
@@ -622,6 +690,11 @@ const OrderButton = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+
+    @media screen and (max-width: 430px) {
+      width: 65%;
+      font-size: 14px;
+    }
   }
 
   .checkbox-button {
@@ -641,6 +714,10 @@ const LoginButton = styled.button`
   background: #0064ff;
   border-radius: 10px 10px 10px 10px;
   margin-bottom: 10px;
+
+  @media screen and (max-width: 430px) {
+    width: 40%;
+  }
 `
 
 export default BasketPage;

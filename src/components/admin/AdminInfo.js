@@ -4,11 +4,12 @@ import axios from 'axios';
 import titleTab from '../../utils/TitleTab';
 //css
 import styled from 'styled-components';
+import AdminItem from './AdminItem';
 //icon
 
 const AdminInfo = () => {
   const titleUpdator = titleTab("Loading...");
-  setTimeout(() => titleUpdator("관리자 - COMMA"), 100);
+  setTimeout(() => titleUpdator("관리자/회원명단 - COMMA"), 100);
   const [state, setState] = useState({
     userId: '',
     grade: '',
@@ -20,19 +21,19 @@ const AdminInfo = () => {
     memberList: [],
   });
 
-  useEffect(() => {
-    const getMemberData = async () => {
-      const url = "http://210.121.173.182/admin/users";
-      const response = await axios.get(url);
-      console.log(response);
-        setState({
-          ...state,
-          memberList: response.data,
-        })
-        console.log('회원 조회성공');
-    }
-    getMemberData()
-  },[]);
+  // useEffect(() => {
+  //   const getMemberData = async () => {
+  //     const url = "http://210.121.173.182/admin/users";
+  //     const response = await axios.get(url);
+  //     console.log(response);
+  //       setState({
+  //         ...state,
+  //         memberList: response.data,
+  //       })
+  //       console.log('회원 조회성공');
+  //   }
+  //   getMemberData()
+  // },[]);
 
   const Card = () => {
     return(
@@ -75,7 +76,7 @@ const AdminInfo = () => {
         </div>
         <div className='member-list'>
           <div className='member-tag-data'>
-            <Card></Card>    
+            <Card/>
           </div>          
         </div>          
       </Content>
@@ -84,17 +85,15 @@ const AdminInfo = () => {
 }
 
 const Container = styled.div`
-  width: 98%;
+  width: 100%;
   height: 650px;
   display: flex;
-  justify-content: center;
 `;
 
 const Content = styled.div`
   width: 100%;  
   display: flex;
   flex-direction: column;
-  align-items: center;
 
   .member-list {
     width: 100%;
@@ -107,18 +106,17 @@ const Content = styled.div`
     
     ::-webkit-scrollbar {
       display: none;
-      }
+    }
   }
 
   .member-tag {
     width: 100%;
     height: 7%;
-    border-top: 1px solid #D8D8D8;
     border-left: 1px solid #D8D8D8;
     border-right: 1px solid #D8D8D8;
     display: flex;
     justify-content: center;
-    margin: 20px 0 0 0;
+    background: #F2F2F2;
   }
 
   .member-tag-data {

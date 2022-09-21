@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router';
 
 import {
-  Container,
   LogoWrap,
 } from '../../styles/account';
 import theme from '../../styles/theme';
@@ -109,10 +108,10 @@ const FindPw = () => {
           <EmailBox>
             <IdBox>
               <TitleBox>
-                <FontAwesomeIcon icon={faEnvelope} size="1x"/>
+                <FontAwesomeIcon icon={faEnvelope} size="2x"/>
               </TitleBox>
               <input
-                placeholder='아이디를 입력해주세요.'
+                placeholder='ID'
                 maxLength={15}
                 value={state.userId}
                 onChange={_handleInputChange}
@@ -159,6 +158,12 @@ const FindPw = () => {
     );
   }
 
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+`
+
 const Wrap = styled.div`
   height: auto;
   padding: 0 20px;
@@ -203,6 +208,10 @@ const Wrap = styled.div`
     background: #0064ff;
     border-radius: 10px 10px 10px 10px;
     margin: 0 0 16px 0;
+
+    @media screen and (max-width: 430px) {
+      width: 95%;
+    }
   }
 
   .login-text {
@@ -220,6 +229,10 @@ const Wrap = styled.div`
     align-items: center;
     border-radius: 10px 10px 10px 10px;
     margin: 0 0 25px 0;
+
+    @media screen and (max-width: 430px) {
+      width: 95%;
+    }
   }
 
   .button-text1{
@@ -241,7 +254,7 @@ const IdBox = styled.div`
   input {
     font-size: 16px;
     background: #f5f5f5;
-    width: 35%;
+    width: 45%;
   }
 
   input::placeholder{
@@ -251,18 +264,30 @@ const IdBox = styled.div`
   margin: 0 0 10px 0;
   border-radius: 10px 10px 10px 10px;
   background: #f5f5f5;
+
+  @media screen and (max-width: 430px) {
+    width: 95%;
+    input {
+      font-size: 13px;
+    } 
+  }
 `;
 
 const SelectBox = styled.div`
   height: 60px;
   width: 40%;
-  background: #f5f5f5;
   display: flex;
   align-items: center;
   // border: 1px solid #A9A9A9;
 
   select {
     background: #f5f5f5;
+  }
+
+  @media screen and (max-width: 430px) {
+    font-size: 14px;
+    width: 50%;
+    border-radius: 0 10px 10px 0;
   }
 `;
 

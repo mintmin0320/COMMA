@@ -15,6 +15,7 @@ import BasketRoute from './BasketRoute';  // 장바구니페이지 Route
 import CommunityRoute from './CommunityRoute';  // 커뮤니티 Route
 import FeedbackRoute from './FeedbackRoute';  // 피드백 게시판 Route
 import PatchNotesRoute from './PatchNotesRoute';  // 개발자 노트 Route
+import GuideRoute from './GuideRoute';  // 가이드 Route
 
 const MainRoutes = () => {
   return (
@@ -27,6 +28,7 @@ const MainRoutes = () => {
       <Route path="/community/*" element={<CommunityRoute />} />
       <Route path="/feedback/*" element={<FeedbackRoute />} />
       <Route path="/patchNotes/*" element={<PatchNotesRoute />} />
+      <Route path="/guide/*" element={<GuideRoute />} />
     </Routes>
   );
 }

@@ -122,7 +122,7 @@ const LoginPage = () => {
                 <FontAwesomeIcon icon={faUser} size="1x"/>
               </TitleBox>
               <input
-                placeholder='아이디를 입력해주세요.'
+                placeholder='ID'
                 maxLength={15}
                 value={state.userId}
                 onChange={_handleInputChange}
@@ -146,7 +146,7 @@ const LoginPage = () => {
                 <FontAwesomeIcon icon={faLock} size="1x"/>
               </TitleBox>
               <input
-                placeholder='비밀번호를   입력해주세요.'
+                placeholder='PASSWORD'
                 maxLength={15}
                 value={state.userPw}
                 onChange={_handleInputChange}
@@ -197,6 +197,10 @@ const LoginBox = styled.div`
     background: #0064ff;
     border-radius: 10px 10px 10px 10px;
     margin: 0 0 16px 0;
+
+    @media screen and (max-width: 430px) {
+      width: 95%;
+    }
   }
 
   .join-button {
@@ -209,6 +213,10 @@ const LoginBox = styled.div`
     align-items: center;
     border-radius: 10px 10px 10px 10px;
     margin: 0 0 25px 0;
+
+    @media screen and (max-width: 430px) {
+      width: 95%;
+    }
   }
 
   .login-text {
@@ -236,6 +244,10 @@ const LoginBox = styled.div`
     border: 1px solid #0064ff;
     font-size: 24px;
     text-decoration-line: none;
+
+    @media screen and (max-width: 430px) {
+      width: 95%;
+    }
   }
 
   .banner-img {
@@ -256,6 +268,10 @@ const LoginBox = styled.div`
 
   .banner-font {
     font-size: 24px;
+
+    @media screen and (max-width: 430px) {
+      font-size: 20px;
+    }
   }
 `;
 
@@ -268,15 +284,23 @@ const IdBox = styled.div`
     font-size: 16px;
     background: #f5f5f5;
     width: 38%;
+
+    @media screen and (max-width: 430px) {
+      width: 45%;
+    }
   }
 
   input::placeholder{
-    font-size: 13px;
+    font-size: 15px;
     color:rightgray;
   }
   margin: 0 0 10px 0;
   border-radius: 10px 10px 10px 10px;
   background: #f5f5f5;
+
+  @media screen and (max-width: 430px) {
+    width: 95%;
+  }
 `;
 
 const PwBox = styled.div`
@@ -294,8 +318,12 @@ const PwBox = styled.div`
     width: 85%;
   }
   input::placeholder{
-    font-size: 18px;
+    font-size: 15px;
     color:rightgray;
+  }
+
+  @media screen and (max-width: 430px) {
+    width: 95%;
   }
 `;
 
@@ -309,6 +337,12 @@ const SelectBox = styled.div`
 
   select {
     background: #f5f5f5;
+  }
+
+  @media screen and (max-width: 430px) {
+    font-size: 14px;
+    width: 50%;
+    border-radius: 0 10px 10px 0;
   }
 `;
 
@@ -325,8 +359,9 @@ const FindIDPW = styled.div`
   justify-content: flex-end;
   margin: 0 0 20px 0;
 
-  .findId {
-
+  @media screen and (max-width: 430px) {
+    font-size: 14px;
+    width: 95%;
   }
 `;
 

@@ -81,7 +81,7 @@ const CafeteriaMenu = () => {
 
 const Container = styled.div`
   width: 100%;
-  height: 180px;
+  height: 140px;
   display: flex;
   // border: 1px solid #D8D8D8;
   justify-content: center;
@@ -96,7 +96,7 @@ const MenuBox = styled.div`
   border-right: 2px solid #D8D8D8; 
   border-left: 2px solid #D8D8D8; 
   width: 100%;
-  height: 180px;
+  height: 100%;
   
   .textBox {
     width: 100%;

@@ -9,9 +9,9 @@ import styled from 'styled-components';
 import AdminItem from './AdminItem';
 //icon
 
-const AdminOrderList = () => {
+const AdminFeedback = () => {
   const titleUpdator = titleTab("Loading...");
-  setTimeout(() => titleUpdator("관리자/주문목록 - COMMA"), 100);
+  setTimeout(() => titleUpdator("관리자/피드백 - COMMA"), 100);
   const [state, setState] = useState({
     userId: '',
     grade: '',
@@ -79,8 +79,9 @@ const AdminOrderList = () => {
             <div className='member-tag-class'>학적</div>
             <div className='member-tag-grade'></div>
           </div>
-          <AdminItem/>
+          {/* <AdminItem/> */}
         </div>
+        dsd
       </Content>
     </Container>
   )
@@ -237,4 +238,4 @@ const Members = styled.div`
   // justify-content: center;
 `;
 
-export default AdminOrderList;
+export default AdminFeedback;

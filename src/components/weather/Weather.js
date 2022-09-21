@@ -132,13 +132,14 @@ const Weather = () => {
 
 const Container = styled.div`
   width: 100%;
-  height: 70px;
-  border: 2px solid #D8D8D8;
+  height: 100%;
+  // border: 2px solid #D8D8D8;
   // border-radius: 10px 10px 10px 10px;
   // border-top: 2px solid #D8D8D8;
   // border-right: 2px solid #D8D8D8;
   // border-left: 2px solid #D8D8D8;
-  background: white;
+  // background: white;
+  // background: red;
 
   .reButton {
     width: 100%;
@@ -169,7 +170,7 @@ const WeatherBox = styled.div`
     height: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
+    // align-items: center;
     // border: 1px solid #D8D8D8;
   //   animation: 0.9s ease-in-out loadEffect1;
   //   @keyframes loadEffect1 {
@@ -189,7 +190,7 @@ const WeatherBox = styled.div`
     height: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
+    // align-items: center;
     // animation: 0.9s ease-in-out loadEffect2;
     // @keyframes loadEffect2 {
     //   0%{

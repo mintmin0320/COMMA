@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
 // 개발자
 import {  logoutRequest } from '../../redux/actions/auth'
 import _axios from '../../utils/axios';
@@ -8,6 +9,7 @@ import titleTab from '../../utils/TitleTab';
 import TopButton from '../TopButton';
 //css
 import styled from 'styled-components';
+import 'react-toastify/dist/ReactToastify.css';
 
 const MypageInfo = () => {
   const titleUpdator = titleTab("Loading...");
@@ -36,20 +38,20 @@ const MypageInfo = () => {
   }
     
   //회원정보 조회
-  useEffect(() => {
-    const getData = async () => {
-      const url = `http://210.121.173.182/user/${userId}`;
-      console.log(userId);
-      const response = await axios.get(url);
-      console.log(response);
-      setState({
-        ...state,
-        userId: response.data.user.user_id,
-        nickname: response.data.user.user_nickname,
-      })
-    }
-    getData()
-  },[]);
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     const url = `http://210.121.173.182/user/${userId}`;
+  //     console.log(userId);
+  //     const response = await axios.get(url);
+  //     console.log(response);
+  //     setState({
+  //       ...state,
+  //       userId: response.data.user.user_id,
+  //       nickname: response.data.user.user_nickname,
+  //     })
+  //   }
+  //   getData()
+  // },[]);
 
   // 비밀번호 확인
   const _handlePwCheck = (e) => {
@@ -75,14 +77,14 @@ const MypageInfo = () => {
         checkPw:true,
         userPw: '',
       });
-      alert('비밀번호 인증 성공');
+      toast('비밀번호 인증 성공');
     }else{
       setState({
         ...state,
         result: response.result,
         message: response.message,
       })    
-      alert('비밀번호 인증 실패');
+      toast('비밀번호 인증 실패');
     }
   };
 
@@ -109,14 +111,14 @@ const MypageInfo = () => {
         checkPw: false,
         changePw:'',
       });
-      alert('비밀번호 변경 성공');
+      toast('비밀번호 변경 성공');
     }else{
       setState({
         ...state,
         result: response.result,
         message: response.message,
       })    
-      alert('비밀번호 변경 실패');
+      toast('비밀번호 변경 실패');
     }
   };
 
@@ -149,22 +151,22 @@ const MypageInfo = () => {
     }
   };
 
-  useEffect(() => {
-    const getMemberData = async () => {
-      const url = `http://210.121.173.182/user/arduino`;
-      const params = {
-        id: userId,
-      };
-      const response = await axios.get(url, params);
-      console.log(response);
-        setState({
-          ...state,
-          orderList: response.data,
-        })
-        console.log('회원 주문목록 조회성공');
-    }
-    getMemberData()
-  },[]);
+  // useEffect(() => {
+  //   const getMemberData = async () => {
+  //     const url = `http://210.121.173.182/user/arduino`;
+  //     const params = {
+  //       id: userId,
+  //     };
+  //     const response = await axios.get(url, params);
+  //     console.log(response);
+  //       setState({
+  //         ...state,
+  //         orderList: response.data,
+  //       })
+  //       console.log('회원 주문목록 조회성공');
+  //   }
+  //   getMemberData()
+  // },[]);
 
   const Card = () => {
     console.log(state.orderList);
@@ -192,12 +194,10 @@ const MypageInfo = () => {
             <div className='info-text'>
               <div className='info-id'>아이디</div>
               <div className='info-nick'>닉네임</div>
-              {/* <div className='info-phone'>전화번호</div> */}
             </div>
             <div className='info-data'>
               <div className='id'>{state.userId}</div>
               <div className='nick'>{state.nickname}</div>
-              {/* <div className='phone'>전화번호</div> */}
             </div>
           </div>
           <div className='info-correction'>
@@ -243,16 +243,15 @@ const MypageInfo = () => {
                 변경
               </button>
             </div>
-            
           </div>
         </MyInfo>
         <div className='title2'>신청목록</div>
         <div className='order-box'>
           <div className='order-text'>
             <div className='date'>신청날짜</div>
-              <div className='list'>신청목록</div>
-              <div className='approve'>승인</div>
-            </div>
+            <div className='list'>신청목록</div>
+            <div className='approve'>승인</div>
+          </div>
             {/* <Card/> */}
         </div>
         <Withdrawal>
@@ -265,6 +264,17 @@ const MypageInfo = () => {
         </Withdrawal>
       </Content>
       <TopButton/>
+      <ToastContainer
+        position="top-center"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </Container>
   )
 }
@@ -276,6 +286,12 @@ const Container = styled.div`
   justify-content: center;
   background: white;
   margin-top: 20px;
+
+  @media screen and (max-width: 430px) {
+    width: 100%;
+    height: 100vh;
+    margin-top: 0px;
+  }
 `;
 
 const Content = styled.div`
@@ -306,17 +322,21 @@ const Content = styled.div`
   }
 
   .order-box {
-    width: 100%;
+    width: 96%;
+    height: 180px;
     display:flex;
     flex-direction: column;  
     align-items: center;  
+    // background: green;
+    border: 1px solid #D8D8D8;
+    margin-top: 20px;
   }
 
   .order-text {
-    width: 96%;
+    width: 100%;
     height: 20%;
     display: flex;
-    margin-top: 20px;
+    border-bottom: 1px solid #D8D8D8;
   }
 
   .date {
@@ -326,8 +346,8 @@ const Content = styled.div`
     justify-content: center;
     align-items: center;
     border-right: 1px solid #D8D8D8;
-    border-left: 1px solid #D8D8D8;
-    border-top: 1px solid #D8D8D8;
+    // border-left: 1px solid #D8D8D8;
+    // border-top: 1px solid #D8D8D8;
   }
 
   .list {
@@ -337,7 +357,7 @@ const Content = styled.div`
     justify-content: center;
     align-items: center;
     border-right: 1px solid #D8D8D8;
-    border-top: 1px solid #D8D8D8;
+    // border-top: 1px solid #D8D8D8;
   }
 
   .approve {
@@ -346,8 +366,8 @@ const Content = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    border-top: 1px solid #D8D8D8;
-    border-right: 1px solid #D8D8D8;
+    // border-top: 1px solid #D8D8D8;
+    // border-right: 1px solid #D8D8D8;
   }
 
 `;
@@ -366,6 +386,11 @@ const MyInfo = styled.div`
     height: 100%;
     display: flex;
     // border: 1px solid #D8D8D8;
+
+    @media screen and (max-width: 430px) {
+      width: 98%;
+      font-size: 15px;
+    }
   }
 
   .info-text {
@@ -446,6 +471,9 @@ const MyInfo = styled.div`
     display: flex;
     flex-direction: column; 
     
+    @media screen and (max-width: 430px) {
+      display: none;
+    }
   }
 
   .pwd {
@@ -516,7 +544,7 @@ const OrederList = styled.div`
     height: 80%;
     display: flex;
     border-bottom: 1px solid #D8D8D8;
-    background: red;
+
   }
   
   .date-data {
@@ -562,6 +590,10 @@ const Withdrawal = styled.div`
     height: 50px;
     background: #0064ff;
     border-radius: 10px 10px 10px 10px;
+    
+    @media screen and (max-width: 430px) {
+      width: 30%;
+    }
   }
 
   .login-text {

@@ -31,32 +31,31 @@ const AdminItem = () => {
   });
 
      // 신청자 목록
-    useEffect(() => {
-      const getItemData = async () => {
-        const url = "http://210.121.173.182/admin/arduino/applicants";
-        const response = await axios.get(url);
-        console.log(response.data.result);
-        if(response.status === 200){
-          setState({
-            ...state,
-            keys1: Object.keys(response.data.result[0].component)[0],
-            keys2: Object.keys(response.data.result[0].component)[1],
-            keys3: Object.keys(response.data.result[0].component)[2],
-            keys4: Object.keys(response.data.result[0].component)[3],
-            values: Object.values(response.data.result[0].component)[0],
-            itemList: response.data.result,
-            userId: response.data.result[0].userId,
-          })
-          console.log('신청자 목록 조회 성공');
+    // useEffect(() => {
+    //   const getItemData = async () => {
+    //     const url = "http://210.121.173.182/admin/arduino/applicants";
+    //     const response = await axios.get(url);
+    //     console.log(response.data.result);
+    //     if(response.status === 200){
+    //       setState({
+    //         ...state,
+    //         keys1: Object.keys(response.data.result[0].component)[0],
+    //         keys2: Object.keys(response.data.result[0].component)[1],
+    //         keys3: Object.keys(response.data.result[0].component)[2],
+    //         keys4: Object.keys(response.data.result[0].component)[3],
+    //         values: Object.values(response.data.result[0].component)[0],
+    //         itemList: response.data.result,
+    //         userId: response.data.result[0].userId,
+    //       })
+    //       console.log('신청자 목록 조회 성공');
           
-        } else {
-          console.log('신청자 목록 조회 실패');
-        } 
-      }
+    //     } else {
+    //       console.log('신청자 목록 조회 실패');
+    //     } 
+    //   }
       
-      getItemData()
-    },[]);
-    console.log(state.userId);
+    //   getItemData()
+    // },[]);
     
     const ItemList = () => {
       return (

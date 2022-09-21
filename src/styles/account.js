@@ -66,6 +66,10 @@ export const Container = styled.div`
   .certify-error {
     margin-bottom: 10px;
   }
+
+  @media screen and (max-width: 430px) {
+    height: 100vh;
+  }
 `;
 
 export const Wrap = styled.div`
@@ -90,6 +94,10 @@ export const Wrap = styled.div`
     margin: 30px 0 80px;
     align-items: center;
     padding: 0 !important;
+  }
+
+  @media screen and (max-width: 400px) {
+    border-radius: 0px 0px 0px 0px;
   }
 
   .loginAnchor {

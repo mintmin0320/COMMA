@@ -27,6 +27,9 @@ const FeedbackPage = () => {
 }
 
 const Container = styled.div`
+  background: #F5F5F5;
+  height: 100vh;
+
   .container-box {
     display: flex;
     width:100%;
