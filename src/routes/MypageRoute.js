@@ -21,9 +21,9 @@ const MypageRoute = () => {
       <Route 
         path="/" 
         element={
-          // <PrivateRoute>
+          <PrivateRoute>
             <MypageHome />
-          // </PrivateRoute>
+          </PrivateRoute>
         }
       />
     </Routes>

@@ -32,7 +32,6 @@ const BasketList = () => {
 
 const Container = styled.div`
   background: #F5F5F5;
-  height: 100vh;
 
   .container-box {
     display: flex;
@@ -74,6 +73,7 @@ const RpsBtnBox = styled.div`
 
 const BasketPageBox = styled.div`
   width: 70%;
+  height: 100%;
   display: flex;
   justify-content: center;
 

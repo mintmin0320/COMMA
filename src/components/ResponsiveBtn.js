@@ -1,11 +1,14 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faPlus, faCartShopping, faGear, faArrowUp, faMinus } from "@fortawesome/free-solid-svg-icons";
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+// 개발자
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// css, icon
+import styled from 'styled-components';
+import { faUser, faPlus, faCartShopping, faGear, faMinus } from "@fortawesome/free-solid-svg-icons";
 
 const ResponsiveBtn = () => {
-
+  const userId = useSelector((store) => store.auth.authStatus.userId);
   const [state, setState] = useState({
     check: false,
   });
@@ -50,16 +53,28 @@ const ResponsiveBtn = () => {
         >
           <FontAwesomeIcon icon={faMinus} size="2x" />
         </button>
-        <NavLink
-          to="/basket"
-          className='button-box3'
-          style={({ isActive }) => ({
-            color: isActive ? 'white' : '#0064ff',
-            backgroundColor: isActive ? '#0064ff' : '#F2F2F2',
-          })}
-        >
-          <FontAwesomeIcon icon={faCartShopping} size="2x" />
-        </NavLink>
+        {userId === 'admin'
+          ? <NavLink
+              to="/admin/memberlist"
+              className='button-box3'
+              style={({ isActive }) => ({
+                color: isActive ? 'white' : '#0064ff',
+                backgroundColor: isActive ? '#0064ff' : '#F2F2F2',
+              })}
+            >
+              <FontAwesomeIcon icon={faGear} size="2x" />
+            </NavLink>
+          : <NavLink
+              to="/basket"
+              className='button-box3'
+              style={({ isActive }) => ({
+                color: isActive ? 'white' : '#0064ff',
+                backgroundColor: isActive ? '#0064ff' : '#F2F2F2',
+              })}
+            >
+              <FontAwesomeIcon icon={faCartShopping} size="2x" />
+            </NavLink>  
+        }
       </Content>}
     </Container>
   )

@@ -8,7 +8,7 @@ const AdminRB = () => {
   return (
     <Container>
       <NavLink
-        to="/admin/"
+        to="/admin/memberlist"
         className='button-box'
         style={({ isActive }) => ({
           color: isActive ? 'white' : '#0064ff',
@@ -44,7 +44,7 @@ const AdminRB = () => {
 const Container = styled.div`
   width: 100%;
   border-top: 2px solid #D8D8D8;
-  height: 50px;
+  height: 48px;
   position: fixed;
   bottom: 0;
   left: 0;

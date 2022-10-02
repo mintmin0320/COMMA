@@ -1,31 +1,13 @@
-import React, { Fragment, useState } from 'react';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faQuestion, faListCheck } from "@fortawesome/free-solid-svg-icons";
-
-import Logo from '../../images/blue_bg.svg';
-import banner from '../../images/banner.png';
-//css
-import styled from 'styled-components';
+import React from 'react';
 import { Link } from 'react-router-dom';
+// 개발자
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// css, img, icon
+import styled from 'styled-components';
+import { faQuestion, faListCheck } from "@fortawesome/free-solid-svg-icons";
+import banner from '../../images/banner.png';
 
 const Banner = () => {
-  //   return(
-  //     <Link to="/feedback" className='banner-box'>
-  //       <div className='top-box'/>
-  //       <div className='bottom-box'>
-  //         <div className='top-text'>
-  //           사이트 이용 후기 
-  //         </div>
-  //         <div className='bottom-text'>
-  //           및 평점 남기기
-  //         </div>
-  //       </div>
-  //     </Link>
-  //   ); 
-  
-  //   );  
-  // }
-
   return(
     <Container>
       <div className='banner-box1'>
@@ -76,8 +58,7 @@ const Container = styled.div`
     height: 35%;
     display: flex;
     justify-content: center;
-    border-bottom: 1px solid #D8D8D8;
-    // border: 1px solid #D8D8D8;
+    // border-bottom: 1px solid #D8D8D8;
   }
 
   .banner-box1:hover {
@@ -91,7 +72,7 @@ const Container = styled.div`
     justify-content: center;
     // border-left: 1px solid #D8D8D8;
     // border-right: 1px solid #D8D8D8;
-    border-bottom: 1px solid #D8D8D8;
+    // border-bottom: 1px solid #D8D8D8;
   }
 
   .banner-box2:hover {

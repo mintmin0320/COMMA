@@ -28,11 +28,14 @@ const FeedbackPage = () => {
 
 const Container = styled.div`
   background: #F5F5F5;
-  height: 100vh;
+  // height: 100vh;
 
   .container-box {
     display: flex;
-    width:100%;
+  }
+
+  @media screen and (max-width: 430px) {
+    display: none;
   }
 `;
 
@@ -51,6 +54,7 @@ const HeaderBox = styled.div`
 
 const GuidePageBox = styled.div`
   width: 70%;
+  height: 100%;
   display: flex;
   justify-content: center;
 `;

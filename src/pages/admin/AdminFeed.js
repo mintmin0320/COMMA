@@ -7,7 +7,6 @@ import AdminBar from '../../components/AdminBar';
 import AdminRB from '../../components/AdminRB';
 
 const AdminFeed = () => {
-
   return(
     <Container>
       <ScrollIndiactor/>
@@ -40,10 +39,6 @@ const MenuBox = styled.div`
   height: 80px;
   display: flex;
   justify-content: center;
-
-  @media screen and (max-width: 430px) {
-    height: 60px;
-  }
 `;
 
 const HeaderBox = styled.div`

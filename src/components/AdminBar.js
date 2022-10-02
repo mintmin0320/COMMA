@@ -37,6 +37,16 @@ const AdminBar = () => {
             </div>
             <div className='button-items'>
               <NavLink
+                to="/admin/memberlist"
+                className='button-box'
+                style={({ isActive }) => ({
+                  color: isActive ? 'white' : '#0064ff',
+                  backgroundColor: isActive ? '#0064ff' : '#F5F5F5',
+                })}  
+              >
+                회원명단
+              </NavLink>
+              <NavLink
                 to="/admin/orderlist"
                 className='button-box'
                 style={({ isActive }) => ({
@@ -45,16 +55,6 @@ const AdminBar = () => {
                 })}  
               >
                 주문현황
-              </NavLink>
-              <NavLink
-                to="/admin/"
-                className='button-box'
-                style={({ isActive }) => ({
-                  color: isActive ? 'white' : '#0064ff',
-                  backgroundColor: isActive ? '#0064ff' : '#F5F5F5',
-                })}  
-              >
-                회원명단
               </NavLink>
               <NavLink
                 to="/admin/feedback"

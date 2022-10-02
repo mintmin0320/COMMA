@@ -55,7 +55,11 @@ const LoginPage = () => {
   const _handleSubmit = (e) => {
     e.preventDefault();
     console.log(state.userPw);
-    dispatch(loginRequest(state.userId + state.selected, state.userPw));
+    if (state.userId === 'admin'){
+      dispatch(loginRequest(state.userId, state.userPw));  
+    } else {
+      dispatch(loginRequest(state.userId + state.selected, state.userPw));
+    }
   };
 
   //엔터 키
@@ -85,7 +89,7 @@ const LoginPage = () => {
         });
 
         navigate('/');
-      }, 1000);
+      }, 700);
 
       // 로그인실패
     } else if (loginStatus === 'FAILURE') {

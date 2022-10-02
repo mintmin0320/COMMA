@@ -37,7 +37,7 @@ const MypageInfo = () => {
     });
   }
     
-  //회원정보 조회
+  // // 회원정보 조회
   // useEffect(() => {
   //   const getData = async () => {
   //     const url = `http://210.121.173.182/user/${userId}`;
@@ -129,43 +129,40 @@ const MypageInfo = () => {
 
   // 회원탈퇴
   const _Withdrawal = async () => {
-    const url = '/user' + state.userId;
-    console.log(state.userId);
-    const response = await axios.delete(url);
+    const url = "http://210.121.173.182/user";
+    const response = await axios.delete(url, {
+      data: {
+        id: userId,
+      }
+    });
     console.log(response);
-    if(response.result){
-      setState({
-        ...state,
-        result: response.result,  
-        message: response.message,
-      });
+    if(response.status === 200){
       dispatch(logoutRequest());
-      alert('회원 탈퇴 성공');
+      console.log('회원 탈퇴 성공');
     }else{
-      setState({
-        ...state,
-        result: response.result,
-        message: response.message,
-      })    
-      alert('회원탈퇴 실패');
+      console.log('회원탈퇴 실패');
     }
   };
 
   // useEffect(() => {
-  //   const getMemberData = async () => {
+  //   const getOrderData = async () => {
   //     const url = `http://210.121.173.182/user/arduino`;
   //     const params = {
   //       id: userId,
   //     };
   //     const response = await axios.get(url, params);
   //     console.log(response);
-  //       setState({
-  //         ...state,
-  //         orderList: response.data,
-  //       })
+  //     if(response.status === 200){
+  //       // setState({
+  //       //   ...state,
+  //       //   orderList: response.data,
+  //       // })
   //       console.log('회원 주문목록 조회성공');
+  //     } else {
+  //       console.log('회원 주문목록 조회실패');
+  //     }
   //   }
-  //   getMemberData()
+  //   getOrderData()
   // },[]);
 
   const Card = () => {
@@ -323,13 +320,13 @@ const Content = styled.div`
 
   .order-box {
     width: 96%;
-    height: 180px;
+    height: 200px;
     display:flex;
     flex-direction: column;  
     align-items: center;  
-    // background: green;
     border: 1px solid #D8D8D8;
     margin-top: 20px;
+    background: red;
   }
 
   .order-text {

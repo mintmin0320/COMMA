@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Header from '../../components/Header';
 import MenuBar from '../../components/MenuBar';
@@ -32,7 +32,7 @@ const Rental = () => {
 
 const Container = styled.div`
   background: #F5F5F5;
-  // height: 100vh;
+  // height: 100vmax;
 
   .container-box {
     display: flex;
@@ -47,9 +47,9 @@ const MenuBox = styled.div`
 `;
 
 const HeaderBox = styled.div`
-  width: 30%;
+  width: 25%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
 
   @media screen and (max-width: 430px) {
     display: none;
@@ -69,8 +69,9 @@ const RpsBtnBox = styled.div`
 
 const RentalPageBox = styled.div`
   width: 70%;
-  height: 100vh;
+  height: 100%;
   display: flex;
+  justify-content: center;
   
   @media screen and (max-width: 430px) {
     width: 100%;

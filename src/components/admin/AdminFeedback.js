@@ -1,241 +1,222 @@
 import React, { useEffect, useState } from 'react';
-// 개발자
 import axios from 'axios';
+// 개발자
 import titleTab from '../../utils/TitleTab';
-// import Alert from '../../components/common/modal/Alert';
+import EllipsisText from "react-ellipsis-text";
 //css
 import styled from 'styled-components';
-//input & button
-import AdminItem from './AdminItem';
-//icon
 
 const AdminFeedback = () => {
   const titleUpdator = titleTab("Loading...");
   setTimeout(() => titleUpdator("관리자/피드백 - COMMA"), 100);
   const [state, setState] = useState({
-    userId: '',
-    grade: '',
-    major: '',
-    academic: '',
-    classroom: '',
-    nickname:'',
-    studentId: '',
-    result: false,        // 서버와의 axios 요청 결과   
-    message: null,
-    member: [],
-    itemList: [],
+    count: '',
+    question1: '',
+    question2: '',
+    question3: '',
+    question4: '',
+    question5: '',
+    opinion: [],
   });
 
-  // 회원목록
-    // useEffect(() => {
-    //   const getMemberData = async () => {
-    //     const url = "http://210.121.173.182/admin/members";
-    //     const response = await axios.get(url);
-    //     const data = response.data;
-    //     console.log(data);
-    //     if(response.status === 200){
-    //       setState({
-    //         ...state,
-    //         member: data,
-    //       })
-    //       console.log('회원 조회성공');
-    //     } else {
-    //       console.log('회원 조회실패');
-    //     }
-    //   }
-    //   getMemberData()
-    // },[]);
+  // 피드백 결과 데이터
+  useEffect(() => {
+    const _getData = async () => {
+      const url = "http://210.121.173.182/admin/survey";
+      const response = await axios.get(url);
+      console.log(response);
+      console.log(response.data.result.opinion);
+      if(response.status === 200){
+        setState({
+          ...state,
+          count: response.data.result.count,
+          question1: response.data.result.question1,
+          question2: response.data.result.question2,
+          question3: response.data.result.question3,
+          question4: response.data.result.question4,
+          question5: response.data.result.question5,
+          opinion: response.data.result.opinion,
+        })
+        console.log('관리자 피드백 조회성공');
+      } else {
+        console.log('관리자 조회실패');
+      }
+    }
+    _getData()
+  },[]);
 
-  //   const Card = () => {
-  //     return (
-  //       <Members>
-  //         {state.member.map((user, i) => {
-  //           return (
-  //             <div className='member-tag' key={i}>  
-  //               <div className='member-tag-id'>{user.id}</div>
-  //               <div className='member-tag-grade'>{user.nickname}</div>
-  //               <div className='member-tag-grade'>{user.studentId}</div>
-  //               <div className='member-tag-name'>{user.major}</div>
-  //               <div className='member-tag-class'>{user.grade}</div>
-  //               <div className='member-tag-class'>{user.classroom}</div>
-  //               <div className='member-tag-class'>{user.academic}</div>
-  //             </div>
-  //             )
-  //         })}
-  //       </Members>
-  //     );
-  // };
+  // 기타 의견 출력
+  const Card = () => {
+    console.log(state.opinion);
+    return (
+      <div className='question-tag'>
+        {state.opinion.map((data, idx) => {
+          return (
+            <div className='question2' key={idx}>
+              <EllipsisText
+                text={data}
+                length={50}
+              />
+            </div>
+          )
+        })}
+      </div>
+    );
+  };
 
   return(
     <Container>
-      <Content>
-        <div className='item-list'>
-          <div className='member-tag'>
-            <div className='member-tag-id'>신청목록</div>
-            <div className='member-tag-grade'>학번</div>
-            <div className='member-tag-name'>학과</div>
-            <div className='member-tag-class'>학년</div>
-            <div className='member-tag-class'>반</div>
-            <div className='member-tag-class'>학적</div>
-            <div className='member-tag-grade'></div>
+      <div className='content'>
+        <div className='count-box'>{state.count}명 참여</div>
+        <div className='tag-list'>
+          <div className='tag-box'>
+            <div className='question'>1. 버튼 및 아이콘의 클릭이 용이하고 배치가 한눈에 들어오는가?</div>
+            <div className='question'>2. 사이트의 각 메뉴를 이용하는 데 불편이나 오류가 없고, 사용자에게 명확한 에러 인식을 위한 문구 또는 신호를 전달하는가?</div>
+            <div className='question'>3. 공지사항을 확인하는 데 유용한가?</div>
+            <div className='question'>4. 아두이노 부품 신청, 수령하는 데 도움이 되었는가?</div>
+            <div className='question1'>5. 해당 사이트를 재방문할 의사가 있는가? </div>
           </div>
-          {/* <AdminItem/> */}
+          <div className='tag-data'>
+            <div className='question-data'><div className='score-font'>{state.question1}&nbsp;</div>/ 5점</div>
+            <div className='question-data'><div className='score-font'>{state.question2}&nbsp;</div>/ 5점</div>
+            <div className='question-data'><div className='score-font'>{state.question3}&nbsp;</div>/ 5점</div>
+            <div className='question-data'><div className='score-font'>{state.question4}&nbsp;</div>/ 5점</div>
+            <div className='question1-data'><div className='score-font'>{state.question5}&nbsp;</div>/ 5점</div>
+          </div>
         </div>
-        dsd
-      </Content>
+        <div className='opinion-box'>
+          <div className='opinion-tag'>기타</div>
+          <Card/>
+        </div>
+      </div>
     </Container>
   )
 }
 
 const Container = styled.div`
   width: 100%;
-  height: 650px;
+  height: 100vh;
   display: flex;
   justify-content: center;
-`;
-
-const Content = styled.div`
-  width: 100%;
-  height: 600px;
-  // border: 1px solid #D8D8D8;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  .member-list {
+  
+  .content {
     width: 100%;
-    height: 240px;
-    border: 1px solid #D8D8D8;
-    margin: 20px 0 0 0;
-    display: flex;
+    height: 100%;
     flex-direction: column;
-    align-items: center;
-    
   }
 
-  .item-list {
+  .count-box {
     width: 100%;
-    height: 300px;
-    border-right: 1px solid #D8D8D8;
-    border-left: 1px solid #D8D8D8;
-    border-bottom: 1px solid #D8D8D8;
-    // display: flex;
-  }
-
-  .member-tag {
-    width: 100%;
-    height: 15%;
-    border-bottom: 1px solid #D8D8D8;
+    height: 5%;
     display: flex;
     justify-content: center;
     align-items: center;
+    color: #0064ff;
+    background: #F2F2F2;
+    font-size: 24px;
+    border-bottom: 1px solid #D8D8D8;
+    border-left: 1px solid #D8D8D8;
+    border-right: 1px solid #D8D8D8;
   }
 
-  .member-tag-data {
+  .tag-list {
     width: 100%;
-    height: 240px;
+    height: 40%;
     display: flex;
-    flex-direction: column;
+    border-right: 1px solid #D8D8D8;
+    border-left: 1px solid #D8D8D8;
+  }
+
+  .tag-box {
+    width: 80%;
+    height: 100%;
+    border-right: 1px solid #D8D8D8;
+  }
+
+  .tag-data {
+    width: 20%;
+    height: 100%;
+  }
+
+  .question {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #F2F2F2;
+    border-bottom: 1px solid #D8D8D8;
+  }
+
+  .question1 {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #F2F2F2;  
+  }
+
+  .question-data {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    border-bottom: 1px solid #D8D8D8;
+  }
+
+  .question1-data {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;  
+  }
+
+  .opinion-box {
+    width: 100%;
+    height: 50%;
+    border-right: 1px solid #D8D8D8;
+    border-top: 1px solid #D8D8D8;
+    border-left: 1px solid #D8D8D8;
+    border-bottom: 1px solid #D8D8D8;
+  }
+
+  .opinion-tag {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    color: #0064ff;
+    border-bottom: 1px solid #D8D8D8;
+    background: #F2F2F2;
+  }
+
+  .question-tag {
+    width: 100%;
+    height: 90%;
     overflow-y: scroll;
   }
 
-  .member-data {
+  .question-tag::-webkit-scrollbar{
+    display:none;
+  }
+
+  .question2 {
     width: 100%;
-    height: 85px;
+    height: 30%;
     border-bottom: 1px solid #D8D8D8;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    padding: 10px;
   }
 
-  .member-tag-id {
-    width: 22%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-right: 1px solid #D8D8D8;
+  .score-font {
+    color: #0064ff;
   }
-
-  .member-tag-name {
-    width: 8%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-right: 1px solid #D8D8D8;
-    
-  }
-
-  .member-tag-phone {
-    width: 14%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-right: 1px solid #D8D8D8;
-  }
-
-  .member-tag-student_id {
-    width: 12%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-right: 1px solid #D8D8D8;
-    
-  }
-
-  .member-tag-major {
-    width: 20%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-right: 1px solid #D8D8D8;
-  }
-
-  .member-tag-grade {
-    width: 7%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-right: 1px solid #D8D8D8;
-  }
-
-  .member-tag-class {
-    width: 7%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-right: 1px solid #D8D8D8;
-  }
-
-  .member-tag-academic {
-    width: 7%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-right: 1px solid #D8D8D8;
-  }
-
-  .member-tag-delete {
-    width: 5%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-`;
-
-const Members = styled.div`
-  width: 100%;
-  height: 45px;
-  // display: flex;
-  // justify-content: center;
 `;
 
 export default AdminFeedback;

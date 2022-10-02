@@ -1,11 +1,11 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
 // 개발자
 import titleTab from '../../utils/TitleTab';
 //css
 import styled from 'styled-components';
-import AdminItem from './AdminItem';
-//icon
+import 'react-toastify/dist/ReactToastify.css';
 
 const AdminInfo = () => {
   const titleUpdator = titleTab("Loading...");
@@ -18,40 +18,68 @@ const AdminInfo = () => {
     classroom: '',
     nickname:'',
     studentId: '',
+    delete: false,
     memberList: [],
   });
 
-  // useEffect(() => {
-  //   const getMemberData = async () => {
-  //     const url = "http://210.121.173.182/admin/users";
-  //     const response = await axios.get(url);
-  //     console.log(response);
-  //       setState({
-  //         ...state,
-  //         memberList: response.data,
-  //       })
-  //       console.log('회원 조회성공');
-  //   }
-  //   getMemberData()
-  // },[]);
+  useEffect(() => {
+    const _getMemberData = async () => {
+      const url = "http://210.121.173.182/admin/users";
+      const response = await axios.get(url);
+      console.log(response.data);
+      setState({
+        ...state,
+        memberList: response.data,
+      })
+      console.log('회원목록 조회성공');
+    }
+    _getMemberData()
+  },[]);
+
+  const _memberDelete = (id) => {
+    _dlelteMember(id); 
+  }
+
+  const _dlelteMember = async (id) => {
+    console.log(id);
+    const url = `http://210.121.173.182/admin/user`;
+    const response = await axios.delete(url, {
+      data: {
+        id : id,
+      }
+    });
+    console.log(response);
+    if(response.status === 200){
+      // setState({
+      //   delete: !state.delete,
+      // });
+      toast.success('추방 성공');
+    } else {
+      toast.error('추방 실패');
+    }
+  }
 
   const Card = () => {
     return(
       <Fragment>
         {state.memberList.map((user, index) => {
-          console.log(state.memberList)
           return (
-            <div className='member-data' key={index}>
-              <div className='member-tag-id'>{user.id}</div>
-              <div className='member-tag-name'>{user.name}</div>
-              <div className='member-tag-nickname'>{user.nickname}</div>
-              <div className='member-tag-phone'>{user.phone}</div>
-              <div className='member-tag-student_id'>{user.studentId}</div>
-              <div className='member-tag-major'>{user.major}</div>
-              <div className='member-tag-grade'>{user.grade}</div>
-              <div className='member-tag-class'>{user.classroom}</div>
-              <div className='member-tag-academic'>{user.academic}</div>
-              <div className='member-tag-delete'>X</div>
+            <div className='member-box' key={index}>
+              <div className='member-id'>{user.id}</div>
+              <div className='member-name'>{user.name}</div>
+              <div className='member-nickname'>{user.nickname}</div>
+              <div className='member-phone'>{user.phone}</div>
+              <div className='member-student_id'>{user.studentId}</div>
+              <div className='member-major'>{user.major}</div>
+              <div className='member-grade'>{user.grade}</div>
+              <div className='member-class'>{user.classroom}</div>
+              <div className='member-academic'>{user.academic}</div>
+              <button
+                className='member-delete'
+                onClick={() => _memberDelete(user.id)}
+              >
+                X
+              </button>
             </div>
           )
         })}
@@ -61,89 +89,74 @@ const AdminInfo = () => {
 
   return(
     <Container>
-      <Content>
-        <div className='member-tag'>
-          <div className='member-tag-id'>아이디</div>
-          <div className='member-tag-name'>이름</div>
-          <div className='member-tag-nickname'>닉네임</div>
-          <div className='member-tag-phone'>전화번호</div>
-          <div className='member-tag-student_id'>학번</div>
-          <div className='member-tag-major'>학과</div>
-          <div className='member-tag-grade'>학년</div>
-          <div className='member-tag-class'>반</div>
-          <div className='member-tag-academic'>학적</div>
-          <div className='member-tag-delete'>추방</div>
+      <div className='content'>
+        <div className='tag-list'>
+          <div className='member-id'>아이디</div>
+            <div className='member-name'>이름</div>
+            <div className='member-nickname'>닉네임</div>
+            <div className='member-phone'>전화번호</div>
+            <div className='member-student_id'>학번</div>
+            <div className='member-major'>학과</div>
+            <div className='member-grade'>학년</div>
+            <div className='member-class'>반</div>
+            <div className='member-academic'>학적</div>
+            <div className='member-delete'>추방</div>
         </div>
-        <div className='member-list'>
-          <div className='member-tag-data'>
-            <Card/>
-          </div>          
-        </div>          
-      </Content>
+        <div className='member-data'>
+          <Card/>
+        </div>
+      </div>
+      <ToastContainer
+        position="top-center"
+        autoClose={500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </Container>
   )
 }
 
 const Container = styled.div`
   width: 100%;
-  height: 650px;
+  height: 85vh;
   display: flex;
-`;
+  justify-content: center;
 
-const Content = styled.div`
-  width: 100%;  
-  display: flex;
-  flex-direction: column;
-
-  .member-list {
+  .content {
     width: 100%;
     height: 100%;
-    border: 1px solid #D8D8D8;
-    display: flex;
     flex-direction: column;
+  }
+
+  .tag-list {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    background: #F2F2F2;
+    border-bottom: 1px solid #D8D8D8;
+    border-right: 1px solid #D8D8D8;
+    border-left: 1px solid #D8D8D8;
+  }
+
+  .member-id {
+    width: 24%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    overflow: scroll;
-    
-    ::-webkit-scrollbar {
-      display: none;
+    border-right: 1px solid #D8D8D8;
+
+    @media screen and (max-width: 430px) {
+      width: 33%;
     }
   }
 
-  .member-tag {
-    width: 100%;
-    height: 7%;
-    border-left: 1px solid #D8D8D8;
-    border-right: 1px solid #D8D8D8;
-    display: flex;
-    justify-content: center;
-    background: #F2F2F2;
-  }
-
-  .member-tag-data {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .member-data {
-    width: 100%;
-    height: 70px;
-    border-bottom: 1px solid #D8D8D8;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .member-tag-id {
-    width: 30%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-right: 1px solid #D8D8D8;
-  }
-
-  .member-tag-name {
+  .member-name {
     width: 8%;
     height: 100%;
     display: flex;
@@ -152,8 +165,47 @@ const Content = styled.div`
     border-right: 1px solid #D8D8D8;
   }
 
-  .member-tag-nickname {
-    width:  15%;
+  .member-nickname {
+    width: 13%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #D8D8D8;
+
+    @media screen and (max-width: 430px) {
+      width: 15%;
+    }
+  }
+
+  .member-phone {
+    width: 12%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #D8D8D8;
+
+    @media screen and (max-width: 430px) {
+      width: 14%;
+    }
+  }
+
+  .member-student_id {
+    width: 8%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #D8D8D8;
+
+    @media screen and (max-width: 430px) {
+      width: 11%;
+    }
+  }
+
+  .member-major {
+    width: 16%;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -161,75 +213,82 @@ const Content = styled.div`
     border-right: 1px solid #D8D8D8;
   }
 
-  .member-tag-phone {
-    width: 14%;
+  .member-grade {
+    width: 5%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     border-right: 1px solid #D8D8D8;
+
+    @media screen and (max-width: 430px) {
+      display: none;
+    }
   }
 
-  .member-tag-student_id {
-    width: 10%;
+  .member-class {
+    width: 5%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     border-right: 1px solid #D8D8D8;
     
+    @media screen and (max-width: 430px) {
+      display: none;
+    }
   }
 
-  .member-tag-major {
-    width: 20%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-right: 1px solid #D8D8D8;
-  }
-
-  .member-tag-grade {
+  .member-academic {
     width: 5%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     border-right: 1px solid #D8D8D8;
+
+    @media screen and (max-width: 430px) {
+      border-right: 0px solid #D8D8D8;
+    }
   }
 
-  .member-tag-class {
-    width: 5%;
+  .member-delete {
+    width: 4%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color:transparent;
+
+    @media screen and (max-width: 430px) {
+      display: none;
+    }
+  }
+
+  .member-data {
+    width: 100%;
+    height: 90%;
+    flex-direction: column;
+    overflow-y: scroll;
     border-right: 1px solid #D8D8D8;
+    border-left: 1px solid #D8D8D8;
+    border-bottom: 1px solid #D8D8D8;
   }
 
-  .member-tag-academic {
-    width: 5%;
-    height: 100%;
+  .member-data::-webkit-scrollbar{
+    display:none;
+  }
+
+  .member-box {
+    width: 100%;
+    height: 20%;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    border-right: 1px solid #D8D8D8;
-  }
+    border-bottom: 1px solid #D8D8D8;
 
-  .member-tag-delete {
-    width: 5%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @media screen and (max-width: 430px) {
+      height: 13%;
+    }
   }
-`;
-
-const Members = styled.div`
-  width: 100%;
-  height: 45px;
-  // display: flex;
-  // justify-content: center;
 `;
 
 export default AdminInfo;

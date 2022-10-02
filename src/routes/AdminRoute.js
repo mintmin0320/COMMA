@@ -15,7 +15,7 @@ const AdminRoute = () => {
   return (
     <Routes>
       <Route 
-        path="/" 
+        path="memberlist" 
         element={
           // <PrivateRoute>
             <AdminHome />

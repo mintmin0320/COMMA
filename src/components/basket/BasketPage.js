@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from 'react';
 // import { useNavigate } from 'react-router';
 // import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
-import _axios from '../../utils/axios';
+import { toast, ToastContainer } from 'react-toastify';
 // 개발자
 import titleTab from '../../utils/TitleTab';
-
-//css
-import styled from 'styled-components';
-
-//icon
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faX  } from '@fortawesome/free-solid-svg-icons';
 import TopButton from '../TopButton';
 import BasketCheck from './BasketCheck';
 import Modal from '../Modal';
-
-//icon
+import _axios from '../../utils/axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import EllipsisText from "react-ellipsis-text";
+//css, icon
+import styled from 'styled-components';
+import { faX  } from '@fortawesome/free-solid-svg-icons';
+import 'react-toastify/dist/ReactToastify.css';
 
 const BasketPage = () => {
   const userId = useSelector((store) => store.auth.authStatus.userId);
@@ -27,10 +25,12 @@ const BasketPage = () => {
   const [state, setState] = useState({
     name: '',
     major: '',
+    allDelete: false,
     professor: '',
     check: false,
     checkbox: false,
     changePage: false,
+    delete: false,
     itemList: [],
   });
 
@@ -54,43 +54,46 @@ const BasketPage = () => {
   }
 
   const _dlelteItem = async (id) => {
-    const url = `http://210.121.173.182/cart/arduino`;
-    const params = {
-      userId,
-      basket: [{
-        arduinoId : id,
-      }]}
-    console.log(params);
-    const response = await axios.delete(url,  {data: {params}});
+    console.log(id);
+    const url = `http://210.121.173.182/cart/arduino/${id}`;
+    const response = await axios.delete(url, {
+      data: {
+        id : userId,
+      }
+    });
     console.log(response);
-    // if(response.status === 200){
-    //   alert('상품 삭제');
-    // } else {
-    //   alert('삭제 실패');
-    // }
+    if(response.status === 200){
+      toast.success('상품 삭제');
+    } else {
+      toast.success('삭제 실패');
+    }
   }
 
   const _allItemDelete = () => {
     _dlelteAllItem(); 
   }
 
+  // 전체 삭제
   const _dlelteAllItem = async () => {
-    const url = `http://210.121.173.182/cart`;
-    const params = {
+    const url = `http://210.121.173.182/user/cart`;
+    const response = await axios.delete(url, {
+      data: {
         id : userId,
-    }
-    console.log(params);
-    const response = await axios.delete(url, params);
+      }
+    })
     console.log(response);
     if(response.status === 200){
-      alert('상품 전체 삭제');
+      setState({
+        allDelete: !state.allDelete,
+      });
+      toast.success('상품 전체 삭제');
     } else {
-      alert('전체 삭제 실패');
+      toast.success('전체 삭제 실패');
     }
   }
 
   useEffect(() => {
-    const getMemberData = async () => {
+    const _getMemberData = async () => {
       const url = `http://210.121.173.182/cart/${userId}`;
       const response = await axios.get(url);
       console.log(response);
@@ -99,16 +102,16 @@ const BasketPage = () => {
           ...state,
           itemList: response.data.result,
         });
-        console.log('회원 조회성공');
+        console.log('장바구니 조회성공');
       } else {
         setState({
           ...state,
           check: true,
         });
-        console.log('회원 조회실패');
+        console.log('장바구니 조회실패');
       }
     }
-    getMemberData();
+    _getMemberData();
   },[]);
 
   const Card = () => {
@@ -118,7 +121,11 @@ const BasketPage = () => {
         {state.itemList.map((item, index) => {
           return (
             <div className='item-box' key={index}>
-              <div className='item-name-box'>{item.arduinoName}</div>
+              <div className='item-name-box'>
+                <EllipsisText
+                  text={item.arduinoName}
+                  length={20} />
+              </div>
               <div className='count-item'>
                 <div className='blank-box'/>
                 <div className='count-box'>
@@ -300,12 +307,24 @@ const BasketPage = () => {
       )}
       <TopButton/>
       <Modal/>
+      <ToastContainer
+        position="top-center"
+        autoClose={500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </Container> 
   )       
 }
 
 const Container = styled.div`
   width: 85%;
+  height: 60vmax;
   display: flex;
   justify-content: center;
   margin-top: 20px;
@@ -313,7 +332,7 @@ const Container = styled.div`
 
   .main-content {
     width: 94%;
-    height: 100%;
+    height: 94%;
     display: flex;
     flex-direction: column;
     // justify-content: center;
@@ -328,7 +347,7 @@ const Container = styled.div`
 
   .top-box {
     width: 92%;
-    height: 40px;
+    height: 7%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -605,6 +624,7 @@ const Container = styled.div`
 
 const OrderBox = styled.div`
   width: 92%;
+  height: 93%;
   display: flex;
   flex-direction: column;
   // justify-content: center;
@@ -620,7 +640,7 @@ const OrderBox = styled.div`
 
   .item-box {
     width: 100%;
-    height: 60px;
+    height: 10%;
     display: flex;
   }
   

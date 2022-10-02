@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import {  logoutRequest } from '../redux/actions/auth';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 //css
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/globalStyle';
@@ -10,7 +10,7 @@ import styled from 'styled-components';
 //input & button
 //icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faL } from "@fortawesome/free-solid-svg-icons";
 import Logo from '../images/blue_bg.svg';
 
 const MenuBar = () => {
@@ -25,6 +25,10 @@ const MenuBar = () => {
       ...state,
       menubar: !state.menubar,
     })
+  };
+
+  const _handleButton = () => {
+    toast.error('미완성 페이지 입니다.');
   };
 
   // 로그아웃 버튼 클릭
@@ -49,7 +53,8 @@ const MenuBar = () => {
       </Link>
       <div className='blank'/>
       <div className='button-box'>
-        <NavLink to="/"
+        <NavLink 
+          to="/"
           className='menu-button1'
           style={({ isActive }) => ({
             color: isActive ? 'white' : '#0064ff',
@@ -58,16 +63,18 @@ const MenuBar = () => {
         >
           공지사항
         </NavLink>
-        <NavLink to="/rental"
+        <NavLink
+          to="/rental"
           className='menu-button2'
           style={({ isActive }) => ({
             color: isActive ? 'white' : '#0064ff',
             backgroundColor: isActive ? '#0064ff' : 'white',
           })}  
         >
-          대여
+          아두이노
         </NavLink>
-        <NavLink to="/community"
+        {/* <NavLink 
+          to="/community"
           className='menu-button3'
           style={({ isActive }) => ({
             color: isActive ? 'white' : '#0064ff',
@@ -75,8 +82,14 @@ const MenuBar = () => {
           })}
         >
           커뮤니티
-        </NavLink>
-        <NavLink to="/patchNotes"
+        </NavLink> */}
+        <button 
+          className='menu-button3'
+          onClick={_handleButton}
+        >
+          커뮤니티
+        </button>
+        {/* <NavLink to="/patchNotes"
           className='menu-button4'
           style={({ isActive }) => ({
             color: isActive ? 'white' : '#0064ff',
@@ -84,11 +97,12 @@ const MenuBar = () => {
           })}
         >
           개발자&nbsp;노트
-        </NavLink>
+        </NavLink> */}
       </div>
       {state.menubar && (
         <div className='mobile-button-box'>
-          <NavLink to="/"
+          <NavLink
+            to="/"
             className='menu-button1'
             style={({ isActive }) => ({
               color: isActive ? 'white' : '#0064ff',
@@ -97,7 +111,8 @@ const MenuBar = () => {
           >
             공지사항
           </NavLink>
-          <NavLink to="/rental"
+          <NavLink
+            to="/rental"
             className='menu-button2'
             style={({ isActive }) => ({
               color: isActive ? 'white' : '#0064ff',
@@ -106,7 +121,8 @@ const MenuBar = () => {
           >
             대여
           </NavLink>
-          <NavLink to="/community"
+          <NavLink
+            to="/community"
             className='menu-button3'
             style={({ isActive }) => ({
               color: isActive ? 'white' : '#0064ff',
@@ -115,7 +131,7 @@ const MenuBar = () => {
           >
               커뮤니티
           </NavLink>
-          <NavLink to="/patchNotes"
+          {/* <NavLink to="/patchNotes"
             className='menu-button4'
             style={({ isActive }) => ({
               color: isActive ? 'white' : '#0064ff',
@@ -123,7 +139,7 @@ const MenuBar = () => {
             })}
           >
             개발자&nbsp;노트
-          </NavLink>
+          </NavLink> */}
           <button
             className='menu-button5'
             onClick={_handleLogout}
@@ -132,6 +148,17 @@ const MenuBar = () => {
           </button>
         </div>
       )}
+      <ToastContainer
+        position="top-center"
+        autoClose={600}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </Container>
   );
 }
@@ -204,7 +231,7 @@ const Container = styled.div`
   }
 
   .blank {
-    width: 50%;
+    width: 60%;
     height: 100%; 
     background: white;
 
@@ -214,7 +241,7 @@ const Container = styled.div`
   }
 
   .button-box {
-    width: 30%;
+    width: 20%;
     height: 100%;
     display: flex;
     align-items: center;
@@ -234,7 +261,7 @@ const Container = styled.div`
   }
 
   .menu-button1 {
-    width: 20%;
+    width: 30%;
     height: 70%;
     display: flex;
     align-items: center;
@@ -257,7 +284,7 @@ const Container = styled.div`
   }
 
   .menu-button2 {
-    width: 20%;
+    width: 30%;
     height: 70%;
     display: flex;
     align-items: center;
@@ -279,7 +306,7 @@ const Container = styled.div`
   }
 
   .menu-button3 {
-    width: 20%;
+    width: 30%;
     height: 70%;
     display: flex;
     align-items: center;
@@ -287,6 +314,7 @@ const Container = styled.div`
     text-decoration: none;
     // border-right: 1px solid #D8D8D8;
     background: white;
+    color: #0064ff;
 
     @media screen and (max-width: 430px) {
       width: 100%;

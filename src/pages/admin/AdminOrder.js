@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import MenuBar from '../../components/MenuBar';
 import AdminOrderList from '../../components/admin/AdminOrderList';
 import ScrollIndiactor from '../../components/ScrollIndicator';
@@ -7,7 +7,6 @@ import AdminBar from '../../components/AdminBar';
 import AdminRB from '../../components/AdminRB';
 
 const AdminOrder = () => {
-
   return(
     <Container>
       <ScrollIndiactor/>
