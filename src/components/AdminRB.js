@@ -44,7 +44,7 @@ const AdminRB = () => {
 const Container = styled.div`
   width: 100%;
   border-top: 2px solid #D8D8D8;
-  height: 48px;
+  height: 40px;
   position: fixed;
   bottom: 0;
   left: 0;

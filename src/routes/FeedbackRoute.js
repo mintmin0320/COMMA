@@ -16,9 +16,9 @@ const FeedbackRoute = () => {
         <Route 
           path="/" 
           element={
-          // <PrivateRoute>
-            <FeedbackPage />
-          // </PrivateRoute>
+            <PrivateRoute>
+              <FeedbackPage />
+            </PrivateRoute>
           }
         />
       }

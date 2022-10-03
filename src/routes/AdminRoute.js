@@ -4,7 +4,8 @@ import {
   Route 
 } from "react-router-dom";
 // 개발자
-import PrivateRoute from './PrivateRoute '; // 로그인 체크
+import ProtectedRoute from './ProtectedRoute'; // 관리자 체크
+import PrivateRoute from './PrivateRoute ';// 로그인 체크
 import { 
   AdminHome, // 관리자페이지 홈
   AdminOrder,
@@ -17,25 +18,31 @@ const AdminRoute = () => {
       <Route 
         path="memberlist" 
         element={
-          // <PrivateRoute>
-            <AdminHome />
-          // </PrivateRoute>
+          <PrivateRoute>
+            <ProtectedRoute>
+              <AdminHome />
+            </ProtectedRoute>
+          </PrivateRoute>
         }
       />
       <Route 
         path="feedback" 
         element={
-          // <PrivateRoute>
-            <AdminFeed />
-          // </PrivateRoute>
+          <PrivateRoute>
+            <ProtectedRoute>
+              <AdminFeed />
+            </ProtectedRoute>
+          </PrivateRoute>
         }
       />   
       <Route 
         path="orderlist" 
         element={
-          // <PrivateRoute>
-            <AdminOrder />
-          // </PrivateRoute>
+          <PrivateRoute>
+            <ProtectedRoute>
+              <AdminOrder />
+            </ProtectedRoute>
+          </PrivateRoute>
         }
       />   
     </Routes>

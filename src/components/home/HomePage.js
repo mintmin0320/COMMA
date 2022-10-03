@@ -316,6 +316,10 @@ const Search = styled.div`
         // height: 60%;
         background: #0064ff;
         color: #f5f5f5;
+
+        @media screen and (max-width: 430px) {
+          width: 20%;
+        }
     }
 
     // @media (max-width: 500px) {

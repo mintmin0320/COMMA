@@ -73,7 +73,6 @@ const RpsBtnBox = styled.div`
 
 const BasketPageBox = styled.div`
   width: 70%;
-  height: 100%;
   display: flex;
   justify-content: center;
 

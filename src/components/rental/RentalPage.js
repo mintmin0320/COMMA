@@ -24,7 +24,7 @@ const RentalPage = () => {
   const userId = useSelector((store) => store.auth.authStatus.userId);
 
   const [state, setState] = useState({
-    search: 9,
+    search: '',
     basket_id: '',
     check: '',
     page: 1,
@@ -63,7 +63,6 @@ const RentalPage = () => {
     console.log(response);
     if(response.result === 'true'){
       toast.success('장바구니에 상품이 담겼습니다.');
-      // <Modal/>
     } else if(response.message === '이미 장바구니에 추가된 부품입니다.') {
       toast.error(response.message);
     } else if(response.message === '신청하신 아두이노 부품이 부족합니다.') {
@@ -155,15 +154,15 @@ const RentalPage = () => {
     const url = `http://210.121.173.182/arduino/name/${state.search}`;
     const response = await axios.get(url);
     console.log(response);
-    if(response.status === 200){
-    // setState({
-    //   ...state,
-    //   itemList: response.data.result,
-    // });
-      console.log('검색 성공');
-    } else {
-      console.log('검색 실패');
-    }
+    // if(response.status === 200){
+    // // setState({
+    // //   ...state,
+    // //   itemList: response.data.result,
+    // // });
+    //   console.log('검색 성공');
+    // } else {
+    //   console.log('검색 실패');
+    // }
   }
 
   // 아두이노 리스트
@@ -180,7 +179,6 @@ const RentalPage = () => {
         console.log(`아두이노 ${state.check} 분류 성공`);
       } 
       else {
-        // const url = `http://210.121.173.182/arduino`;
         const url = `http://210.121.173.182/arduino/${state.page - 1}`;
         const response = await axios.get(url);
         console.log(response);
@@ -217,26 +215,6 @@ const RentalPage = () => {
                   {item.count + 'EA'}
                 </div>
               </div>
-              <div
-                className='data-box2'
-                key={index}
-              >  
-                <div className='img-box'>
-                  사진
-                </div>
-                <div className='title-box'>
-                  {data.arduino_name}
-                </div>
-                <div className='category-box'>
-                  {data.arduino_name}
-                </div>
-                <div className='count-box'>
-                  {data.count}
-                </div>
-                <div className='icon-box'>
-                  <FontAwesomeIcon icon={ faCartArrowDown } size="2x" onClick={() => _handleBasketAdd(data.arduinoId)}/>
-                </div>
-              </div>
             </Fragment>
           )})
         }
@@ -250,14 +228,15 @@ const RentalPage = () => {
         <div className='top-menu'>
           <div className='header-bar'>
             <div className='search-box'>
-              <div className='left-box'>검색</div>
+              <div className='left-box'><div className='font-box'>검색</div></div>
               <div className='right-box'>
                 <div className='search'>
                   <input
                     value={state.search}
                     onChange={_handleInputChange}                
                     type='text'
-                    name='search'                  
+                    name='search'     
+                    className='input-css'             
                   />
                   <button
                     className='login-button'
@@ -271,7 +250,7 @@ const RentalPage = () => {
             </div>
             <div className='classification'>
               <div className='left-box'>
-                분류
+                <div className='font-box'>분류</div>
               </div>
               <div className='right-search-box'>
                 <div className='check-box'>
@@ -413,6 +392,43 @@ const RentalPage = () => {
           </div>
         </div>
       </div>
+      <MobileMoreData>
+        <div className='index-box'>
+          <div className='before-index'>
+            <button
+              className='button-css'
+              onClick={_handleInputMinus}
+            >
+                이전
+            </button>
+          </div>
+          <div className='now-index'>
+            <input
+              className='input-css'
+              value={state.index}
+              name="index"
+              type="text"
+              onChange={_handleInputChange}
+              maxLength={1}
+              placeholder='1~9'
+            />
+            <button
+              className='search-button'
+              onClick={_handleInputMove}
+            >
+              이동
+            </button>
+          </div>
+          <div className='after-index'>
+            <button
+              className='button-css'
+              onClick={_handleInputPlus}
+            >
+              다음
+            </button>
+          </div>
+        </div>
+      </MobileMoreData>
       <Content>
         <div className='data'>
           <Card/>
@@ -490,6 +506,10 @@ const Container = styled.div`
   .box {
     height: 15%;
     border: 1px solid #D8D8D8;
+
+    @media screen and (max-width: 430px) {
+      height: 25%;
+    }
   }
 
   .top-menu {
@@ -529,7 +549,7 @@ const Container = styled.div`
     border-bottom: 1px solid #D8D8D8;
 
     @media screen and (max-width: 430px) {
-      height: 50%;
+      height: 30%;
     }
   }
 
@@ -545,6 +565,14 @@ const Container = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
+    }
+  }
+
+  .font-box {
+    font-size: 16px;
+
+    @media screen and (max-width: 430px) {
+      font-size: 16px;
     }
   }
 
@@ -566,6 +594,10 @@ const Container = styled.div`
       height: 100%;
       display: flex;
       align-items: center;
+    }
+
+    .input-css {
+      border-radius: 0px 0px 0px 0px;
     }
     
     input {
@@ -626,8 +658,7 @@ const Container = styled.div`
     align-items: center;
 
     @media screen and (max-width: 430px) {
-      height: 50%;
-      border-bottom: 1px solid #D8D8D8;
+      height: 70%;
     }
   }
     
@@ -640,7 +671,7 @@ const Container = styled.div`
     align-items: center;
 
     @media screen and (max-width: 430px) {
-      width: 100%;
+      display: none;
     }
   }
 
@@ -662,7 +693,6 @@ const Container = styled.div`
     align-items: center;
     background: #F5F5F5;
     // border: 1px solid #D8D8D8;
-    
   }
 
   .ranking-box {
@@ -716,6 +746,10 @@ const Content = styled.div`
   border-bottom: 1px solid #D8D8D8;
   // background: red;
 
+  @media screen and (max-width: 430px) {
+    height: 67%;
+  }
+
   .data {
     width: 97%;
     height: 97%;
@@ -754,7 +788,9 @@ const Content = styled.div`
     // background: #0064ff;
 
     @media screen and (max-width: 430px) {
-      display: none;
+      display: block;
+      width: 65%;
+      height: 200px;
     }
   }
 
@@ -774,26 +810,6 @@ const Content = styled.div`
   //   }
   // }
 
-  .data-box2 {
-    width: 100%;
-    height: 100%;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    // border-left: 1px solid #D8D8D8;
-    // border-right: 1px solid #D8D8D8;
-    // border-bottom: 1px solid #D8D8D8;
-    // border-radius: 5px 5px 5px 5px;
-    padding: 10px;
-
-    @media screen and (max-width: 430px) {
-      width: 95%;
-      display: flex;
-      flex-direction: row;
-      border: 1px solid #F2F2F2;
-    }
-  }
-
   .img-box {
     width: 100%;
     height: 45%;
@@ -803,6 +819,10 @@ const Content = styled.div`
     border: 1px solid #D8D8D8;
     margin-top: 5px;
     margin-bottom: 5px;
+
+    @media screen and (max-width: 430px) {
+      height: 40%;
+    }
   }
 
   .title-box {
@@ -825,6 +845,10 @@ const Content = styled.div`
     font-size: 10px;
     color: gray;
     margin-bottom: 5px;
+
+    @media screen and (max-width: 430px) {
+      height: 15%;
+    }
   }
 
   .count-box {
@@ -835,26 +859,17 @@ const Content = styled.div`
     align-items: center;
     font-size: 10px;
   }
-
-  .icon-box {
-    display: none;
-
-    @media screen and (max-width: 430px) {
-      width: 80%;
-      height: 20%;
-      display: flex;
-      // justify-content: center;
-      align-items: center;
-      // margin-bottom: 5px;
-    }
-  }
 `;
 
 const MoreData = styled.div`
   width: 100%;
   height: 3%;
-  display:flex;
+  display: flex;
   justify-content: center;
+
+  @media screen and (max-width: 430px) {
+    display: none;
+  }
 
   .index-box {
     width: 90%;
@@ -902,6 +917,86 @@ const MoreData = styled.div`
   .search-button {
     width: 30%;
     height: 80%;
+  }
+`;
+
+const MobileMoreData = styled.div`
+  display: none;
+
+  @media screen and (max-width: 430px) {
+    width: 100%;
+    height: 5%;
+    display:flex;
+    justify-content: center;
+  }
+
+  .index-box {
+    width: 90%;
+    height: 100%;
+    display:flex;
+
+    @media screen and (max-width: 430px) {
+      width: 100%;
+    }
+  }
+
+  .before-index {
+    width: 40%;
+    height: 100%;
+    display:flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    @media screen and (max-width: 430px) {
+      display:flex;
+      justify-content: center;
+    }
+  }
+
+  .now-index {
+    width: 20%;
+    height: 100%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .after-index {
+    width: 40%;
+    height: 100%;
+    display:flex;
+    align-items: center;
+    // justify-content: center;
+
+    @media screen and (max-width: 430px) {
+      display:flex;
+      justify-content: center;
+    }
+  }
+
+  .button-css {
+    width: 20%;
+    height: 80%;
+    
+    @media screen and (max-width: 430px) {
+      width: 40%;
+    }
+  }
+
+  .input-css {
+    width: 30%;
+    height: 80%;
+    border: 1px solid #D8D8D8;
+    text-align:center
+  }
+
+  .search-button {
+    width: 30%;
+    height: 80%;
+
+    @media screen and (max-width: 430px) {
+      width: 50%;
+    }
   }
 `;
 

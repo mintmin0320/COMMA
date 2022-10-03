@@ -84,7 +84,7 @@ const Container = styled.div`
   
   .modal-button {
     width: 80px;
-    height: 30px;
+    height: 24px;
     background: #0064ff;
     position: fixed;
     left: 50%;

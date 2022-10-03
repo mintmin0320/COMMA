@@ -1,9 +1,9 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, {  useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 // 개발자
-import {  logoutRequest } from '../../redux/actions/auth'
+import Withdrawal from './Withdrawal';
 import _axios from '../../utils/axios';
 import titleTab from '../../utils/TitleTab';
 import TopButton from '../TopButton';
@@ -24,124 +24,32 @@ const MypageInfo = () => {
     changePw:'',
     changeName: '',
     orderList: [],
-    checkPw: false,
+    page: false,
     result:  false,        
     message: null,
   });
-  
-  // 입력값이 변할 때
-  const _handleInputChange = (e) => {
-    setState({ 
-      ...state, 
-      [e.target.name]: e.target.value 
-    });
-  }
     
-  // // 회원정보 조회
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     const url = `http://210.121.173.182/user/${userId}`;
-  //     console.log(userId);
-  //     const response = await axios.get(url);
-  //     console.log(response);
-  //     setState({
-  //       ...state,
-  //       userId: response.data.user.user_id,
-  //       nickname: response.data.user.user_nickname,
-  //     })
-  //   }
-  //   getData()
-  // },[]);
-
-  // 비밀번호 확인
-  const _handlePwCheck = (e) => {
-    e.preventDefault();
-    _postPw();
-  };
-
-  // 저장npm
-  const _postPw = async () => {
-    const url = '/user/password/check';
-    const params = {
-      id: userId,
-      password: state.userPw,
-    };
-    console.log(state.userPw);
-    const response = await _axios(url, params);
-    console.log(response);
-    if(response.result){
+  // 회원정보 조회
+  useEffect(() => {
+    const getData = async () => {
+      const url = `http://210.121.173.182/user/${userId}`;
+      console.log(userId);
+      const response = await axios.get(url);
+      console.log(response);
       setState({
         ...state,
-        result: response.result,  
-        message: response.message,
-        checkPw:true,
-        userPw: '',
-      });
-      toast('비밀번호 인증 성공');
-    }else{
-      setState({
-        ...state,
-        result: response.result,
-        message: response.message,
-      })    
-      toast('비밀번호 인증 실패');
+        userId: response.data.user.user_id,
+        nickname: response.data.user.user_nickname,
+      })
     }
-  };
+    getData()
+  },[]);
 
-  //비밀번호 변경
-  const _handleChangePw = (e) => {
-    e.preventDefault();
-    _postChangePw();
-  };
-
-  // 저장npm
-  const _postChangePw = async () => {
-    const url = '/user/find/password';
-    const params = {
-      id: userId,
-      password: state.changePw,
-    };
-    const response = await _axios(url, params);
-    console.log(response);
-    if(response.result){
-      setState({
-        ...state,
-        result: response.result,  
-        message: response.message,
-        checkPw: false,
-        changePw:'',
-      });
-      toast('비밀번호 변경 성공');
-    }else{
-      setState({
-        ...state,
-        result: response.result,
-        message: response.message,
-      })    
-      toast('비밀번호 변경 실패');
-    }
-  };
-
-  const _handleWithdrawal = (e) => {
-    e.preventDefault();
-    _Withdrawal();
-  };
-
-  // 회원탈퇴
-  const _Withdrawal = async () => {
-    const url = "http://210.121.173.182/user";
-    const response = await axios.delete(url, {
-      data: {
-        id: userId,
-      }
-    });
-    console.log(response);
-    if(response.status === 200){
-      dispatch(logoutRequest());
-      console.log('회원 탈퇴 성공');
-    }else{
-      console.log('회원탈퇴 실패');
-    }
+  const _handleWithdrawal = () => {
+    setState({
+      ...state,
+      page: true,
+    })
   };
 
   // useEffect(() => {
@@ -184,94 +92,57 @@ const MypageInfo = () => {
 
   return(
     <Container>
-      <Content>
-        <div className='title1'>내정보</div>
-        <MyInfo>
-          <div className='info'>
-            <div className='info-text'>
-              <div className='info-id'>아이디</div>
-              <div className='info-nick'>닉네임</div>
+      {!state.page && (
+        <Content>
+          <div className='title1'>내정보</div>
+          <MyInfo>
+            <div className='info'>
+              <div className='info-text'>
+                <div className='info-id'>아이디</div>
+                <div className='info-nick'>닉네임</div>
+              </div>
+              <div className='info-data'>
+                <div className='id'>{state.userId}</div>
+                <div className='nick'>{state.nickname}</div>
+              </div>
             </div>
-            <div className='info-data'>
-              <div className='id'>{state.userId}</div>
-              <div className='nick'>{state.nickname}</div>
+          </MyInfo>
+          <div className='title2'>신청목록</div>
+          <div className='order-box'>
+            <div className='order-text'>
+              <div className='date'>신청날짜</div>
+              <div className='list'>신청목록</div>
+              <div className='approve'>승인</div>
             </div>
+              {/* <Card/> */}
           </div>
-          <div className='info-correction'>
-            <div className='pwd'>
-              <TitleBox>
-                현재 비밀번호
-              </TitleBox>
-              <input
-                style={{fontSize: '24px'}}
-                value={state.userPw}
-                type='password'
-                name='userPw'
-                onChange={_handleInputChange}
-                required={true}            
-                maxLength={15}
-                disabled={state.checkPw}
-              />
-              <button
-                className='reset-button'
-                type='button'
-                onClick={_handlePwCheck}
-              >
-                확인
-              </button>
-            </div>
-            <div className='change-pwd'>
-              <TitleBox>
-                변경 비밀번호
-              </TitleBox>
-              <input
-                  style={{fontSize: '24px'}}
-                  value={state.changePw}
-                  type='password'
-                  name='changePw'
-                  onChange={_handleInputChange}
-                  required={true}            
-                  maxLength={15}
-                />
-              <button
-                className='reset-button'
-                // onClick={_handleReRequest}
-              >
-                변경
-              </button>
-            </div>
-          </div>
-        </MyInfo>
-        <div className='title2'>신청목록</div>
-        <div className='order-box'>
-          <div className='order-text'>
-            <div className='date'>신청날짜</div>
-            <div className='list'>신청목록</div>
-            <div className='approve'>승인</div>
-          </div>
-            {/* <Card/> */}
-        </div>
-        <Withdrawal>
-          <button
-            className='withdrawal-button'
-            onClick={_handleWithdrawal}
-          >
-            <div className='login-text'>회원탈퇴</div>
-          </button>
-        </Withdrawal>
-      </Content>
-      <TopButton/>
-      <ToastContainer
-        position="top-center"
-        autoClose={1500}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
+          <WithdrawalButton>
+            <button
+              className='withdrawal-button'
+              onClick={_handleWithdrawal}
+            >
+              <div className='login-text'>회원탈퇴</div>
+            </button>
+          </WithdrawalButton>
+          <TopButton/>
+          <ToastContainer
+            position="top-center"
+            autoClose={1500}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
+        </Content>
+      )}  
+      {state.page && (
+        <WithdrawalBox>
+          <Withdrawal/>
+        </WithdrawalBox>
+      )}
     </Container>
   )
 }
@@ -287,7 +158,6 @@ const Container = styled.div`
   @media screen and (max-width: 430px) {
     width: 100%;
     height: 100vh;
-    margin-top: 0px;
   }
 `;
 
@@ -370,11 +240,11 @@ const Content = styled.div`
 `;
 
 const MyInfo = styled.div`
-  width: 98%;
+  width: 96%;
   height: 180px;
   margin: 20px 0 0 0;
   display: flex;
-  justify-content: space-around;
+  // justify-content: space-around;
   // flex-direction: column; 
   // align-items: center;
 
@@ -382,7 +252,7 @@ const MyInfo = styled.div`
     width: 48%;
     height: 100%;
     display: flex;
-    // border: 1px solid #D8D8D8;
+    
 
     @media screen and (max-width: 430px) {
       width: 98%;
@@ -515,11 +385,9 @@ const MyInfo = styled.div`
   }
 `;
 
-const TitleBox = styled.div`
-  width: 23%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const WithdrawalBox = styled.div`
+  width: 100%;
+  height: 280px;
 `;
 
 const OrederList = styled.div`
@@ -574,7 +442,7 @@ const OrederList = styled.div`
   }
 `;
 
-const Withdrawal = styled.div`
+const WithdrawalButton = styled.div`
   width: 96%;
   height: 80px;
   display: flex;
@@ -582,15 +450,15 @@ const Withdrawal = styled.div`
   align-items: center;
   margin: 20px 0 0 0;
 
+  @media screen and (max-width: 430px) {
+    display: none;
+  }
+
   .withdrawal-button {
     width: 20%;
     height: 50px;
     background: #0064ff;
     border-radius: 10px 10px 10px 10px;
-    
-    @media screen and (max-width: 430px) {
-      width: 30%;
-    }
   }
 
   .login-text {

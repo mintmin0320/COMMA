@@ -77,7 +77,7 @@ export const Wrap = styled.div`
   padding: 0 20px;
   object-fit: contain;
   background-color: ${theme.colors.white};
-  box-shadow: 2px 4px 30px rgba(0, 0, 0, 0.25);
+  box-shadow: 2px 4px 30px rgba(0, 0, 0, 0.22);
   border-radius: 20px 20px 20px 20px;
   
   
@@ -91,7 +91,7 @@ export const Wrap = styled.div`
   @media ${({ theme }) => theme.device.desktop} {
     width: 500px;
     height: 680px;
-    margin: 30px 0 80px;
+    margin-top: 18px;
     align-items: center;
     padding: 0 !important;
   }

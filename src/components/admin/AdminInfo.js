@@ -50,12 +50,10 @@ const AdminInfo = () => {
     });
     console.log(response);
     if(response.status === 200){
-      // setState({
-      //   delete: !state.delete,
-      // });
-      toast.success('추방 성공');
+      window.location.reload();
+      console.log('추방 성공');
     } else {
-      toast.error('추방 실패');
+      console.log('추방 실패');
     }
   }
 

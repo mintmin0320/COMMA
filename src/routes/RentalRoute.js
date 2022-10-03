@@ -15,19 +15,11 @@ const RentalRoute = () => {
       <Route 
         path="/" 
         element={
-          // <PrivateRoute>
+          <PrivateRoute>
             <Rental />
-          // </PrivateRoute>
+          </PrivateRoute>
         }
       />
-      {/* <Route 
-        path=":myInfo" 
-        element={
-          // <PrivateRoute>
-            <MyInfo />
-          // </PrivateRoute>
-        }
-      />    */}
     </Routes>
   );
 }

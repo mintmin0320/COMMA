@@ -51,6 +51,14 @@ const LoginPage = () => {
     });
   };
 
+  const _handlePageMove = () => {
+    window.open('https://www.dongyang.ac.kr/dongyang/index.do','홈페이지', 'scrollbars=yes');
+  };
+
+  const _handlePageMove2 = () => {
+    window.open('https://account.live.com/username/recover','이메일찾기', 'scrollbars=yes');
+  };
+
   // 로그인 버튼 클릭
   const _handleSubmit = (e) => {
     e.preventDefault();
@@ -161,7 +169,12 @@ const LoginPage = () => {
               />
             </PwBox>
             <FindIDPW>
-              <a href='https://account.live.com/username/recover' style={{textDecorationLine: 'none'}}>아이디 | </a>
+              <div 
+                onClick={_handlePageMove2}
+                style={{textDecorationLine: 'none', cursor: 'pointer',color: '#0064ff'}}
+              >
+                아이디 |
+              </div>
               <Link to="/findPW" style={{textDecorationLine: 'none'}}>&nbsp;비밀번호찾기</Link>
             </FindIDPW>
             <button
@@ -174,14 +187,17 @@ const LoginPage = () => {
               <div className='button-text1'>처음 방문하셨나요?</div>
               <div className='button-text2'>&nbsp;회원가입</div>
             </Link>
-            <a href='https://www.dongyang.ac.kr/dongyang/index.do' className='banner'>
+            <div
+              className='banner'
+              onClick={_handlePageMove}
+            >
               <div className='banner-img'>
                 <img src={banner} alt="logo" width="65%" height="100%"></img>
               </div>
               <div className='banner-text'>
                 <div className='banner-font'>홈페이지 바로가기 &gt;</div>
               </div>
-            </a>
+            </div>
           </LoginBox>
         </form>
       </Wrap>
@@ -248,6 +264,8 @@ const LoginBox = styled.div`
     border: 1px solid #0064ff;
     font-size: 24px;
     text-decoration-line: none;
+    cursor: pointer;
+    color: #0064ff;
 
     @media screen and (max-width: 430px) {
       width: 95%;

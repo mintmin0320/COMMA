@@ -875,7 +875,7 @@ const JoinPage = () => {
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  height: 100vh;
+  height: 100%;
 `
 
 const Wrap = styled.div`
@@ -1000,10 +1000,11 @@ const JoinBox = styled.div`
 const SelectBox = styled.div`
   height: 60px;
   width: 40%;
-  background: #f5f5f5;
+  background: #F5F5F5;
   display: flex;
   align-items: center;
   // border: 1px solid #A9A9A9;
+  border-radius: 0 10px 10px 0;
 
   select {
     background: #f5f5f5;

@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import rental from '../../images/rental.png';
 import basket from '../../images/basket.png';
+import arduino from '../../images/arduino.png';
 //개발자
 import titleTab from '../../utils/TitleTab';
 
@@ -24,9 +25,9 @@ const GuidePage = () => {
               <div className='total-content'>
                 <div className='first-page'>
                   <div className='img1'>
-                    <img src={rental} alt="profile" className='rental'/>
+                    <img src={arduino} alt="profile" className='rental'/>
                   </div>
-                  <div className='text1'>1. 아두이노페이지에서 원는 상품을 장바구니에 담습니다.</div>
+                  <div className='text1'>1. 아두이노페이지에서 원하는 상품을 장바구니에 담습니다.</div>
                 </div>
                 <div className='first-page'>
                   <div className='img1'>

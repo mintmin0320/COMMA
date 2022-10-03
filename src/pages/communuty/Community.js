@@ -33,6 +33,10 @@ const Community = () => {
 const Container = styled.div`
   background: #F5F5F5;
 
+  @media screen and (max-width: 430px) {
+    background: white;
+  }
+
   .container-box {
     display: flex;
   }

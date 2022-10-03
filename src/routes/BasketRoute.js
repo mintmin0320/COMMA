@@ -15,9 +15,9 @@ const BasketRoute = () => {
       <Route 
         path="/" 
         element={
-          // <PrivateRoute>
+          <PrivateRoute>
             <BasketList />
-          // </PrivateRoute>
+          </PrivateRoute>
         }
       />
     </Routes>

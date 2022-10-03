@@ -36,6 +36,10 @@ const Container = styled.div`
   .container-box {
     display: flex;
   }
+
+  @media screen and (max-width: 430px) {
+    background: white;
+  }
 `;
 
 const MenuBox = styled.div`

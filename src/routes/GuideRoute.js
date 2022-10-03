@@ -16,9 +16,9 @@ const GuideRoute = () => {
         <Route 
           path="/" 
           element={
-          // <PrivateRoute>
+            <PrivateRoute>
               <Guide />
-          // </PrivateRoute>
+            </PrivateRoute>
           }
         />
       }

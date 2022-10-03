@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-// import { useNavigate } from 'react-router';
-// import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 // 개발자
 import titleTab from '../../utils/TitleTab';
 import TopButton from '../TopButton';
-import BasketCheck from './BasketCheck';
 import Modal from '../Modal';
 import _axios from '../../utils/axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,13 +17,14 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const BasketPage = () => {
   const userId = useSelector((store) => store.auth.authStatus.userId);
+  const navigate = useNavigate();
   const titleUpdator = titleTab("Loading...");
   setTimeout(() => titleUpdator("신청서 - COMMA"), 100);
-
   const [state, setState] = useState({
     name: '',
     major: '',
     allDelete: false,
+    delete: false,
     professor: '',
     check: false,
     checkbox: false,
@@ -49,13 +48,14 @@ const BasketPage = () => {
     });
   }
 
-  const _itemDelete = (id) => {
-    _dlelteItem(id); 
+  // 상품 선택 삭제
+  const _itemDelete = (arduinoId) => {
+    _dlelteItem(arduinoId); 
   }
 
-  const _dlelteItem = async (id) => {
-    console.log(id);
-    const url = `http://210.121.173.182/cart/arduino/${id}`;
+  const _dlelteItem = async (arduinoId) => {
+    console.log(arduinoId);
+    const url = `http://210.121.173.182/cart/arduino/${arduinoId}`;
     const response = await axios.delete(url, {
       data: {
         id : userId,
@@ -63,9 +63,10 @@ const BasketPage = () => {
     });
     console.log(response);
     if(response.status === 200){
-      toast.success('상품 삭제');
+      console.log('상품 삭제');
+      window.location.reload();
     } else {
-      toast.success('삭제 실패');
+      console.log('삭제 실패');
     }
   }
 
@@ -83,16 +84,15 @@ const BasketPage = () => {
     })
     console.log(response);
     if(response.status === 200){
-      setState({
-        allDelete: !state.allDelete,
-      });
-      toast.success('상품 전체 삭제');
+      console.log('상품 전체 삭제');
+      window.location.reload();
     } else {
-      toast.success('전체 삭제 실패');
+      console.log('전체 삭제 실패');
     }
   }
 
   useEffect(() => {
+    console.log(state.delete);
     const _getMemberData = async () => {
       const url = `http://210.121.173.182/cart/${userId}`;
       const response = await axios.get(url);
@@ -104,10 +104,6 @@ const BasketPage = () => {
         });
         console.log('장바구니 조회성공');
       } else {
-        setState({
-          ...state,
-          check: true,
-        });
         console.log('장바구니 조회실패');
       }
     }
@@ -115,7 +111,6 @@ const BasketPage = () => {
   },[]);
 
   const Card = () => {
-    console.log(state.itemList);
     return (
       <OrderBox>
         {state.itemList.map((item, index) => {
@@ -197,11 +192,12 @@ const BasketPage = () => {
     const response = await _axios(url, params);
     console.log(response);
     if(response.result === true){
+      alert('주문 성공!');
+      navigate('/mypage');
       setState({
         ...state,
         changePage: true,
       })
-      alert('주문 성공!');
     }else{
       alert('주문 실패!');
     }
@@ -209,7 +205,6 @@ const BasketPage = () => {
 
   return(
     <Container>
-      {!state.changePage && (
       <form onSubmit={_handleSubmit} className="main-content">
         <div className='header'>실험실습재료 신청</div>
           <div className='content'>
@@ -293,7 +288,7 @@ const BasketPage = () => {
           <OrderButton>
             <div className='check-box'>
               상기 내용을 모두 확인했습니다.&nbsp;
-              <input type='checkbox' className='checkbox-button' onChange={_handleInputCheckbox} checked={state.checkbox}/>
+              <input type='checkbox' className='checkbox-button' value={'1'} onChange={_handleInputCheckbox} checked={state.checkbox}/>
             </div>
             {!state.checkbox ?
               <LoginButton style={{ background: "gray" }} disabled={!state.checkbox}><div className='login-text'>신청</div></LoginButton>
@@ -301,10 +296,6 @@ const BasketPage = () => {
             }     
           </OrderButton>
         </form>
-      )}
-      {state.changePage && (
-        <BasketCheck/>
-      )}
       <TopButton/>
       <Modal/>
       <ToastContainer
@@ -666,26 +657,6 @@ const OrderBox = styled.div`
     justify-content: center;
     border-bottom: 1px solid #D8D8D8;
   }
-`;
-
-const CardBox = styled.div`
-  width: 950px;
-  height: 180px;
-  margin: 0 0 30px 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid #D8D8D8;
-`;
-
-const Content = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  // justify-content: center;
-  align-items: center;
 `;
 
 const OrderButton = styled.div`

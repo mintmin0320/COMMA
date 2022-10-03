@@ -32,9 +32,12 @@ const FindPw = () => {
     result: false,        // 서버와의 axios 요청 결과
     message: null,
     });
+
+    const _handlePageMove2 = () => {
+      window.open('https://account.live.com/username/recover','이메일찾기', 'scrollbars=yes');
+    };
   
-    const _signIn = (e) => {
-      e.preventDefault();
+    const _signIn = () => {
       navigate('/login');
     };
     
@@ -148,10 +151,13 @@ const FindPw = () => {
               >
               <div className='login-text'>로그인하기</div>
             </button>)}
-            <a href='https://account.live.com/username/recover' className='join-button'>
+            <div
+              onClick={_handlePageMove2}
+              className='join-button'
+            >
               <div className='button-text1'>이메일을 잊으셨나요?</div>
               <div className='button-text2'>&nbsp;이메일찾기</div>
-            </a>
+            </div>
           </EmailBox>
         </Wrap>
       </Container>
@@ -161,7 +167,7 @@ const FindPw = () => {
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  height: 100vh;
+  height: 100%;
 `
 
 const Wrap = styled.div`
@@ -279,6 +285,7 @@ const SelectBox = styled.div`
   display: flex;
   align-items: center;
   // border: 1px solid #A9A9A9;
+  font-size: 14px;
 
   select {
     background: #f5f5f5;

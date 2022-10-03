@@ -433,6 +433,10 @@ const Search = styled.div`
       // height: 60%;
       background: #0064ff;
       color: #f5f5f5;
+
+      @media screen and (max-width: 430px) {
+        width: 20%;
+      }
   }
 
   // @media (max-width: 500px) {
@@ -541,6 +545,7 @@ const Border = styled.div`
   margin: 20px 0;
   border: 1px solid #d8d8d8;
   // border-radius: 10px;
+  height: 80px;
 
   .test {
     display: block;
