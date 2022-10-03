@@ -44,7 +44,7 @@ const Withdrawal = () => {
     };
     const response = await _axios(url, params);
     console.log(response);
-    if(response.status === 200){
+    if(response.result === true){
       toast.success('비밀번호 인증 성공');
       setState({
         ...state,

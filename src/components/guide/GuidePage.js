@@ -2,7 +2,7 @@ import React from 'react';
 //css, img
 import styled from 'styled-components';
 import rental from '../../images/rental.png';
-import basket from '../../images/basket.png';
+// import basket from '../../images/basket.png';
 import arduino from '../../images/arduino.png';
 //개발자
 import titleTab from '../../utils/TitleTab';
@@ -31,7 +31,7 @@ const GuidePage = () => {
                 </div>
                 <div className='first-page'>
                   <div className='img1'>
-                    <img src={basket} alt="profile" className='rental'/>
+                    {/* <img src={basket} alt="profile" className='rental'/> */}
                   </div>
                   <div className='text1'>
                     2. 양식에 맞게 정보를 입력하고 부품의 수량을 조절한 뒤에 신청 버튼을 눌러 주문합니다.
