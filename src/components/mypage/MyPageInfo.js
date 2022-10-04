@@ -1,7 +1,6 @@
 import React, {  useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
 // 개발자
 import Withdrawal from './Withdrawal';
 import _axios from '../../utils/axios';
@@ -9,13 +8,11 @@ import titleTab from '../../utils/TitleTab';
 import TopButton from '../TopButton';
 //css
 import styled from 'styled-components';
-import 'react-toastify/dist/ReactToastify.css';
 
 const MypageInfo = () => {
   const titleUpdator = titleTab("Loading...");
   setTimeout(() => titleUpdator("마이페이지 - COMMA"), 100);
-  const dispatch = useDispatch();
-  const userId = useSelector((store) => store.auth.authStatus.userId);
+  const id = useSelector((store) => store.auth.authStatus.userId);
   const [state, setState] = useState({
     userPw: '',
     email: '',
@@ -32,8 +29,9 @@ const MypageInfo = () => {
   // 회원정보 조회
   useEffect(() => {
     const getData = async () => {
-      const url = `http://210.121.173.182/user/${userId}`;
-      console.log(userId);
+      const url = `http://210.121.173.182/user/${id}`;
+      console.log(url);
+      console.log(id);
       const response = await axios.get(url);
       console.log(response);
       setState({
@@ -52,37 +50,44 @@ const MypageInfo = () => {
     })
   };
 
-  // useEffect(() => {
-  //   const getOrderData = async () => {
-  //     const url = `http://210.121.173.182/user/arduino`;
-  //     const params = {
-  //       id: userId,
-  //     };
-  //     const response = await axios.get(url, params);
-  //     console.log(response);
-  //     if(response.status === 200){
-  //       // setState({
-  //       //   ...state,
-  //       //   orderList: response.data,
-  //       // })
-  //       console.log('회원 주문목록 조회성공');
-  //     } else {
-  //       console.log('회원 주문목록 조회실패');
-  //     }
-  //   }
-  //   getOrderData()
-  // },[]);
+  useEffect(() => {
+    const getOrderData = async () => {
+      const url = `http://210.121.173.182/user/arduino/${id}`;
+      const response = await axios.get(url);
+      console.log(url);
+      console.log(response);
+      if(response.status === 200){
+        setState({
+          ...state,
+          orderList: response.data.result.승인,
+        })
+        console.log('회원 주문목록 조회성공');
+      } else {
+        console.log('회원 주문목록 조회실패');
+      }
+    }
+    getOrderData()
+  },[]);
 
   const Card = () => {
-    console.log(state.orderList);
     return (
       <OrederList>
         {state.orderList.map((item, index) => {
+          const basketList = item.basket;
           return (
             <div className='order-data' key={index}>
-              <div className='date-data'>신청날짜</div>
-              <div className='list-data'>신청목록</div>
-              <div className='approve-data'>승인</div>
+              <div className='date-data'>{item.applicationDate}</div>
+              <div className='list-data'>
+                {basketList.map((row, index2) => {
+                  return(
+                    <div className='row-box' key={index2}>
+                      <div>{row.item}</div>
+                      <div className='count-color'>{row.count}EA</div>
+                    </div>
+                  )
+                })}
+              </div>
+              <div className='approve-data'>{item.status}</div>
             </div>
           )
         })}
@@ -114,7 +119,7 @@ const MypageInfo = () => {
               <div className='list'>신청목록</div>
               <div className='approve'>승인</div>
             </div>
-              {/* <Card/> */}
+              <Card/>
           </div>
           <WithdrawalButton>
             <button
@@ -125,17 +130,6 @@ const MypageInfo = () => {
             </button>
           </WithdrawalButton>
           <TopButton/>
-          <ToastContainer
-            position="top-center"
-            autoClose={1500}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-          />
         </Content>
       )}  
       {state.page && (
@@ -196,18 +190,18 @@ const Content = styled.div`
     align-items: center;  
     border: 1px solid #D8D8D8;
     margin-top: 20px;
-    background: red;
   }
 
   .order-text {
     width: 100%;
     height: 20%;
     display: flex;
+    background: #F2F2F2;
     border-bottom: 1px solid #D8D8D8;
   }
 
   .date {
-    width: 25%;
+    width: 20%;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -218,7 +212,7 @@ const Content = styled.div`
   }
 
   .list {
-    width: 50%;
+    width: 65%;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -228,7 +222,7 @@ const Content = styled.div`
   }
 
   .approve {
-    width: 25%;
+    width: 15%;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -391,10 +385,10 @@ const WithdrawalBox = styled.div`
 `;
 
 const OrederList = styled.div`
-  width: 96%;
+  width: 100%;
   height: 240px;
   display: flex;
-  border: 1px solid #D8D8D8;
+  // border: 1px solid #D8D8D8;
   flex-direction: column; 
   align-items: center;
   // justify-content: center;
@@ -402,43 +396,50 @@ const OrederList = styled.div`
 
   ::-webkit-scrollbar {
     display: none;
-    }
+  }
 
   .order-data {
     width: 100%;
-    height: 80%;
+    height: 50%;
     display: flex;
     border-bottom: 1px solid #D8D8D8;
-
   }
   
   .date-data {
-    width: 25%;
-    height: 20%;
+    width: 20%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     border-right: 1px solid #D8D8D8;
-    border-bottom: 1px solid #D8D8D8;
   }
 
   .list-data {
-    width: 50%;
-    height: 20%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 65%;
+    height: 100%;
     border-right: 1px solid #D8D8D8;
-    border-bottom: 1px solid #D8D8D8;
+    overflow: scroll;
+
+    ::-webkit-scrollbar {
+      display: none;
+      }
   }
 
   .approve-data {
-    width: 25%;
-    height: 20%;
+    width: 15%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-bottom: 1px solid #D8D8D8;
+  }
+
+  .row-box {
+    border-bottom: 1px solid black;
+    padding: 8px;
+  }
+
+  .count-color {
+    color: #0064ff;
   }
 `;
 

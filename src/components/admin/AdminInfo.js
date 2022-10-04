@@ -1,11 +1,10 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
+import EllipsisText from 'react-ellipsis-text';
 // 개발자
 import titleTab from '../../utils/TitleTab';
 //css
 import styled from 'styled-components';
-import 'react-toastify/dist/ReactToastify.css';
 
 const AdminInfo = () => {
   const titleUpdator = titleTab("Loading...");
@@ -104,17 +103,6 @@ const AdminInfo = () => {
           <Card/>
         </div>
       </div>
-      <ToastContainer
-        position="top-center"
-        autoClose={500}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
     </Container>
   )
 }

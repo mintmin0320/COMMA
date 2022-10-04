@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router';
-
+// 개발자
+import titleTab from '../../utils/TitleTab';
+import _axios from '../../utils/axios';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// css, icon, img
 import {
   LogoWrap,
 } from '../../styles/account';
 import theme from '../../styles/theme';
 import styled from 'styled-components';
-
-import titleTab from '../../utils/TitleTab';
-import _axios from '../../utils/axios';
-
-//input & button
 import Logo from '../../images/white_bg.svg';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
 const FindPw = () => {
@@ -175,15 +173,14 @@ const Wrap = styled.div`
   padding: 0 20px;
   object-fit: contain;
   background-color: ${theme.colors.white};
-  box-shadow: 2px 4px 30px rgba(0, 0, 0, 0.25);
-  border-radius: 20px 20px 20px 20px;
+  // box-shadow: 2px 4px 30px rgba(0, 0, 0, 0.25);
+  // border-radius: 20px 20px 20px 20px;
   
   @media ${({ theme }) => theme.device.mobile} {
     width: 100%;
     padding-top: 0px;
     padding-bottom: 30px;
   }
-
   @media ${({ theme }) => theme.device.desktop} {
     width: 500px;
     margin: 30px 0 80px;

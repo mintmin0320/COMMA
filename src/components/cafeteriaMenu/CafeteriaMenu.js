@@ -1,12 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 // 개발자
-//input & button
-import Button from '../../components/common/Button';
 //css
 import styled from 'styled-components';
-//input & button
-//icon
 
 const CafeteriaMenu = () => {
   const dt = new Date();
@@ -17,12 +13,14 @@ const CafeteriaMenu = () => {
 
   let arrDayStr = ['일','월','화','수','목','금','토'];
   let str = (dt.getMonth()+1)+'월 '+dt.getDate()+'일 ('+arrDayStr[dt.getDay()]+')';
-  let date = (dt.getFullYear())+'-'+(month)+'-'+(day)+'T00:00:00';
+  let todayDate = (dt.getFullYear())+'-'+(month)+'-'+(day);
+
+  let koreanData = '';
+  let goodData = '';
 
   const [state, setState] = useState({
-    korean: '',
-    good: '',
-    result: false,    // 서버와의 axios 요청 결과
+    koreanFood: '',
+    goodFood: '',
   });
 
   // useEffect(() => {
@@ -30,35 +28,31 @@ const CafeteriaMenu = () => {
   //     const url = 'http://210.121.173.182/cafeteriaMenu';
   //     const response = await axios.get(url);
   //     console.log(response);
-  //     console.log(response.data);
   //     if(response.status === 200){
-  //       for(let i = 0; i < response.data.length; i++){
-  //         if(response.data[i].day === date){
-  //           setState({
-  //             ...state,
-  //             korean: response.data[i].koreanFood,
-  //             good: response.data[i].goodFood,
-  //           });
-  //           console.log('식단 조회 성공');
-  //           break;
+  //       for(let i = 0; i < response.data.result.length; i++){
+  //         if(response.data.result[i].date === todayDate){
+  //           if(response.data.result[i].category === '한식'){
+  //             koreanData = response.data.result[i].food;
+  //             console.log('한식 조회 성공');
+  //           }
+  //           else if(response.data.result[i].category === '일품'){
+  //             goodData = response.data.result[i].food;
+  //             console.log('일품 조회 성공');
+  //           }
   //         }
-  //         if(response.data[i].day !== date){
-  //           setState({
-  //             ...state,
-  //             korean: '오늘은 휴일입니다.',
-  //             good: '오늘은 휴일입니다.',
-  //           });
-  //         console.log('오늘은 휴일입니다.');
-  //         }
+  //         setState({
+  //           ...state,
+  //           koreanFood: koreanData,
+  //           goodFood: goodData,
+  //         });
+  //         console.log('식단 조회 성공');
   //       }
   //     }else{    
   //       console.log('식단 조회 실패입니다');
   //     }
-  //     console.log(state);
   //   }
   //     Refresh();
   // },[]);
-
 
   return (
     <Container>
@@ -68,10 +62,10 @@ const CafeteriaMenu = () => {
         </div>
         <div className='food-box'>
           <div className='korean-food'>
-            {state.korean}
+            {state.koreanFood === '' ? '오늘은 휴일입니다.' : state.koreanFood}
           </div>
           <div className='good-food'>
-            {state.good}
+            {state.goodFood === '' ? '오늘은 휴일입니다.' : state.goodFood}
           </div>
         </div>
       </MenuBox>
@@ -123,6 +117,7 @@ const MenuBox = styled.div`
     align-items: center;
     justify-content: center;
     border-bottom: 2px solid #D8D8D8;
+    font-size: 13px;
   }
   
   .good-food {
@@ -131,6 +126,7 @@ const MenuBox = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 13px;
   }
 `;
 

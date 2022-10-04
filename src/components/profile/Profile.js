@@ -4,9 +4,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 // 개발자
 import {  logoutRequest } from '../../redux/actions/auth';
-// import EllipsisText from 'react-ellipsis-text';
 import EllipsisText from 'react-ellipsis-text';
-
 //npm install --save react-ellipsis-text    
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 //css

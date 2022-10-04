@@ -16,7 +16,6 @@ import {
   LogoWrap,
 } from '../../styles/account';
 import styled from 'styled-components';
-
 //icon
 import Logo from '../../images/white_bg.svg';
 import banner from '../../images/banner.png';
@@ -206,10 +205,18 @@ const LoginPage = () => {
 };
 
 const LoginBox = styled.div`
+  height: 450px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 0 20px 0;
+  justify-content: center;
+  border-radius: 10px 10px 10px 10px;
+  border: 2px solid #D8D8D8;
+  // background: pink;
+
+  @media screen and (max-width: 430px) {
+    border: 0px solid #D8D8D8;
+  }
 
   .login-button {
     width: 80%;
@@ -309,11 +316,12 @@ const IdBox = styled.div`
 
     @media screen and (max-width: 430px) {
       width: 45%;
+      font-size: 13px;
     }
   }
 
   input::placeholder{
-    font-size: 15px;
+    font-size: 17px;
     color:rightgray;
   }
   margin: 0 0 10px 0;
@@ -334,13 +342,17 @@ const PwBox = styled.div`
   border-radius: 10px 10px 10px 10px;
   background: #f5f5f5;
   input {
-    font-size: 18px;
+    font-size: 24px;
     background: #f5f5f5;
     border-radius: 0 10px 10px 0;
     width: 85%;
+
+    @media screen and (max-width: 430px) {
+      font-size: 15px;
+    }
   }
   input::placeholder{
-    font-size: 15px;
+    font-size: 17px;
     color:rightgray;
   }
 

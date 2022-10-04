@@ -1,10 +1,12 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
 // 개발자
 import titleTab from '../../utils/TitleTab';
+import _axios from '../../utils/axios';
 //css
 import styled from 'styled-components';
-//icon
+import 'react-toastify/dist/ReactToastify.css';
 
 const AdminOrderList = () => {
   const titleUpdator = titleTab("Loading...");
@@ -20,38 +22,108 @@ const AdminOrderList = () => {
     result: false,        // 서버와의 axios 요청 결과   
     message: null,
     orderList: [],
+    approveList: [],
   });
+
+   // 관리자 승인 버튼
+  const _handleApprove = (id, date) => {
+    console.log(id, date);
+    _getApprove(id, date);
+  };
+  
+  const _getApprove = async (id, date) => {
+    const url = '/admin/arduino/user'
+    const params = {
+      userId: id,
+      applicationDate: date,        
+    };
+    const response = await _axios(url, params);
+    console.log(response);
+    if(response.result === 'true'){
+      toast.success('승인!');
+    }
+    else {
+      toast.error('실패');
+    }
+  }
 
   useEffect(() => {
     const _getListData = async () => {
       const url = "http://210.121.173.182/admin/arduino/users";
       const response = await axios.get(url);
-      console.log(response.data.result.신청[0].basket);
-      console.log(JSON.stringify(response.data.result.신청[0].basket));
-      setState({
-        ...state,
-        orderList: response.data.result.신청,
-      });
-      console.log('주문목록 조회성공');
+      console.log(response);
+      if(response.status === 200){
+        setState({
+          ...state,
+          orderList: response.data.result.신청,
+          approveList: response.data.result.승인,
+        });
+        console.log('관리자 주문목록 조회성공');
+      }
     }
     _getListData()
   },[]);
 
   const Card = () => {
-    console.log(state.orderList);
     return(
       <Fragment>
-        {state.orderList.map((user, index) => {
+        {state.orderList.map((row, index) => {
+          const orderBasket = row.basket;
           return (
             <div className='member-box' key={index}>
-              <div className='member-id'>{user.userId}</div>
-              <div className='member-name'>{user.userName}</div>
-              <div className='member-student_id'>{user.userStudentId}</div>
-              <div className='member-professor'>{user.professor}</div>
-              <div className='member-subject'>{user.subjectName}</div>
-              {/* <div className='member-item-list'>{user.basket}</div> */}
-              <div className='member-date'>{user.applicationDate}</div>
-              <div className='member-status'></div>
+              <div className='member-id'>{row.userId}</div>
+              <div className='member-name'>{row.userName}</div>
+              <div className='member-student_id'>{row.userStudentId}</div>
+              <div className='member-professor'>{row.professor}</div>
+              <div className='member-subject'>{row.subjectName}</div>
+              <div className='member-item-list'>
+                {orderBasket.map((row2, index2) => {
+                  return(
+                    <div className='row-box' key={index2}>
+                      <div>{row2.item}</div>
+                      <div className='count-color'>{row2.count}EA</div>
+                    </div>
+                  )
+                })}
+              </div>              
+              <div className='member-date'>{row.applicationDate}</div>
+              <div className='member-status'>
+                <button
+                  className='status-box'
+                  onClick={() => _handleApprove(row.userId, row.applicationDate)}
+                >
+                  승인
+                </button>
+              </div>
+            </div>
+          )
+        })}
+      </Fragment>
+    )
+  };
+
+  const Card2 = () => {
+    return(
+      <Fragment>
+        {state.approveList.map((row, index) => {
+          const approveBasket = row.basket;
+          return (
+            <div className='member-box' key={index}>
+              <div className='approve-name'>{row.userName}</div>
+              <div className='approve-student_id'>{row.userStudentId}</div>
+              <div className='approve-phone'>{row.phone}</div>
+              <div className='approve-date'>{row.applicationDate}</div>
+              <div className='approve-status'>{row.status}</div>
+              <div className='approve-item-list'>
+                {approveBasket.map((row3, index2) => {
+                  return(
+                    <div className='row-box' key={index2}>
+                      <div>{row3.item}</div>
+                      <div className='count-color'>{row3.count}EA</div>
+                    </div>
+                  )
+                })}
+              </div>              
             </div>
           )
         })}
@@ -69,7 +141,7 @@ const AdminOrderList = () => {
             <div className='member-student_id'>학번</div>
             <div className='member-professor'>교수</div>
             <div className='member-subject'>과목</div>
-            <div className='member-item-list'>리스트</div>
+            <div className='member-item-list2'>리스트</div>
             <div className='member-date'>날짜</div>
             <div className='member-status'>상태</div>
           </div>
@@ -77,22 +149,32 @@ const AdminOrderList = () => {
             <Card/>
           </div>
         </div>
-        <div className='list-box'>
+        <div className='list-blank'/>
+        <div className='list-box2'>
           <div className='tag-list'>
-            <div className='member-id'>전화번호</div>
-            <div className='member-name'>이름</div>
-            <div className='member-student_id'>학번</div>
-            {/* <div className='member-professor'>교수</div> */}
-            {/* <div className='member-subject'>과목</div> */}
-            <div className='member-item-list'>리스트</div>
-            <div className='member-date'>날짜</div>
-            <div className='member-status'>상태</div>
+            <div className='approve-name'>이름</div>
+            <div className='approve-student_id'>학번</div>
+            <div className='approve-phone'>전화번호</div>
+            <div className='approve-date'>날짜</div>
+            <div className='approve-status'>상태</div>
+            <div className='approve-item-list2'>리스트</div>
           </div>
           <div className='member-data'>
-            {/* <Card/> */}
+            <Card2/>
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </Container>
   )
 }
@@ -111,8 +193,23 @@ const Container = styled.div`
 
   .list-box {
     width: 100%;
-    height: 50%;
+    height: 44%;
     flex-direction: column;
+    // margin-bottom: 10px;
+  }
+
+  .list-blank {
+    width: 100%;
+    height: 4%;
+    border-right: 1px solid #D8D8D8;
+    border-left: 1px solid #D8D8D8;
+  }
+
+  .list-box2 {
+    width: 100%;
+    height: 44%;
+    flex-direction: column;
+    border-top: 1px solid #D8D8D8;
   }
 
   .tag-list {
@@ -132,6 +229,10 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     border-right: 1px solid #D8D8D8;
+
+    @media screen and (max-width: 430px) {
+      display: none;
+    }
   }
 
   .member-name {
@@ -141,15 +242,23 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     border-right: 1px solid #D8D8D8;
+
+    @media screen and (max-width: 430px) {
+      width: 15%;
+    }
   }
   
   .member-student_id {
-    width: 13%;
+    width: 11%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     border-right: 1px solid #D8D8D8;
+
+    @media screen and (max-width: 430px) {
+      width: 25%;
+    }
   }
 
   .member-professor {
@@ -159,33 +268,79 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     border-right: 1px solid #D8D8D8;
+
+    @media screen and (max-width: 430px) {
+      display: none;
+    }
   }
 
   .member-subject {
-    width: 17%;
+    width: 18%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     border-right: 1px solid #D8D8D8;
+
+    @media screen and (max-width: 430px) {
+      display: none;
+    }
   }
 
   .member-item-list {
-    width: 16%;
+    width: 19%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #D8D8D8;
+    overflow-y: scroll;
+    padding: 8px;
+    // background: red;
+
+    @media screen and (max-width: 430px) {
+      width: 30%;
+    }
+  }
+
+  .member-item-list2 {
+    width: 19%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     border-right: 1px solid #D8D8D8;
+    // background: red;
+
+    @media screen and (max-width: 430px) {
+      width: 30%;
+    }
+  }
+
+  .member-item-list::-webkit-scrollbar{
+    display:none;
+  }
+
+  .row-box {
+    border-bottom: 1px solid black;
+    padding: 8px;
+  }
+
+  .count-color {
+    color: #0064ff;
   }
 
   .member-date {
-    width: 11%;
+    width: 9%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     border-right: 1px solid #D8D8D8;
+
+    @media screen and (max-width: 430px) {
+      width: 15%;
+    }
   }
 
   .member-status {
@@ -195,6 +350,28 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     border-right: 1px solid #D8D8D8;
+
+    @media screen and (max-width: 430px) {
+      width: 15%;
+    }
+  }
+
+  .status-box {
+    width: 80%;
+    height: 50%;
+    // background: red;
+    color: #0064ff;
+    border-radius: 10px 10px 10px 10px;
+
+    @media screen and (max-width: 430px) {
+      width: 75%;
+      height: 30%;
+    }
+  }
+
+  .status-box:hover {
+    background: #0064ff;
+    color: white;
   }
 
   .member-data {
@@ -214,9 +391,80 @@ const Container = styled.div`
 
   .member-box {
     width: 100%;
-    height: 20%;
+    height: 55%;
     display: flex;
     border-bottom: 1px solid #D8D8D8;
+  }
+  
+  .approve-name {
+    width: 10%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #D8D8D8;
+  }
+
+  .approve-student_id {
+    width: 12%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #D8D8D8;
+  }
+  
+  .approve-phone {
+    width: 20%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #D8D8D8;
+  }
+
+  .approve-date {
+    width: 10%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #D8D8D8;
+  }
+
+  .approve-status {
+    width: 7%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #D8D8D8;
+  }
+
+  .approve-item-list {
+    width: 41%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #D8D8D8;
+    overflow-y: scroll;
+    padding: 8px;
+    // background: red;
+  }
+
+  .approve-item-list::-webkit-scrollbar{
+    display:none;
+  }
+
+  .approve-item-list2 {
+    width: 41%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #D8D8D8;
+    // background: red;
   }
 `;
 

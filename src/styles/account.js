@@ -76,11 +76,9 @@ export const Wrap = styled.div`
   height: auto;
   padding: 0 20px;
   object-fit: contain;
-  background-color: ${theme.colors.white};
-  box-shadow: 2px 4px 30px rgba(0, 0, 0, 0.22);
-  border-radius: 20px 20px 20px 20px;
-  
-  
+  // background-color: ${theme.colors.red};
+  // box-shadow: 2px 4px 30px rgba(0, 0, 0, 0.22);
+  // border-radius: 20px 20px 20px 20px;
 
   @media ${({ theme }) => theme.device.mobile} {
     width: 100%;
@@ -89,7 +87,7 @@ export const Wrap = styled.div`
   }
 
   @media ${({ theme }) => theme.device.desktop} {
-    width: 500px;
+    width: 510px;
     height: 680px;
     margin-top: 18px;
     align-items: center;
@@ -116,7 +114,7 @@ export const LogoWrap = styled.div`
   justify-content: center;
   // cursor: pointer;
   img {
-    margin: 20px 0;
+    // margin: 20px 0;
     max-width: 200px;
   }
 `;

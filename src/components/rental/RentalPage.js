@@ -10,8 +10,8 @@ import TopButton from '../TopButton';
 import _axios from '../../utils/axios';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import EllipsisText from "react-ellipsis-text";
-import data from './data';
 import BestList from './BestList';
+import InsufficientPage from './InsufficientPage';
 //css, icon, img
 import styled from 'styled-components';
 import 'react-toastify/dist/ReactToastify.css';
@@ -31,6 +31,7 @@ const RentalPage = () => {
     index: 1,
     modal: false,
     plus: false,
+    insufficient: false,
     itemList: [],
     bestList: [],
     request: '',
@@ -41,7 +42,6 @@ const RentalPage = () => {
     setState({ 
       ...state, 
       [e.target.name]: e.target.value,
-      index: e.target.value,
     });
   }
 
@@ -154,30 +154,44 @@ const RentalPage = () => {
     const url = `http://210.121.173.182/arduino/name/${state.search}`;
     const response = await axios.get(url);
     console.log(response);
-    // if(response.status === 200){
-    // // setState({
-    // //   ...state,
-    // //   itemList: response.data.result,
-    // // });
-    //   console.log('검색 성공');
-    // } else {
-    //   console.log('검색 실패');
-    // }
+    if(response.data.result === false){
+      setState({
+        ...state,
+        insufficient: true,
+      });
+      console.log('없는 상품');
+    } else {
+      setState({
+        ...state,
+        itemList: response.data.result,
+      });
+      console.log('검색 성공');
+    }
   }
 
   // 아두이노 리스트
   useEffect(() => {
     const _getItemData = async () => {
-      if(state.check !== ''){
+      if(state.check !== '' && state.check !== '조명' && state.check !== '트랜지스터'){
         const url = `http://210.121.173.182/arduino/type/${state.check}`;
         const response = await axios.get(url);
         console.log(response);
         setState({
           ...state,
           itemList: response.data.result,
+          search: '',
+          insufficient: false,
+          index: 1,
         });
         console.log(`아두이노 ${state.check} 분류 성공`);
       } 
+      else if(state.check === '조명' || state.check === '트랜지스터') {
+        setState({
+          ...state,
+          insufficient: true,
+          index: 1,
+        });
+      }
       else {
         const url = `http://210.121.173.182/arduino/${state.page - 1}`;
         const response = await axios.get(url);
@@ -185,6 +199,7 @@ const RentalPage = () => {
         setState({
           ...state,
           itemList: response.data.result,
+          insufficient: false,
         });
         console.log(`아두이노 리스트 출력 성공`);
       }
@@ -430,9 +445,13 @@ const RentalPage = () => {
         </div>
       </MobileMoreData>
       <Content>
+      {!state.insufficient ? 
         <div className='data'>
-          <Card/>
+          <Card/>   
         </div>
+        :<div className='insufficient'>
+          <InsufficientPage/>
+        </div>}
       </Content>
       <MoreData>
         <div className='index-box'>
@@ -771,6 +790,12 @@ const Content = styled.div`
 
   .data::-webkit-scrollbar{
     display:none;
+  }
+
+  .insufficient {
+    width: 97%;
+    height: 97%;
+    display: flex;
   }
 
   .data-box {
