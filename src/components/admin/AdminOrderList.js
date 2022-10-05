@@ -39,7 +39,7 @@ const AdminOrderList = () => {
     };
     const response = await _axios(url, params);
     console.log(response);
-    if(response.result === 'true'){
+    if(response.data.result === 'true'){
       toast.success('승인!');
     }
     else {
