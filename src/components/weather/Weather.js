@@ -33,56 +33,56 @@ const Weather = () => {
     message: null,
   });
 
-  // useEffect(() => {
-  //   const _Refresh = async () => {
-  //     const url = 'http://210.121.173.182/weather';
-  //     const response = await axios.get(url);
-  //     console.log(response);
-  //     const weatherData = response.data.result;
-  //     console.log(response.data.result);
-  //     if(response.status === 200){
-  //       for(let i = 0; i < weatherData.length; i++){
-  //         if(response.data.result[i].fcstTime === time && response.data.result[i].category === 'SKY'){            
-  //           skydata = response.data.result[i].fcstValue;
-  //           console.log('하늘상태' + skydata); 
-  //         }
-  //         if(response.data.result[i].fcstTime === time && response.data.result[i].category === 'PTY' && response.data.result[i].fcstValue !== '0'){            
-  //           ptydata = response.data.result[i].fcstValue;
-  //           console.log('강수형태' + ptydata); 
-  //         }
-  //         if(response.data.result[i].fcstTime === time && response.data.result[i].category === 'POP'){            
-  //           popdata = response.data.result[i].fcstValue;
-  //           console.log('강수확률' + popdata); 
-  //         }
-  //         if(response.data.result[i].fcstTime === time && response.data.result[i].category === 'TMP'){            
-  //           tmpdata = response.data.result[i].fcstValue;
-  //           console.log('기온' + tmpdata); 
-  //         }
-  //         if(response.data.result[i].fcstTime === time && response.data.result[i].category === 'REH'){            
-  //           rehdata = response.data.result[i].fcstValue;
-  //           console.log('습도' + rehdata); 
-  //         }
-  //         // if(response.data.result[i].fcstTime === time && response.data.result[i].category === 'PCP'){            
-  //         //   pcpdata = response.data.result[i].fcstValue;
-  //         //   console.log('강수량' + pcpdata); 
-  //         // }
-  //         setState({
-  //           ...state,
-  //           sky: skydata,
-  //           pop: popdata,
-  //           pty: '/' + ptydata,
-  //           tmp: tmpdata,
-  //           reh: rehdata,
-  //           // pcp: pcpdata,
-  //         });
-  //       }
-  //       console.log('날씨 갱신 성공');
-  //     }else{    
-  //       console.log('날씨 갱신 실패');
-  //     }
-  //   }
-  //     _Refresh();
-  // },[]);
+  useEffect(() => {
+    const _Refresh = async () => {
+      const url = 'http://210.121.173.182/weather';
+      const response = await axios.get(url);
+      console.log(response);
+      const weatherData = response.data.result;
+      console.log(response.data.result);
+      if(response.status === 200){
+        for(let i = 0; i < weatherData.length; i++){
+          if(response.data.result[i].fcstTime === time && response.data.result[i].category === 'SKY'){            
+            skydata = response.data.result[i].fcstValue;
+            console.log('하늘상태' + skydata); 
+          }
+          if(response.data.result[i].fcstTime === time && response.data.result[i].category === 'PTY' && response.data.result[i].fcstValue !== '0'){            
+            ptydata = response.data.result[i].fcstValue;
+            console.log('강수형태' + ptydata); 
+          }
+          if(response.data.result[i].fcstTime === time && response.data.result[i].category === 'POP'){            
+            popdata = response.data.result[i].fcstValue;
+            console.log('강수확률' + popdata); 
+          }
+          if(response.data.result[i].fcstTime === time && response.data.result[i].category === 'TMP'){            
+            tmpdata = response.data.result[i].fcstValue;
+            console.log('기온' + tmpdata); 
+          }
+          if(response.data.result[i].fcstTime === time && response.data.result[i].category === 'REH'){            
+            rehdata = response.data.result[i].fcstValue;
+            console.log('습도' + rehdata); 
+          }
+          // if(response.data.result[i].fcstTime === time && response.data.result[i].category === 'PCP'){            
+          //   pcpdata = response.data.result[i].fcstValue;
+          //   console.log('강수량' + pcpdata); 
+          // }
+          setState({
+            ...state,
+            sky: skydata,
+            pop: popdata,
+            pty: '/' + ptydata,
+            tmp: tmpdata,
+            reh: rehdata,
+            // pcp: pcpdata,
+          });
+        }
+        console.log('날씨 갱신 성공');
+      }else{    
+        console.log('날씨 갱신 실패');
+      }
+    }
+      _Refresh();
+  },[]);
 
   const TopWidget = () => {
     let timerId = setTimeout(() => {

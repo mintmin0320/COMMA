@@ -173,8 +173,8 @@ const Wrap = styled.div`
   padding: 0 20px;
   object-fit: contain;
   background-color: ${theme.colors.white};
-  // box-shadow: 2px 4px 30px rgba(0, 0, 0, 0.25);
-  // border-radius: 20px 20px 20px 20px;
+  box-shadow: 2px 4px 30px rgba(0, 0, 0, 0.25);
+  border-radius: 20px 20px 20px 20px;
   
   @media ${({ theme }) => theme.device.mobile} {
     width: 100%;

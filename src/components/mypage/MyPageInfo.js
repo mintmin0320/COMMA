@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from 'react';
+import React, {  Fragment, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 // 개발자
@@ -6,6 +6,7 @@ import Withdrawal from './Withdrawal';
 import _axios from '../../utils/axios';
 import titleTab from '../../utils/TitleTab';
 import TopButton from '../TopButton';
+import Approval from './Approval';
 //css
 import styled from 'styled-components';
 
@@ -24,6 +25,7 @@ const MypageInfo = () => {
     page: false,
     result:  false,        
     message: null,
+    application: true,
   });
     
   // 회원정보 조회
@@ -43,6 +45,20 @@ const MypageInfo = () => {
     getData()
   },[]);
 
+  const _handleApplication = () => {
+    setState({
+      ...state,
+      application: true,
+    })
+  };
+
+  const _handleApplication2 = () => {
+    setState({
+      ...state,
+      application: false,
+    })
+  };
+
   const _handleWithdrawal = () => {
     setState({
       ...state,
@@ -59,7 +75,7 @@ const MypageInfo = () => {
       if(response.status === 200){
         setState({
           ...state,
-          orderList: response.data.result.승인,
+          orderList: response.data.result.신청,
         })
         console.log('회원 주문목록 조회성공');
       } else {
@@ -113,13 +129,48 @@ const MypageInfo = () => {
             </div>
           </MyInfo>
           <div className='title2'>신청목록</div>
+            <div className='change-status'>
+              {state.application 
+                ?<Fragment>
+                <div
+                    className='change-text'
+                    onClick={_handleApplication}
+                  >
+                    신청
+                  </div>
+                  &nbsp;&nbsp;
+                  <div
+                    className='change-text2' 
+                    onClick={_handleApplication2}
+                  >
+                    승인
+                  </div>
+                </Fragment>
+                :
+                <Fragment>
+                <div
+                    className='change-text2'
+                    onClick={_handleApplication}
+                  >
+                    신청
+                  </div>
+                  &nbsp;&nbsp;
+                  <div
+                    className='change-text'
+                    onClick={_handleApplication2}
+                  >
+                    승인
+                  </div>
+                </Fragment>
+              }
+            </div>
           <div className='order-box'>
             <div className='order-text'>
               <div className='date'>신청날짜</div>
               <div className='list'>신청목록</div>
               <div className='approve'>승인</div>
             </div>
-              <Card/>
+            {!state.application ? <Approval/> : <Card/>}
           </div>
           <WithdrawalButton>
             <button
@@ -143,7 +194,7 @@ const MypageInfo = () => {
 
 const Container = styled.div`
   width: 85%;
-  height: 100%; 
+  height: 55vmax; 
   display: flex;
   justify-content: center;
   background: white;
@@ -179,17 +230,42 @@ const Content = styled.div`
     display:flex;
     align-items: center;
     font-size: 25px;
-    margin: 5px 0 0 0;
+  }
+
+  .change-status {
+    width: 96%;
+    height: 5%;
+    display:flex;
+    align-items: center;  
+    font-size: 24px;
+    justify-content: center;
+    // border: 1px solid #D8D8D8;
+    // background: red;
+  }
+
+  .change-text {
+    display:flex;
+    align-items: center;  
+    font-size: 22px;
+    cursor: pointer;
+  }
+
+  .change-text2 {
+    display:flex;
+    align-items: center;  
+    font-size: 22px;
+    cursor: pointer;
+    color: gray;
   }
 
   .order-box {
     width: 96%;
-    height: 200px;
+    height: 300px;
     display:flex;
     flex-direction: column;  
     align-items: center;  
     border: 1px solid #D8D8D8;
-    margin-top: 20px;
+    // margin-top: 20px;
   }
 
   .order-text {
@@ -212,7 +288,7 @@ const Content = styled.div`
   }
 
   .list {
-    width: 65%;
+    width: 70%;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -222,7 +298,7 @@ const Content = styled.div`
   }
 
   .approve {
-    width: 15%;
+    width: 10%;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -415,7 +491,7 @@ const OrederList = styled.div`
   }
 
   .list-data {
-    width: 65%;
+    width: 70%;
     height: 100%;
     border-right: 1px solid #D8D8D8;
     overflow: scroll;
@@ -426,7 +502,7 @@ const OrederList = styled.div`
   }
 
   .approve-data {
-    width: 15%;
+    width: 10%;
     height: 100%;
     display: flex;
     justify-content: center;

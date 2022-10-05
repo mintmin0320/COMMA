@@ -1,9 +1,9 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 // 개발자
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { toast, ToastContainer } from 'react-toastify';
 import EllipsisText from "react-ellipsis-text";
 import _axios from '../../utils/axios';
 //css, icon, img

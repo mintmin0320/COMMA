@@ -33,7 +33,7 @@ const MypageHome = () => {
 
 const Container = styled.div`  
   background: #F5F5F5;
-  height: 100vh;
+  // height: 40%;
   
   .container-box {
     display: flex;

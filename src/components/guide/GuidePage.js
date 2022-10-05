@@ -2,8 +2,11 @@ import React from 'react';
 //css, img
 import styled from 'styled-components';
 import rental from '../../images/rental.png';
-// import basket from '../../images/basket.png';
+import basketpage from '../../images/basketpage.png';
 import arduino from '../../images/arduino.png';
+import mail1 from '../../images/mail1.png';
+import mail2 from '../../images/mail2.png';
+import mypage from '../../images/mypage.png';
 //개발자
 import titleTab from '../../utils/TitleTab';
 
@@ -31,7 +34,7 @@ const GuidePage = () => {
                 </div>
                 <div className='first-page'>
                   <div className='img1'>
-                    {/* <img src={basket} alt="profile" className='rental'/> */}
+                    <img src={basketpage} alt="profile" className='rental'/>
                   </div>
                   <div className='text1'>
                     2. 양식에 맞게 정보를 입력하고 부품의 수량을 조절한 뒤에 신청 버튼을 눌러 주문합니다.
@@ -39,21 +42,21 @@ const GuidePage = () => {
                 </div>
                 <div className='first-page'>
                   <div className='img1'>
-                    <img src={rental} alt="profile" className='rental'/>
+                    <img src={mail1} alt="profile" className='rental'/>
                   </div>
-                  <div className='text1'>3. 대여페이지에서 원는 상품을 장바구니에 담습니다.</div>
+                  <div className='text1'>3. 신청이 완료 되면 이메일로 신청확인 메일이 도칙힙니다.</div>
                 </div>
                 <div className='first-page'>
                   <div className='img1'>
-                    <img src={rental} alt="profile" className='rental'/>
+                    <img src={mypage} alt="profile" className='rental'/>
                   </div>
-                  <div className='text1'>4. 대여페이지에서 원는 상품을 장바구니에 담습니다.</div>
+                  <div className='text1'>4. 신청 부품이 승인되면 마이페이지에서 승인 여부를 확인할 수 있습니다.</div>
                 </div>
                 <div className='first-page'>
                   <div className='img1'>
-                    <img src={rental} alt="profile" className='rental'/>
+                    <img src={mail2} alt="profile" className='rental'/>
                   </div>
-                  <div className='text1'>5. 대여페이지에서 원는 상품을 장바구니에 담습니다.</div>
+                  <div className='text1'>5. 마이페이지가 외에 이메일로도 신청 승인 메세지를 확인할 수  있습니다.</div>
                 </div>
               </div>
             </div>

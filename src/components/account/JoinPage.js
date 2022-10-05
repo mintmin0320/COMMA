@@ -1,21 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-
+import axios from 'axios';
 // 개발자
 import _axios from '../../utils/axios';
 import titleTab from '../../utils/TitleTab';
-// import Alert from '../../components/common/modal/Alert';
-
-//css
+import { toast, ToastContainer } from 'react-toastify';
+//css, icon
 import '../../styles/kendo.css';
 import theme from '../../styles/theme';
 import {
   LogoWrap,
 } from '../../styles/account';
 import styled from 'styled-components';
-
-//icon
 import Logo from '../../images/white_bg.svg';
 
 const JoinPage = () => {
@@ -57,6 +54,7 @@ const JoinPage = () => {
     checkPw: '',
     emailCode:'',   // 인증번호
     nickname:'',  
+    nickCheck: false,  
     name: '', // 이름
     phone:'', 
     studentId: '',  // 학번
@@ -97,17 +95,13 @@ const JoinPage = () => {
     e.preventDefault();
     console.log(state.email);
     _postEmail();
-    setState({
-      ...state,
-      emailCodeCheck: true,
-    });
   };
 
   // 저장npm
   const _postEmail = async () => {
     const url = '/mailAuthentication'; 
     const params = {
-      address: state.userId + state.selected,
+      id: state.userId + state.selected,
     };
     console.log(params);
     const response = await _axios(url, params);
@@ -117,12 +111,12 @@ const JoinPage = () => {
         ...state,
         result: response.result,
         message: response.message,
-        codeCheck: true,
+        emailCodeCheck: true,
         failureCode:false,
         checkButton:false,
         disInput: true,
       });
-      alert('발급 되었습니다.');
+      console.log('발급 되었습니다.');
     }else{
       setState({
         ...state,
@@ -147,10 +141,6 @@ const JoinPage = () => {
     console.log(state.count);
     e.preventDefault();
     _codeCheck();
-    setState({
-      ...state,
-      emailCheck: true,
-    });
   };
   
   // 저장
@@ -170,7 +160,7 @@ const JoinPage = () => {
         result: response.result,
         message: response.message,
       });
-      alert('인증 성공!');
+      console.log('인증 성공!');
     }else{
       if(state.count < 4 ){
         setState({
@@ -181,7 +171,7 @@ const JoinPage = () => {
           disInput: false,
           count: state.count + 1,
       });
-      alert('잘못된 코드입니다.');
+      console.log('잘못된 코드입니다.');
       }else {
         setState({
           ...state,
@@ -190,10 +180,32 @@ const JoinPage = () => {
           codeCheck: false,
           count: state.count = 0,
         });
-      alert('횟수 초과입니다.');
+        console.log('횟수 초과입니다.');
         }
     }
   };
+
+    // 닉네임 중복 체크 
+    const _handleNameCheck = (e) => {
+      e.preventDefault();
+      _getName();
+    }
+  
+    // 저장
+    const _getName = async () => {
+      const url = `http://210.121.173.182/namecheck/${state.nickname}`;
+      const response = await axios.get(url);
+      console.log(response);
+      if(response.data.result){
+        setState({
+          ...state,
+          nickCheck: true,
+        });
+        toast.success('사용 가능한 아이디입니다!');
+      }else{
+        toast.error('사용 불가능한 아이디입니다!');
+      }
+    };
   
   // 입력값이 변할 때
   const _handleInputChange = (e) => {
@@ -351,18 +363,13 @@ const JoinPage = () => {
   const _handleSubmit = (e) => {
     e.preventDefault();
     _setData();
-    setState({
-      ...state,
-      success: true,
-    });
   }
 
   // 저장
   const _setData = async () => {
-    console.log(state);
     const url = '/signUp';
     const params = {
-      id: state.email + state.selected,
+      id: state.userId + state.selected,
       password: state.userPw,
       nickname: state.nickname,
       phone: state.phone,
@@ -376,7 +383,7 @@ const JoinPage = () => {
     console.log(params);
     const response = await _axios(url, params);
     console.log(response);
-    if(response.result){
+    if(response.r.data.esult){
       setState({
         ...state,
         result: response.result,
@@ -385,7 +392,7 @@ const JoinPage = () => {
         success: true,
         visibleDialog: true,
       });
-      alert('회원가입 성공!');
+      toast.success('회원가입 성공!');
       
     }else{
       setState({
@@ -394,7 +401,7 @@ const JoinPage = () => {
         result: response.result,
         message: response.message,
       });
-      alert('회원가입 실패!');
+      toast.error('회원가입 실패!');
     }
   };
   // 회원가입 성공 시 페이지 이동
@@ -775,7 +782,7 @@ const JoinPage = () => {
               <TitleBox>
                 <button
                   className='reset-button'
-                  // onClick={_handleReRequest}
+                  onClick={_handleNameCheck}
                 >
                   중복검사
                 </button>
@@ -852,7 +859,7 @@ const JoinPage = () => {
           {state.emailCheck && !state.success && (
             <button
               className='login-button'
-              disabled={!state.validationPw || !state.validationCheckPw || !state.validationNickname || !state.validationName || !state.validationPhone || !state.validationStudent}
+              disabled={!state.validationPw || !state.validationCheckPw || !state.validationNickname || !state.validationName || !state.validationPhone || !state.validationStudent || !state.nickCheck}
             >
               <div className='login-text'>회원가입</div>
             </button>
@@ -868,6 +875,17 @@ const JoinPage = () => {
         </JoinBox>
       </form>
     </Wrap>
+    <ToastContainer
+      position="top-center"
+      autoClose={700}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      />
   </Container>
 );
 };

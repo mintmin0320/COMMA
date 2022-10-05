@@ -54,7 +54,7 @@ export default function auth(state = initialState, action) {
       };
 
     case types.AUTH_LOGIN_FAILURE:
-      console.log('실패');
+      alert('로그인 실패!');
       return {
         ...state,
         login: {

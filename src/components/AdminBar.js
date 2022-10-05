@@ -1,20 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import React, { useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import {  logoutRequest } from '../redux/actions/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutRequest } from '../redux/actions/auth';
+import EllipsisText from 'react-ellipsis-text';
 // 개발자
 //css
 import styled from 'styled-components';
 //icon
-import Logo from '../images/white_bg.svg';
-import banner from '../images/banner.png';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faArrowRightFromBracket, faCartShopping, faGear } from "@fortawesome/free-solid-svg-icons";
 
 const AdminBar = () => {
   const dispatch = useDispatch();
+  const userId = useSelector((store) => store.auth.authStatus.userId);
+  const [state, setState] = useState({
+    nickname:'',
+  });
   
   // 로그아웃 버튼 클릭
   const _handleLogout = (e) => {
@@ -22,12 +22,29 @@ const AdminBar = () => {
     dispatch(logoutRequest());
   };
 
+  useEffect(() => {
+    const _getProfileData = async () => {
+      const url = `http://210.121.173.182/user/profile/${userId}`;
+      const response = await axios.get(url);
+      setState({
+        ...state,
+        nickname: response.data.user,
+      })
+      console.log('프로필 조회성공');
+    }
+    _getProfileData()
+  },[]);
+
   return (
     <Container>
         <div className='photo-box'>
           <div className='right-profile'>
             <div className='top-profile'>
-              <div className='nick-box'>하민님</div>
+              <div className='nick-box'>
+                <EllipsisText
+                  text={state.nickname}
+                  length={5} />
+              </div>
               <button
                 className='logout-box'
                 onClick={_handleLogout}

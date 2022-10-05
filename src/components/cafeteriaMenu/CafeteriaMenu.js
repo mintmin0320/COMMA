@@ -23,36 +23,36 @@ const CafeteriaMenu = () => {
     goodFood: '',
   });
 
-  // useEffect(() => {
-  //   const Refresh = async () => {
-  //     const url = 'http://210.121.173.182/cafeteriaMenu';
-  //     const response = await axios.get(url);
-  //     console.log(response);
-  //     if(response.status === 200){
-  //       for(let i = 0; i < response.data.result.length; i++){
-  //         if(response.data.result[i].date === todayDate){
-  //           if(response.data.result[i].category === '한식'){
-  //             koreanData = response.data.result[i].food;
-  //             console.log('한식 조회 성공');
-  //           }
-  //           else if(response.data.result[i].category === '일품'){
-  //             goodData = response.data.result[i].food;
-  //             console.log('일품 조회 성공');
-  //           }
-  //         }
-  //         setState({
-  //           ...state,
-  //           koreanFood: koreanData,
-  //           goodFood: goodData,
-  //         });
-  //         console.log('식단 조회 성공');
-  //       }
-  //     }else{    
-  //       console.log('식단 조회 실패입니다');
-  //     }
-  //   }
-  //     Refresh();
-  // },[]);
+  useEffect(() => {
+    const Refresh = async () => {
+      const url = 'http://210.121.173.182/cafeteriaMenu';
+      const response = await axios.get(url);
+      console.log(response);
+      if(response.status === 200){
+        for(let i = 0; i < response.data.result.length; i++){
+          if(response.data.result[i].date === todayDate){
+            if(response.data.result[i].category === '한식'){
+              koreanData = response.data.result[i].food;
+              console.log('한식 조회 성공');
+            }
+            else if(response.data.result[i].category === '일품'){
+              goodData = response.data.result[i].food;
+              console.log('일품 조회 성공');
+            }
+          }
+          setState({
+            ...state,
+            koreanFood: koreanData,
+            goodFood: goodData,
+          });
+          console.log('식단 조회 성공');
+        }
+      }else{    
+        console.log('식단 조회 실패입니다');
+      }
+    }
+      Refresh();
+  },[]);
 
   return (
     <Container>
@@ -101,6 +101,7 @@ const MenuBox = styled.div`
     display: flex;
     justify-content: center;
   }
+
   .food-box {
     width: 100%;
     height: 80%;
@@ -109,6 +110,7 @@ const MenuBox = styled.div`
     // border-left: 1px solid #D8D8D8;
     // border-right: 1px solid #D8D8D8;
     border-bottom: 2px solid #D8D8D8;
+    padding: 4px;
   }
   .korean-food {
     width: 100%;

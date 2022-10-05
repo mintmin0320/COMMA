@@ -72,7 +72,6 @@ const LoginPage = () => {
   //엔터 키
   const _handleEnterPress = (e) => {
     e.preventDefault();
-
     if (e.charCode === 13) {
       dispatch(loginRequest(state.userId + state.selected, state.userPw));
     }
