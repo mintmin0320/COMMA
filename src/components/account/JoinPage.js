@@ -1017,7 +1017,7 @@ const JoinBox = styled.div`
 
 const SelectBox = styled.div`
   height: 60px;
-  width: 40%;
+  width: 30%;
   background: #F5F5F5;
   display: flex;
   align-items: center;
@@ -1124,7 +1124,7 @@ const IdBox = styled.div`
   input {
     font-size: 16px;
     background: #f5f5f5;
-    width: 50%;
+    width: 33%;
   }
 
   margin: 0 0 10px 0;

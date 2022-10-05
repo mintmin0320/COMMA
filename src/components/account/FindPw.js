@@ -257,7 +257,7 @@ const IdBox = styled.div`
   input {
     font-size: 16px;
     background: #f5f5f5;
-    width: 45%;
+    width: 40%;
   }
 
   input::placeholder{
@@ -278,7 +278,7 @@ const IdBox = styled.div`
 
 const SelectBox = styled.div`
   height: 60px;
-  width: 40%;
+  width: 33%;
   display: flex;
   align-items: center;
   // border: 1px solid #A9A9A9;
