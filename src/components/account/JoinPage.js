@@ -383,7 +383,7 @@ const JoinPage = () => {
     console.log(params);
     const response = await _axios(url, params);
     console.log(response);
-    if(response.r.data.esult){
+    // if(response.result){
       setState({
         ...state,
         result: response.result,
@@ -392,17 +392,17 @@ const JoinPage = () => {
         success: true,
         visibleDialog: true,
       });
-      toast.success('회원가입 성공!');
+      console.log('회원가입 성공!');
       
-    }else{
-      setState({
-        ...state,
-        success:false,
-        result: response.result,
-        message: response.message,
-      });
-      toast.error('회원가입 실패!');
-    }
+    // }else{
+    //   setState({
+    //     ...state,
+    //     success:false,
+    //     result: response.result,
+    //     message: response.message,
+    //   });
+    //   toast.error('회원가입 실패!');
+    // }
   };
   // 회원가입 성공 시 페이지 이동
   const _signUpSuccess = (e) => {

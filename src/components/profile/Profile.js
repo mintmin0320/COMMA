@@ -5,12 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 // 개발자
 import {  logoutRequest } from '../../redux/actions/auth';
 import EllipsisText from 'react-ellipsis-text';
+import ProfileFile from './ProfileFile';
 //npm install --save react-ellipsis-text    
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 //css
 import styled from 'styled-components';
 //icon
-import banner from '../../images/white_bg.svg';
 import { faUser, faCartShopping, faGear } from "@fortawesome/free-solid-svg-icons";
 
 const Profile = () => {
@@ -45,7 +45,7 @@ const Profile = () => {
         <div className='photo-box'>
           <div className='right-profile'>
             <div className='top-profile'>
-              <img src={banner} alt="logo" className='profile'/>
+              <ProfileFile/>
               <div className='nick-box'>
                 <EllipsisText
                   text={state.nickname}
@@ -184,14 +184,6 @@ const ProfileBox = styled.div`
     justify-content: center;
     align-items: center;
     font-size: 14px;
-  }
-
-  .profile {
-    width: 50%;
-    height: 50%;
-    border: 1px solid #D8D8D8;
-    border-radius: 50%;
-    background: white;
   }
 
   .button-box {

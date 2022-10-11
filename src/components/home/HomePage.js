@@ -118,13 +118,14 @@ const PageBtn = styled.div`
 
 // 공지사항 전체
 const Container = styled.div`
-  // margin: 10px;
+  margin: 20px;
   // padding-top: 80px;
   // padding-left: 10%;
   // text-align: center;
   width: 85%;
+  height: 70vmax; 
   padding: 10px;
-  background: white;
+  background: white
 `
 
 // 공지사항 목록의 내용

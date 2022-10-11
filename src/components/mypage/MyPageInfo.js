@@ -127,6 +127,16 @@ const MypageInfo = () => {
                 <div className='nick'>{state.nickname}</div>
               </div>
             </div>
+            <div className='info'>
+              <div className='info-text'>
+                <div className='info-id'>아이디</div>
+                <div className='info-nick'>닉네임</div>
+              </div>
+              <div className='info-data'>
+                <div className='id'>{state.userId}</div>
+                <div className='nick'>{state.nickname}</div>
+              </div>
+            </div>
           </MyInfo>
           <div className='title2'>신청목록</div>
             <div className='change-status'>
@@ -168,7 +178,7 @@ const MypageInfo = () => {
             <div className='order-text'>
               <div className='date'>신청날짜</div>
               <div className='list'>신청목록</div>
-              <div className='approve'>승인</div>
+              <div className='approve'>상태</div>
             </div>
             {!state.application ? <Approval/> : <Card/>}
           </div>
@@ -314,7 +324,7 @@ const MyInfo = styled.div`
   height: 180px;
   margin: 20px 0 0 0;
   display: flex;
-  // justify-content: space-around;
+  justify-content: space-around;
   // flex-direction: column; 
   // align-items: center;
 
@@ -322,8 +332,8 @@ const MyInfo = styled.div`
     width: 48%;
     height: 100%;
     display: flex;
+    background: red;
     
-
     @media screen and (max-width: 430px) {
       width: 98%;
       font-size: 15px;

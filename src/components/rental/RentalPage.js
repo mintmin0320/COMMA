@@ -9,13 +9,12 @@ import { toast, ToastContainer } from 'react-toastify';
 import TopButton from '../TopButton';
 import _axios from '../../utils/axios';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import EllipsisText from "react-ellipsis-text";
 import BestList from './BestList';
 import InsufficientPage from './InsufficientPage';
 //css, icon, img
 import styled from 'styled-components';
 import 'react-toastify/dist/ReactToastify.css';
-import { faMagnifyingGlass, faCartArrowDown, faMedal, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faMedal } from "@fortawesome/free-solid-svg-icons";
 import Plus from '../../images/circle-plus-solid.svg';
 
 const RentalPage = () => {
@@ -929,7 +928,11 @@ const MoreData = styled.div`
   .button-css {
     width: 20%;
     height: 80%;
-    // background: pink;
+    
+    :hover {
+      background: #0064ff;
+      color: white;
+    }
   }
 
   .input-css {

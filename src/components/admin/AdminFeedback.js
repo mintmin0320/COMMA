@@ -51,14 +51,16 @@ const AdminFeedback = () => {
     return (
       <div className='question-tag'>
         {state.opinion.map((data, idx) => {
-          return (
-            <div className='question2' key={idx}>
-              <EllipsisText
-                text={data}
-                length={50}
-              />
-            </div>
-          )
+          if(data !== '') {
+            return (
+              <div className='question2' key={idx}>
+                <EllipsisText
+                  text={data}
+                  length={100}
+                />
+              </div>
+            )
+          }
         })}
       </div>
     );
@@ -209,7 +211,7 @@ const Container = styled.div`
 
   .question2 {
     width: 100%;
-    height: 30%;
+    height: 20%;
     border-bottom: 1px solid #D8D8D8;
     padding: 10px;
   }

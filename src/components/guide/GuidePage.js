@@ -44,7 +44,7 @@ const GuidePage = () => {
                   <div className='img1'>
                     <img src={mail1} alt="profile" className='rental'/>
                   </div>
-                  <div className='text1'>3. 신청이 완료 되면 이메일로 신청확인 메일이 도칙힙니다.</div>
+                  <div className='text1'>3. 신청이 완료 되면 이메일로 신청확인 메일이 도칙합니다.</div>
                 </div>
                 <div className='first-page'>
                   <div className='img1'>
