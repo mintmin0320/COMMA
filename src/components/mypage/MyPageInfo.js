@@ -1,6 +1,7 @@
-import React, {  Fragment, useEffect, useState } from 'react';
+import React, {  Fragment, useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import styled from 'styled-components';
 // 개발자
 import Withdrawal from './Withdrawal';
 import _axios from '../../utils/axios';
@@ -8,11 +9,13 @@ import titleTab from '../../utils/TitleTab';
 import TopButton from '../TopButton';
 import Approval from './Approval';
 //css
-import styled from 'styled-components';
+import logo from '../../images/white_bg.svg';
 
 const MypageInfo = () => {
   const titleUpdator = titleTab("Loading...");
   setTimeout(() => titleUpdator("마이페이지 - COMMA"), 100);
+  const [imgBase64, setImgBase64] = useState(logo);
+  const [imgFile, setImgFile] = useState(null);
   const id = useSelector((store) => store.auth.authStatus.userId);
   const [state, setState] = useState({
     userPw: '',
@@ -26,24 +29,25 @@ const MypageInfo = () => {
     result:  false,        
     message: null,
     application: true,
+    img: '',
   });
     
   // 회원정보 조회
-  useEffect(() => {
-    const getData = async () => {
-      const url = `http://210.121.173.182/user/${id}`;
-      console.log(url);
-      console.log(id);
-      const response = await axios.get(url);
-      console.log(response);
-      setState({
-        ...state,
-        userId: response.data.user.user_id,
-        nickname: response.data.user.user_nickname,
-      })
-    }
-    getData()
-  },[]);
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     const url = `http://210.121.173.182/user/${id}`;
+  //     console.log(url);
+  //     console.log(id);
+  //     const response = await axios.get(url);
+  //     console.log(response);
+  //     setState({
+  //       ...state,
+  //       userId: response.data.user.user_id,
+  //       nickname: response.data.user.user_nickname,
+  //     })
+  //   }
+  //   getData()
+  // },[]);
 
   const _handleApplication = () => {
     setState({
@@ -66,24 +70,24 @@ const MypageInfo = () => {
     })
   };
 
-  useEffect(() => {
-    const getOrderData = async () => {
-      const url = `http://210.121.173.182/user/arduino/${id}`;
-      const response = await axios.get(url);
-      console.log(url);
-      console.log(response);
-      if(response.status === 200){
-        setState({
-          ...state,
-          orderList: response.data.result.신청,
-        })
-        console.log('회원 주문목록 조회성공');
-      } else {
-        console.log('회원 주문목록 조회실패');
-      }
-    }
-    getOrderData()
-  },[]);
+  // useEffect(() => {
+  //   const getOrderData = async () => {
+  //     const url = `http://210.121.173.182/user/arduino/${id}`;
+  //     const response = await axios.get(url);
+  //     console.log(url);
+  //     console.log(response);
+  //     if(response.status === 200){
+  //       setState({
+  //         ...state,
+  //         orderList: response.data.result.신청,
+  //       })
+  //       console.log('회원 주문목록 조회성공');
+  //     } else {
+  //       console.log('회원 주문목록 조회실패');
+  //     }
+  //   }
+  //   getOrderData()
+  // },[]);
 
   const Card = () => {
     return (
@@ -111,6 +115,58 @@ const MypageInfo = () => {
     );
   };
 
+  const _setImg = async (base64) => {
+    const url = '/user/arduino';
+    const params = {
+      img: base64,
+    };
+    console.log(params);
+    // setState({
+    //   ...state,
+    //   loading: true,
+    // });
+    const response = await _axios(url, params);
+    console.log(response);
+    // if(response.result === true){
+    //   navigate('/mypage');
+    //   setState({
+    //     ...state,
+    //     changePage: true,
+    //     loading: false,
+    //   })
+    // }else{
+    //   setState({
+    //     ...state,
+    //     loading: false,
+    //   })
+    //   toast.error('주문 실패!');
+    // }
+  };
+
+  const _handleChangeFile = (event) => {
+    let reader = new FileReader();
+
+    reader.onloadend = () => {
+      // 2. 읽기가 완료되면 아래코드가 실행됩니다.
+      const base64 = reader.result;
+      if (base64) {
+        console.log(base64);
+        // _setImg(base64);
+        setImgBase64(base64); // 파일 base64 상태 업데이트
+      }
+    }
+    if (event.target.files[0]) {
+      reader.readAsDataURL(event.target.files[0]); // 1. 파일을 읽어 버퍼에 저장합니다.
+      setImgFile(event.target.files[0]); // 파일 상태 업데이트
+    }
+  }
+
+    // 파일 삭제
+    const _handledeleteFileImage = () => {
+      URL.revokeObjectURL(imgBase64);
+      setImgBase64(logo);
+    };
+  
   return(
     <Container>
       {!state.page && (
@@ -127,14 +183,34 @@ const MypageInfo = () => {
                 <div className='nick'>{state.nickname}</div>
               </div>
             </div>
-            <div className='info'>
-              <div className='info-text'>
-                <div className='info-id'>아이디</div>
-                <div className='info-nick'>닉네임</div>
-              </div>
-              <div className='info-data'>
-                <div className='id'>{state.userId}</div>
-                <div className='nick'>{state.nickname}</div>
+            <div className='change-profile'>
+              <div className='change-button-box'>
+                <div className='img-box'>
+                <img 
+                  src={imgBase64}
+                  className="img"
+                />
+                </div>
+                <div className='btn-box'>
+                  <div className='btn'>
+                    <label htmlFor='profile'>
+                      <div class="btn-upload">파일 업로드하기</div>
+                    </label>
+                    <input
+                      type="file"
+                      accept='image/*'
+                      id='profile'
+                      onChange={_handleChangeFile}
+                    />
+                  </div>
+                  <div className='delete-box'>
+                    <div class="btn-upload" 
+                      onClick={_handledeleteFileImage}
+                    >
+                      기본이미지
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </MyInfo>
@@ -248,7 +324,7 @@ const Content = styled.div`
     display:flex;
     align-items: center;  
     font-size: 24px;
-    justify-content: center;
+    // justify-content: center;
     // border: 1px solid #D8D8D8;
     // background: red;
   }
@@ -265,7 +341,7 @@ const Content = styled.div`
     align-items: center;  
     font-size: 22px;
     cursor: pointer;
-    color: gray;
+    color: #E6E6E6;
   }
 
   .order-box {
@@ -332,7 +408,7 @@ const MyInfo = styled.div`
     width: 48%;
     height: 100%;
     display: flex;
-    background: red;
+    // background: red;
     
     @media screen and (max-width: 430px) {
       width: 98%;
@@ -463,6 +539,93 @@ const MyInfo = styled.div`
     // margin-left: 15px;
     color: white;
   }
+
+  .change-profile {
+    width: 48%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // border: 1px solid #D8D8D8;
+    border-left: 2px solid #D8D8D8;
+    
+    @media screen and (max-width: 430px) {
+      display: none;
+    }
+  }
+
+  #profile {
+    display: none;
+  }
+
+  .img-box {
+    // width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #D8D8D8;
+  }
+
+  .btn {
+    width: 100%;
+    height: 50%;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    // border-right: 1px solid #D8D8D8;
+  }
+
+  .btn-box {
+    width: 50%;
+    height: 100%;
+    flex-direction: column;   
+    justify-content: center;
+    align-items: center;
+  }
+
+  .delete-box {
+    width: 100%;
+    height: 50%;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+  }
+
+  .delete-btn {
+    width: 150px;
+    height: 30px;
+  }
+
+  .img {
+    overflow: hidden;
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+    // border-radius: 50%;
+    // border: 1px solid #D8D8D8;
+  }
+
+  .change-button-box {
+    width: 90%;
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .btn-upload {
+    width: 150px;
+    height: 30px;
+    background: #fff;
+    border: 1px solid rgb(77,77,77);
+    border-radius: 10px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 const WithdrawalBox = styled.div`
@@ -526,6 +689,18 @@ const OrederList = styled.div`
 
   .count-color {
     color: #0064ff;
+  }
+
+  .change-profile {
+    width: 48%;
+    height: 100%;
+    display: flex;
+    background: red;
+    
+    @media screen and (max-width: 430px) {
+      width: 98%;
+      font-size: 15px;
+    }
   }
 `;
 

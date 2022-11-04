@@ -12,16 +12,22 @@ import {
 const CommunityRoute = () => {
   return (
     <Routes>
-      {
-        <Route 
-          path="/" 
-          element={
-            <PrivateRoute>
-              <Community />
-            </PrivateRoute>
-          }
-        />
-      }
+      <Route 
+        path="/" 
+        element={
+          <PrivateRoute>
+            <Community />
+          </PrivateRoute>
+        }
+      />
+      <Route 
+        path="employment" 
+        element={
+          <PrivateRoute>
+            <Community />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   );
 }

@@ -80,8 +80,8 @@ const JoinPage = () => {
     validationPhone: false,   
     validationStudent: false, 
     result: false,        // 서버와의 axios 요청 결과
-    emailCodeCheck: false,      // 인증번호 인증 확인 (첫 번째 순서)
-    emailCheck: false,    // 이메일 인증여부 확인 (두 번째 순서)
+    emailCodeCheck: true,      // 인증번호 인증 확인 (첫 번째 순서)
+    emailCheck: true,    // 이메일 인증여부 확인 (두 번째 순서)
     checkButton: false,   // 다른 이메일 인증하기
     count: 0,             // 남은 인증번호 입력가능 횟수
     message: null,
@@ -383,27 +383,21 @@ const JoinPage = () => {
     console.log(params);
     const response = await _axios(url, params);
     console.log(response);
-    // if(response.result){
+    if(response.result){
       setState({
         ...state,
-        result: response.result,
-        nickname: state.nickname,
-        message: response.message,
         success: true,
-        visibleDialog: true,
       });
-      console.log('회원가입 성공!');
-      
-    // }else{
-    //   setState({
-    //     ...state,
-    //     success:false,
-    //     result: response.result,
-    //     message: response.message,
-    //   });
-    //   toast.error('회원가입 실패!');
-    // }
+      console.log('회원가입 성공!');  
+    }else{
+      setState({
+        ...state,
+        success:false,
+      });
+      console.log('회원가입 실패!');
+    }
   };
+
   // 회원가입 성공 시 페이지 이동
   const _signUpSuccess = (e) => {
     e.preventDefault();

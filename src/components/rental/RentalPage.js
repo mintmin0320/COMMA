@@ -3,6 +3,7 @@ import axios from 'axios';
 // import { useNavigate } from 'react-router';
 // import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 // 개발자
 import titleTab from '../../utils/TitleTab';
 import { toast, ToastContainer } from 'react-toastify';
@@ -12,14 +13,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import BestList from './BestList';
 import InsufficientPage from './InsufficientPage';
 //css, icon, img
-import styled from 'styled-components';
 import 'react-toastify/dist/ReactToastify.css';
 import { faMagnifyingGlass, faMedal } from "@fortawesome/free-solid-svg-icons";
 import Plus from '../../images/circle-plus-solid.svg';
+import Loading from '../Loading';
 
 const RentalPage = () => {
   const titleUpdator = titleTab("Loading...");
-  setTimeout(() => titleUpdator("대여 - COMMA"), 300);
+  setTimeout(() => titleUpdator("아두이노 - COMMA"), 300);
   const userId = useSelector((store) => store.auth.authStatus.userId);
 
   const [state, setState] = useState({
@@ -34,6 +35,7 @@ const RentalPage = () => {
     itemList: [],
     bestList: [],
     request: '',
+    loading: false,
   });
 
    // 입력값이 변할 때
@@ -58,6 +60,10 @@ const RentalPage = () => {
         arduinoId : id,
       }]
     };
+    setState({
+      ...state,
+      loading: true,
+    });
     const response = await _axios(url, params);
     console.log(response);
     if(response.result === 'true'){
@@ -69,6 +75,10 @@ const RentalPage = () => {
     } else {
       toast.error('실패');
     }
+    setState({
+      ...state,
+      loading: false,
+    });
   }
 
   // 분류 값 전달
@@ -151,12 +161,17 @@ const RentalPage = () => {
 
   const _getSearchData = async () => {
     const url = `http://210.121.173.182/arduino/name/${state.search}`;
+    setState({
+      ...state,
+      loading: true,
+    });
     const response = await axios.get(url);
     console.log(response);
     if(response.data.result === false){
       setState({
         ...state,
         insufficient: true,
+        loading: false,
       });
       console.log('없는 상품');
     } else {
@@ -172,6 +187,10 @@ const RentalPage = () => {
   useEffect(() => {
     const _getItemData = async () => {
       if(state.check !== '' && state.check !== '조명' && state.check !== '트랜지스터'){
+        setState({
+          ...state,
+          loading: true,
+        });
         const url = `http://210.121.173.182/arduino/type/${state.check}`;
         const response = await axios.get(url);
         console.log(response);
@@ -181,6 +200,7 @@ const RentalPage = () => {
           search: '',
           insufficient: false,
           index: 1,
+          loading: false,
         });
         console.log(`아두이노 ${state.check} 분류 성공`);
       } 
@@ -192,6 +212,10 @@ const RentalPage = () => {
         });
       }
       else {
+        setState({
+          ...state,
+          loading: false, // 빌드시 true로 전환!!
+        });
         const url = `http://210.121.173.182/arduino/${state.page - 1}`;
         const response = await axios.get(url);
         console.log(response);
@@ -199,6 +223,7 @@ const RentalPage = () => {
           ...state,
           itemList: response.data.result,
           insufficient: false,
+          loading: false,
         });
         console.log(`아두이노 리스트 출력 성공`);
       }
@@ -238,6 +263,7 @@ const RentalPage = () => {
 
   return(
     <Container>
+      { state.loading ? <Loading/> : null }
       <div className='box'>
         <div className='top-menu'>
           <div className='header-bar'>
@@ -511,7 +537,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   // justify-content: center;
-  align-itmes: center;
+  /* align-items: center; */
   margin-top: 20px;
   background: white;
 

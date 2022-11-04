@@ -1,12 +1,13 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
+import styled from 'styled-components';
 // 개발자
 import titleTab from '../../utils/TitleTab';
 import _axios from '../../utils/axios';
 //css
-import styled from 'styled-components';
 import 'react-toastify/dist/ReactToastify.css';
+import Loading from '../Loading';
 
 const AdminOrderList = () => {
   const titleUpdator = titleTab("Loading...");
@@ -23,6 +24,7 @@ const AdminOrderList = () => {
     message: null,
     orderList: [],
     approveList: [],
+    loading: false,
   });
 
    // 관리자 승인 버튼
@@ -37,12 +39,24 @@ const AdminOrderList = () => {
       userId: id,
       applicationDate: date,        
     };
+    setState({
+      ...state,
+      loading: true,
+    });
     const response = await _axios(url, params);
     console.log(response);
-    if(response.data.result === 'true'){
+    if(response.result){
+      setState({
+        ...state,
+        loading: false,
+      });
       toast.success('승인!');
     }
     else {
+      setState({
+        ...state,
+        loading: false,
+      });
       toast.error('실패');
     }
   }
@@ -87,13 +101,23 @@ const AdminOrderList = () => {
                 })}
               </div>              
               <div className='member-date'>{row.applicationDate}</div>
-              <div className='member-status'>
-                <button
-                  className='status-box'
-                  onClick={() => _handleApprove(row.userId, row.applicationDate)}
-                >
-                  승인
-                </button>
+              <div className='member-status-data'>
+                <div className='btn-box'>
+                  <button
+                    className='status-btn'
+                    onClick={() => _handleApprove(row.userId, row.applicationDate)}
+                  >
+                    승인
+                  </button>
+                </div>
+                <div className='btn-box'>
+                  <button
+                    className='status-btn'
+                    // onClick={() => _handleApprove(row.userId, row.applicationDate)}
+                  >
+                    취소
+                  </button>
+                </div>
               </div>
             </div>
           )
@@ -133,6 +157,7 @@ const AdminOrderList = () => {
 
   return(
     <Container>
+      { state.loading ? <Loading/> : null }
       <div className='content'>
         <div className='list-box'>
           <div className='tag-list'>
@@ -347,6 +372,7 @@ const Container = styled.div`
     width: 7%;
     height: 100%;
     display: flex;
+    // flex-direction: column;
     justify-content: center;
     align-items: center;
     border-right: 1px solid #D8D8D8;
@@ -356,10 +382,25 @@ const Container = styled.div`
     }
   }
 
-  .status-box {
+  .member-status-data {
+    width: 7%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border-right: 1px solid #D8D8D8;
+  }
+
+  .btn-box {
     width: 80%;
-    height: 50%;
-    // background: red;
+    height: 30%;
+    border-radius: 10px 10px 10px 10px;
+  }
+
+  .status-btn {
+    width: 100%;
+    height: 100%;
     color: #0064ff;
     border-radius: 10px 10px 10px 10px;
 

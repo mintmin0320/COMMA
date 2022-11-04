@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
+import styled from 'styled-components';
 // 개발자
 import titleTab from '../../utils/TitleTab';
 import TopButton from '../TopButton';
@@ -11,9 +12,9 @@ import _axios from '../../utils/axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import EllipsisText from "react-ellipsis-text";
 //css, icon
-import styled from 'styled-components';
 import { faX  } from '@fortawesome/free-solid-svg-icons';
 import 'react-toastify/dist/ReactToastify.css';
+import Loading from '../Loading';
 
 const BasketPage = () => {
   const userId = useSelector((store) => store.auth.authStatus.userId);
@@ -31,6 +32,7 @@ const BasketPage = () => {
     changePage: false,
     delete: false,
     itemList: [],
+    loading: false,
   });
 
   const _handleInputChange = (e) => {
@@ -189,22 +191,31 @@ const BasketPage = () => {
       basket: state.itemList,
     };
     console.log(params);
+    setState({
+      ...state,
+      loading: true,
+    });
     const response = await _axios(url, params);
     console.log(response);
     if(response.result === true){
-      alert('주문 성공!');
       navigate('/mypage');
       setState({
         ...state,
         changePage: true,
+        loading: false,
       })
     }else{
-      alert('주문 실패!');
+      setState({
+        ...state,
+        loading: false,
+      })
+      toast.error('주문 실패!');
     }
   };
 
   return(
     <Container>
+      { state.loading ? <Loading/> : null }
       <form onSubmit={_handleSubmit} className="main-content">
         <div className='header'>실험실습재료 신청</div>
           <div className='content'>

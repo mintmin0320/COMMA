@@ -1,7 +1,6 @@
 import React from 'react';
 //css, img
 import styled from 'styled-components';
-import rental from '../../images/rental.png';
 import basketpage from '../../images/basketpage.png';
 import arduino from '../../images/arduino.png';
 import mail1 from '../../images/mail1.png';
@@ -24,7 +23,7 @@ const GuidePage = () => {
           </div>
           <div className='content'>
             <div className='total-box'>
-              <div className='title'>1. 아두이노 대여 기능</div>
+              <div className='title'>1. 아두이노 신청 기능</div>
               <div className='total-content'>
                 <div className='first-page'>
                   <div className='img1'>

@@ -16,6 +16,7 @@ import CommunityRoute from './CommunityRoute';  // 커뮤니티 Route
 import FeedbackRoute from './FeedbackRoute';  // 피드백 게시판 Route
 import PatchNotesRoute from './PatchNotesRoute';  // 개발자 노트 Route
 import GuideRoute from './GuideRoute';  // 가이드 Route
+import JobRoute from './JobRoute'; // 구인구직 route
 
 const MainRoutes = () => {
   return (
@@ -29,6 +30,7 @@ const MainRoutes = () => {
       <Route path="/feedback/*" element={<FeedbackRoute />} />
       <Route path="/patchNotes/*" element={<PatchNotesRoute />} />
       <Route path="/guide/*" element={<GuideRoute />} />
+      <Route path="/jobs/*" element={<JobRoute />} />
     </Routes>
   );
 }

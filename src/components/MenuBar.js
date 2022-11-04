@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import {  logoutRequest } from '../redux/actions/auth';
@@ -73,7 +73,7 @@ const MenuBar = () => {
         >
           아두이노
         </NavLink>
-        {/* <NavLink 
+        <NavLink 
           to="/community"
           className='menu-button3'
           style={({ isActive }) => ({
@@ -82,22 +82,16 @@ const MenuBar = () => {
           })}
         >
           커뮤니티
-        </NavLink> */}
-        <button 
-          className='menu-button3'
-          onClick={_handleButton}
-        >
-          커뮤니티
-        </button>
-        {/* <NavLink to="/patchNotes"
+        </NavLink>
+        <NavLink to="/jobs"
           className='menu-button4'
           style={({ isActive }) => ({
             color: isActive ? 'white' : '#0064ff',
             backgroundColor: isActive ? '#0064ff' : 'white',
           })}
         >
-          개발자&nbsp;노트
-        </NavLink> */}
+          Job
+        </NavLink>
       </div>
       {state.menubar && (
         <div className='mobile-button-box'>

@@ -1,14 +1,13 @@
 import React from 'react';
 import Header from '../../components/Header';
 import MenuBar from '../../components/MenuBar';
-import MyPageInfo from '../../components/mypage/MyPageInfo';
+import JobsPage from '../../components/jobs/JobsPage';
 import ScrollIndiactor from '../../components/ScrollIndicator';
 import styled from 'styled-components';
 import TopButton from '../../components/TopButton';
 import ResponsiveBtn from '../../components/ResponsiveBtn';
 
-const MypageHome = () => {
-
+const Jobs = () => {
   return(
     <Container>
       <ScrollIndiactor/>
@@ -19,9 +18,9 @@ const MypageHome = () => {
         <HeaderBox>
           <Header/>
         </HeaderBox>
-        <MypageBox>
-          <MyPageInfo/>
-        </MypageBox>
+        <JobsPageBox>
+          <JobsPage/>
+        </JobsPageBox>
       </div>  
       <RpsBtnBox>
         <ResponsiveBtn/>
@@ -72,7 +71,7 @@ const RpsBtnBox = styled.div`
   }
 `
 
-const MypageBox = styled.div`
+const JobsPageBox = styled.div`
   width: 70%;
   display: flex;
   justify-content: center;
@@ -82,4 +81,4 @@ const MypageBox = styled.div`
   }
 `;
 
-export default MypageHome;
+export default Jobs;
