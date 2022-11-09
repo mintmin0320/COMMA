@@ -30,15 +30,11 @@ export function init() {
 export function loginRequest(userId, userPw) {
   return (dispatch) => {
     dispatch(login());
-    // const CryptoJS = require("crypto-js");
-    // const secretKey = 'secret key';
-    // let encrypted = CryptoJS.AES.encrypt((userPw), secretKey).toString();
     const url = '/signIn';
     const params = {
       id: userId,
       password: userPw,
     };
-    // encrypt
 
     // API REQUEST
     return _axios(url, params)

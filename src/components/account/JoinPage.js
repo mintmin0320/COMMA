@@ -2,22 +2,22 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import styled from 'styled-components';
 // 개발자
 import _axios from '../../utils/axios';
 import titleTab from '../../utils/TitleTab';
 import { toast, ToastContainer } from 'react-toastify';
+import Loading from '../Loading';
 //css, icon
 import '../../styles/kendo.css';
 import theme from '../../styles/theme';
 import {
   LogoWrap,
 } from '../../styles/account';
-import styled from 'styled-components';
 import Logo from '../../images/white_bg.svg';
 
 const JoinPage = () => {
   const navigate = useNavigate();
-
   const titleUpdator = titleTab("Loading...");
   setTimeout(() => titleUpdator("회원가입 - COMMA"), 100);
 
@@ -80,20 +80,16 @@ const JoinPage = () => {
     validationPhone: false,   
     validationStudent: false, 
     result: false,        // 서버와의 axios 요청 결과
-    emailCodeCheck: true,      // 인증번호 인증 확인 (첫 번째 순서)
-    emailCheck: true,    // 이메일 인증여부 확인 (두 번째 순서)
-    checkButton: false,   // 다른 이메일 인증하기
+    emailCodeCheck: false,      // 인증번호 인증 확인 (첫 번째 순서)
+    emailCheck: false,    // 이메일 인증여부 확인 (두 번째 순서)
     count: 0,             // 남은 인증번호 입력가능 횟수
-    message: null,
     success: false,       // 회원가입 성공/실패
-    reCode: false,
-    disInput: false,
+    loading: false,
   });
 
   // 이메일 인증 발급
   const _handleRequest = (e) => {
     e.preventDefault();
-    console.log(state.email);
     _postEmail();
   };
 
@@ -103,38 +99,29 @@ const JoinPage = () => {
     const params = {
       id: state.userId + state.selected,
     };
-    console.log(params);
+    setState({
+      ...state,
+      loading: true,
+    });
     const response = await _axios(url, params);
     console.log(response);
     if(response.result){
       setState({
         ...state,
-        result: response.result,
-        message: response.message,
+        loading: false,
         emailCodeCheck: true,
-        failureCode:false,
-        checkButton:false,
-        disInput: true,
       });
       console.log('발급 되었습니다.');
     }else{
       setState({
         ...state,
-        result: response.result,
+        loading: false,
         message: response.message,
-        alertCheck: true,
+        userId: '',
       })    
-      console.log('발급 실패!');
+      toast.error(`발급 실패!`);
     }
   };
-
-  // 인증코드 재요청 버튼 클릭
-  const _handleReRequest = (e) => {
-    e.preventDefault();
-    _postEmail();
-    time.current = 120;
-    setMin(2);
-    };
 
    // 이메일 인증하기 클릭
   const _handleEmailCheck = (e) => {
@@ -150,66 +137,74 @@ const JoinPage = () => {
       id: state.emailCode,
       address: state.userId + state.selected,
     };
-    console.log(params);
+    setState({
+      ...state,
+      loading: true,
+    })
     const response = await _axios(url, params);
     console.log(response);
     if(response.result){
       setState({
         ...state,
         emailCheck: true,
-        result: response.result,
-        message: response.message,
+        loading: false,
       });
       console.log('인증 성공!');
     }else{
-      if(state.count < 4 ){
+      if(state.count < 2){
         setState({
           ...state,
-          result: response.result,
-          message: response.message,
-          failureCode: false,
-          disInput: false,
+          loading: false,
           count: state.count + 1,
+          emailCode: '',
       });
-      console.log('잘못된 코드입니다.');
+        toast.error(`잘못된 코드입니다. ${state.count + 1}/3`);
       }else {
         setState({
           ...state,
-          result: response.result,
-          message: response.message,
-          codeCheck: false,
-          count: state.count = 0,
+          loading: false,
+          emailCodeCheck: false,
+          emailCode: '',
+          userId: '',
         });
-        console.log('횟수 초과입니다.');
-        }
+        toast.error('횟수 초과입니다.');
+      }
     }
   };
 
-    // 닉네임 중복 체크 
-    const _handleNameCheck = (e) => {
-      e.preventDefault();
-      _getName();
+  // 닉네임 중복 체크 
+  const _handleNameCheck = (e) => {
+    e.preventDefault();
+    _getName();
+  }
+
+  // 저장
+  const _getName = async () => {
+    const url = `http://210.121.173.182/namecheck/${state.nickname}`;
+    setState({
+      ...state,
+      loading: true,
+    });
+    const response = await axios.get(url);
+    console.log(response);
+    if(response.data.result){
+      setState({
+        ...state,
+        loading: false,
+        nickCheck: true,
+      });
+      toast.success('사용 가능한 닉네임입니다!');
+    }else{
+      toast.error('사용 불가능한 닉네임입니다!');
+      setState({
+        ...state,
+        loading: false,
+      });
     }
-  
-    // 저장
-    const _getName = async () => {
-      const url = `http://210.121.173.182/namecheck/${state.nickname}`;
-      const response = await axios.get(url);
-      console.log(response);
-      if(response.data.result){
-        setState({
-          ...state,
-          nickCheck: true,
-        });
-        toast.success('사용 가능한 아이디입니다!');
-      }else{
-        toast.error('사용 불가능한 아이디입니다!');
-      }
-    };
+  };
   
   // 입력값이 변할 때
   const _handleInputChange = (e) => {
-    console.log(e.target.value);
     switch(e.target.name){
       case 'userId' :
         if (regEng.test(e.target.value)) {
@@ -335,13 +330,13 @@ const JoinPage = () => {
             codeValidation: '6자리의 숫자만 입력해주세요.',
             [e.target.name]: e.target.value 
             });
-      }break;
+        }break;
       default:
     }
   };
 
+  // 비밀번호 확인
   const _handlePwchange = (e) => {
-    console.log(e.target.value);
     if(state.userPw === e.target.value) {
       setState({
         ...state,
@@ -381,20 +376,25 @@ const JoinPage = () => {
       academic: state.academic,
     };
     console.log(params);
+    setState({
+      ...state,
+      loading: true,
+    });
     const response = await _axios(url, params);
     console.log(response);
     if(response.result){
       setState({
         ...state,
+        loading: false,
         success: true,
       });
       console.log('회원가입 성공!');  
     }else{
       setState({
         ...state,
-        success:false,
+        loading: false,
       });
-      console.log('회원가입 실패!');
+      toast.error('회원가입 실패!');
     }
   };
 
@@ -421,6 +421,9 @@ const JoinPage = () => {
         setMin(0);
         setSec(0);
         clearInterval(timerId.current);
+        setState({
+          emailCodeCheck: false,
+        })
         }
       }, [sec]);
       return(
@@ -586,6 +589,7 @@ const JoinPage = () => {
 
   return (
     <Container>
+      { state.loading ? <Loading/> : null }
       <Wrap>
         <Link to="/login">
           <LogoWrap>
@@ -595,7 +599,7 @@ const JoinPage = () => {
         <form onSubmit={_handleSubmit}>
           <JoinBox>
             {!state.emailCheck && !state.emailCodeCheck && !state.success && (
-              <IdBox>
+              <EmailCheckBox>
                 <TitleBox>
                   이메일
                 </TitleBox>
@@ -605,7 +609,6 @@ const JoinPage = () => {
                     name='userId'
                     onChange={_handleInputChange}
                     required={true}
-                    // disabled={state.disInput}
                   />
                   <SelectBox>
                     <div>
@@ -618,7 +621,7 @@ const JoinPage = () => {
                       </select>
                     </div>
                   </SelectBox>
-              </IdBox>
+              </EmailCheckBox>
             )}
             {!state.emailCheck && !state.emailCodeCheck && !state.success && (
               <Validation>
@@ -649,18 +652,6 @@ const JoinPage = () => {
               />
               <StateBox>
                 <Timer/>
-                {/* !state.emailCheck && state.codeCheck && !state.checkButton && time.current === 0 &&( */}
-                {!state.emailCheck && state.emailCodeCheck && !state.success && time.current === 0 && ( 
-                <button
-                  className='reset-button'
-                  onClick={_handleReRequest}
-                >
-                  <div className='login-text'>
-                    <div className='reset-font'>
-                      재인증
-                    </div>
-                  </div>
-                </button>)}
               </StateBox>  
             </CodeBox>
           )}
@@ -871,7 +862,7 @@ const JoinPage = () => {
     </Wrap>
     <ToastContainer
       position="top-center"
-      autoClose={700}
+      autoClose={1000}
       hideProgressBar={false}
       newestOnTop={false}
       closeOnClick
@@ -1118,6 +1109,32 @@ const IdBox = styled.div`
   input {
     font-size: 16px;
     background: #f5f5f5;
+    width: 52%;
+  }
+
+  margin: 0 0 10px 0;
+  border-radius: 10px 10px 10px 10px;
+  background: #f5f5f5;
+
+  @media screen and (max-width: 430px) {
+    width: 95%;
+    font-size: 13px;
+    input {
+      font-size: 13px;
+      background: #f5f5f5;
+      width: 50%;
+    }
+  }
+`;
+
+const EmailCheckBox = styled.div`
+  width: 80%;
+  height: 60px;
+  display: flex;
+  
+  input {
+    font-size: 16px;
+    background: #f5f5f5;
     width: 33%;
   }
 
@@ -1162,7 +1179,6 @@ const TitleBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  
 
   .reset-button {
     width: 75%;

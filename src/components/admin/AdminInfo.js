@@ -1,10 +1,9 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import axios from 'axios';
-import EllipsisText from 'react-ellipsis-text';
+import styled from 'styled-components';
 // 개발자
 import titleTab from '../../utils/TitleTab';
-//css
-import styled from 'styled-components';
+import Loading from '../Loading';
 
 const AdminInfo = () => {
   const titleUpdator = titleTab("Loading...");
@@ -19,18 +18,32 @@ const AdminInfo = () => {
     studentId: '',
     delete: false,
     memberList: [],
+    loading: false,
   });
 
   useEffect(() => {
     const _getMemberData = async () => {
       const url = "http://210.121.173.182/admin/users";
-      const response = await axios.get(url);
-      console.log(response.data);
       setState({
         ...state,
-        memberList: response.data,
+        loading: true,
       })
-      console.log('회원목록 조회성공');
+      const response = await axios.get(url);
+      console.log(response);
+      if(response.status === 200){
+        setState({
+          ...state,
+          memberList: response.data,
+          loading: false,
+        })
+        console.log('회원목록 조회성공');
+      } else {
+        setState({
+          ...state,
+          loading: false,
+        })
+        console.log('회원목록 조회실패');
+      }
     }
     _getMemberData()
   },[]);
@@ -86,6 +99,7 @@ const AdminInfo = () => {
 
   return(
     <Container>
+      { state.loading ? <Loading/> : null }
       <div className='content'>
         <div className='tag-list'>
           <div className='member-id'>아이디</div>
@@ -138,46 +152,11 @@ const Container = styled.div`
     border-right: 1px solid #D8D8D8;
 
     @media screen and (max-width: 430px) {
-      width: 33%;
+      width: 40%;
     }
   }
 
   .member-name {
-    width: 8%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-right: 1px solid #D8D8D8;
-  }
-
-  .member-nickname {
-    width: 13%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-right: 1px solid #D8D8D8;
-
-    @media screen and (max-width: 430px) {
-      width: 15%;
-    }
-  }
-
-  .member-phone {
-    width: 12%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-right: 1px solid #D8D8D8;
-
-    @media screen and (max-width: 430px) {
-      width: 14%;
-    }
-  }
-
-  .member-student_id {
     width: 8%;
     height: 100%;
     display: flex;
@@ -190,6 +169,47 @@ const Container = styled.div`
     }
   }
 
+  .member-nickname {
+    width: 13%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #D8D8D8;
+
+    @media screen and (max-width: 430px) {
+      width: 20%;
+    }
+  }
+
+  .member-phone {
+    width: 12%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #D8D8D8;
+
+    @media screen and (max-width: 430px) {
+      /* width: 14%; */
+      display: none;
+    }
+  }
+
+  .member-student_id {
+    width: 8%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #D8D8D8;
+
+    @media screen and (max-width: 430px) {
+      /* width: 11%; */
+      display: none;
+    }
+  }
+
   .member-major {
     width: 16%;
     height: 100%;
@@ -197,6 +217,10 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     border-right: 1px solid #D8D8D8;
+
+    @media screen and (max-width: 430px) {
+      width: 24%;
+    }
   }
 
   .member-grade {

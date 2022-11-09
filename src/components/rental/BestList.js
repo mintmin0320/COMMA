@@ -70,7 +70,7 @@ const BestList = () => {
                   {index + 1}.&nbsp;
                   <EllipsisText
                     text={list.arduinoSpecificationName}
-                    length={27}
+                    length={43}
                   />
                 </div>
                 <div className='best-icon-box'>

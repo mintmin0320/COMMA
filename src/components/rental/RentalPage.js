@@ -7,20 +7,20 @@ import styled from 'styled-components';
 // 개발자
 import titleTab from '../../utils/TitleTab';
 import { toast, ToastContainer } from 'react-toastify';
-import TopButton from '../TopButton';
 import _axios from '../../utils/axios';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import BestList from './BestList';
 import InsufficientPage from './InsufficientPage';
+import Loading from '../Loading';
 //css, icon, img
 import 'react-toastify/dist/ReactToastify.css';
 import { faMagnifyingGlass, faMedal } from "@fortawesome/free-solid-svg-icons";
 import Plus from '../../images/circle-plus-solid.svg';
-import Loading from '../Loading';
+import NoPhoto from '../../images/nophoto.png';
 
 const RentalPage = () => {
   const titleUpdator = titleTab("Loading...");
-  setTimeout(() => titleUpdator("아두이노 - COMMA"), 300);
+  setTimeout(() => titleUpdator("실습재료 - COMMA"), 300);
   const userId = useSelector((store) => store.auth.authStatus.userId);
 
   const [state, setState] = useState({
@@ -94,6 +94,8 @@ const RentalPage = () => {
       setState({
         ...state,
         check: '',
+        page: 1,
+        index: 1,
       });  
     } else {
       setState({
@@ -139,7 +141,7 @@ const RentalPage = () => {
 
   // page 이동
   const _handleInputMove = () => {
-    if(state.index === '0' || state.index < '0' || state.index > '9') {
+    if(state.index === '0' || state.index < '0' || state.index > '10') {
       setState({ 
         ...state, 
         index: 1,
@@ -178,6 +180,7 @@ const RentalPage = () => {
       setState({
         ...state,
         itemList: response.data.result,
+        loading: false,
       });
       console.log('검색 성공');
     }
@@ -214,18 +217,28 @@ const RentalPage = () => {
       else {
         setState({
           ...state,
-          loading: false, // 빌드시 true로 전환!!
+          loading: true, // 빌드시 true로 전환!!
         });
-        const url = `http://210.121.173.182/arduino/${state.page - 1}`;
+        const url = `http://210.121.173.182/arduino/${state.page}`;
         const response = await axios.get(url);
         console.log(response);
-        setState({
+        if(response.data.result){
+          setState({
           ...state,
           itemList: response.data.result,
           insufficient: false,
           loading: false,
         });
-        console.log(`아두이노 리스트 출력 성공`);
+          console.log(`아두이노 리스트 출력 성공`);
+        } else {
+          setState({
+            ...state,
+            itemList: response.data.result,
+            insufficient: false,
+            loading: false,
+          });
+          console.log(`아두이노 리스트 출력 실패`);
+        }
       }
     } 
     _getItemData();
@@ -242,7 +255,20 @@ const RentalPage = () => {
                 onClick={() => _handleBasketAdd(item.arduinoId)}
               >  
                 <div className='img-box'>
-                  사진
+                  {
+                    item.picture !== null ?
+                    <img
+                      src={`http://210.121.173.182/arduinoImage/${item.picture}`}
+                      alt="사진"
+                      style={{overflow : "hiden", objectFit: "contain",  width: "100%", height: "100%"}}
+                    />
+                    :
+                    <img
+                      src={NoPhoto}
+                      alt="사진"
+                      style={{overflow : "hiden", objectFit: "contain",  width: "100%", height: "100%"}}
+                    />
+                  }
                 </div>
                 <div className='title-box'>
                   {item.arduinoSpecificationName}
@@ -295,130 +321,144 @@ const RentalPage = () => {
               <div className='right-search-box'>
                 <div className='check-box'>
                   <div className='checkbox1'>
+                    &nbsp;
                     <input
                       type='checkbox'
                       onChange={(e) => checkOnlyOne(e.target)}
                       value="전체"
                       name="check"
                     />
-                      전체
+                      &nbsp;전체
                   </div>
                   <div className='checkbox1'>
+                    &nbsp;
                     <input
                       type='checkbox'
                       onChange={(e) => checkOnlyOne(e.target)}
                       value="센서"
                       name="check"
                     />
-                      센서
+                      &nbsp;센서
                   </div>
                   <div className='checkbox1'>
+                    &nbsp;
                     <input
                       type='checkbox'
                       onChange={(e) => checkOnlyOne(e.target)}
                       value="모듈"
                       name="check"
                     />
-                      모듈
+                      &nbsp;모듈
                   </div>
                   <div className='checkbox1'>
+                    &nbsp;
                     <input
                       type='checkbox'
                       onChange={(e) => checkOnlyOne(e.target)}
                       value="조명"
                       name="check"
                     />
-                      조명
+                      &nbsp;조명
                   </div>
                   <div className='checkbox1'>
+                    &nbsp;
                     <input
                       type='checkbox'
                       onChange={(e) => checkOnlyOne(e.target)}
                       value="IC"
                       name="check"
                     />
-                      IC
+                      &nbsp;IC
                   </div>
                   <div className='checkbox1'>
+                    &nbsp;
                     <input
                       type='checkbox'
                       onChange={(e) => checkOnlyOne(e.target)}
                       value="모터"
                       name="check"
                     />
-                      모터
+                      &nbsp;모터
                   </div>
                   <div className='checkbox1'>
+                    &nbsp;
                     <input
                       type='checkbox'
                       onChange={(e) => checkOnlyOne(e.target)}
                       value="보드"
                       name="check"
                     />
-                      보드
+                      &nbsp;보드
                   </div>
                   <div className='checkbox1'>
+                    &nbsp;
                     <input
                       type='checkbox'
                       onChange={(e) => checkOnlyOne(e.target)}
                       value="다이오드"
                       name="check"
                     />
-                    다이오드
+                    &nbsp;다이오드
                   </div>
                   <div className='checkbox1'>
+                    &nbsp;
                     <input
                       type='checkbox'
                       onChange={(e) => checkOnlyOne(e.target)}
                       value="부저"
                       name="check"
                     />
-                    부저
+                    &nbsp;부저
                   </div>
                   <div className='checkbox1'>
+                    &nbsp;
                     <input
                       type='checkbox'
                       onChange={(e) => checkOnlyOne(e.target)}
                       value="스위치"
                       name="check"
                     />
-                    스위치
+                    &nbsp;스위치
                   </div>
                   <div className='checkbox1'>
+                    &nbsp;
                     <input
                       type='checkbox'
                       onChange={(e) => checkOnlyOne(e.target)}
                       value="저항"
                       name="check"
                     />
-                    저항
+                    &nbsp;저항
                   </div>
                   <div className='checkbox1'>
+                    &nbsp;
                     <input
                       type='checkbox'
                       onChange={(e) => checkOnlyOne(e.target)}
                       value="캐패시터"
                       name="check"
                     />
-                    캐패시터
+                    &nbsp;캐패시터
                   </div>
                   <div className='checkbox1'>
+                    &nbsp;
                     <input
                       type='checkbox'
                       onChange={(e) => checkOnlyOne(e.target)}
                       value="트랜지스터"
                       name="check"
                     />
-                    트랜지스터
+                    &nbsp;트랜지스터
                   </div>
                   <div className='checkbox1'>
+                    &nbsp;
                     <input
                       type='checkbox'
                       onChange={(e) => checkOnlyOne(e.target)}
                       value="기타"
                       name="check"
                     />
-                    기타
+                    &nbsp;기타
                   </div>
                 </div>
               </div>
@@ -485,7 +525,7 @@ const RentalPage = () => {
               className='button-css'
               onClick={_handleInputMinus}
             >
-                이전
+              이전
             </button>
           </div>
           <div className='now-index'>
@@ -515,7 +555,6 @@ const RentalPage = () => {
           </div>
         </div>
       </MoreData>
-      <TopButton/>
       <ToastContainer
         position="top-center"
         autoClose={1000}
@@ -548,7 +587,7 @@ const Container = styled.div`
   }
 
   .box {
-    height: 15%;
+    height: 12%;
     border: 1px solid #D8D8D8;
 
     @media screen and (max-width: 430px) {
@@ -682,7 +721,7 @@ const Container = styled.div`
       // padding: 10px;
       align-items: center;
       // background: red;
-      font-size: 14px;
+      font-size: 15px;
     }
   }
 
@@ -736,14 +775,12 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     background: #F5F5F5;
-    // border: 1px solid #D8D8D8;
   }
 
   .ranking-box {
     width: 95%;
     height: 33%;
     display: flex;
-    // justify-content: center;
     align-items: center;
     font-family: Helvetica;
     font-size: 15px;
@@ -753,9 +790,8 @@ const Container = styled.div`
     width: 80%;
     height: 100%;
     display: flex;
-    // justify-content: center;
     align-items: center;
-    
+    font-size: 14px;
   }
 
   .best-icon-box {
@@ -779,7 +815,7 @@ const Container = styled.div`
 
 const Content = styled.div`
   width: 100%;
-  height: 82%;
+  height: 85%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -801,6 +837,7 @@ const Content = styled.div`
     grid-template-columns: 1fr 1fr 1fr;
     gap: 15px 15px;
     overflow-y: scroll;
+    align-content: start;
     // background: red;
     // justify-content: center;
     // margin-top: 20px;
@@ -825,22 +862,23 @@ const Content = styled.div`
 
   .data-box {
     width: 100%;
-    height: 250px;
+    height: 350px;
     display: flex;
     flex-direction: column;
     align-items: center;
     // border-left: 1px solid #D8D8D8;
     // border-right: 1px solid #D8D8D8;
-    border: 1px solid #D8D8D8;
+    /* border: 1px solid #D8D8D8; */
     // border-radius: 35px 35px 35px 35px;
     padding: 10px;
     cursor: pointer;
-    // background: #0064ff;
+    /* background: #0064ff; */
 
     @media screen and (max-width: 430px) {
       display: block;
       width: 65%;
       height: 200px;
+      border-top: 2px solid #D8D8D8;
     }
   }
 
@@ -862,13 +900,11 @@ const Content = styled.div`
 
   .img-box {
     width: 100%;
-    height: 45%;
+    height: 60%;
     display: flex;
     justify-content: center;
     align-items: center;
     border: 1px solid #D8D8D8;
-    margin-top: 5px;
-    margin-bottom: 5px;
 
     @media screen and (max-width: 430px) {
       height: 40%;
@@ -877,24 +913,22 @@ const Content = styled.div`
 
   .title-box {
     width: 100%;
-    height: 25%;
+    height: 20%;
     display: flex;
     // justify-content: center;
     align-items: center;
     font-weight: bold;
     font-size: 12px;
-    margin-bottom: 5px;
   }
 
   .category-box {
     width: 100%;
-    height: 20%;
+    height: 15%;
     display: flex;
     // justify-content: center;
     align-items: center;
     font-size: 10px;
     color: gray;
-    margin-bottom: 5px;
 
     @media screen and (max-width: 430px) {
       height: 15%;
@@ -903,7 +937,7 @@ const Content = styled.div`
 
   .count-box {
     width: 100%;
-    height: 20%;
+    height: 15%;
     display: flex;
     // justify-content: center;
     align-items: center;
@@ -965,7 +999,7 @@ const MoreData = styled.div`
     width: 30%;
     height: 80%;
     border: 1px solid #D8D8D8;
-    text-align:center
+    text-align: center;
   }
 
   .search-button {

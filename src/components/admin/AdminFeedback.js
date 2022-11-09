@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
 // 개발자
 import titleTab from '../../utils/TitleTab';
 import EllipsisText from "react-ellipsis-text";
-//css
-import styled from 'styled-components';
+import Loading from '../Loading';
 
 const AdminFeedback = () => {
   const titleUpdator = titleTab("Loading...");
@@ -17,18 +17,23 @@ const AdminFeedback = () => {
     question4: '',
     question5: '',
     opinion: [],
+    loading: false,
   });
 
   // 피드백 결과 데이터
   useEffect(() => {
     const _getData = async () => {
       const url = "http://210.121.173.182/admin/survey";
+      setState({
+        ...state,
+        loading: true,
+      });
       const response = await axios.get(url);
       console.log(response);
-      console.log(response.data.result.opinion);
       if(response.status === 200){
         setState({
           ...state,
+          loading: false,
           count: response.data.result.count,
           question1: response.data.result.question1,
           question2: response.data.result.question2,
@@ -39,6 +44,10 @@ const AdminFeedback = () => {
         })
         console.log('관리자 피드백 조회성공');
       } else {
+        setState({
+          ...state,
+          loading: false,
+        });
         console.log('관리자 조회실패');
       }
     }
@@ -68,6 +77,7 @@ const AdminFeedback = () => {
 
   return(
     <Container>
+      { state.loading ? <Loading/> : null }
       <div className='content'>
         <div className='count-box'>{state.count}명 참여</div>
         <div className='tag-list'>

@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
+import styled from 'styled-components';
 // 개발자
 import { logoutRequest } from '../../redux/actions/auth'
 import _axios from '../../utils/axios';
 import titleTab from '../../utils/TitleTab';
+import Loading from '../Loading';
 //css
-import styled from 'styled-components';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Withdrawal = () => {
@@ -19,7 +20,7 @@ const Withdrawal = () => {
     userPw: '',
     checkPw: false,
     result:  false,        
-    message: null,
+    loading: false
   });
   
   // 입력값이 변할 때
@@ -42,16 +43,25 @@ const Withdrawal = () => {
       id: userId,
       password: state.userPw,
     };
+    setState({
+      ...state,
+      loading:true,
+    })
     const response = await _axios(url, params);
     console.log(response);
     if(response.result === true){
       toast.success('비밀번호 인증 성공');
       setState({
         ...state,
+        loading: false,
         checkPw: true,
       });
     }else{
       toast.error('비밀번호 인증 실패');
+      setState({
+        ...state,
+        loading: false,
+      });
     }
   };
 
@@ -62,6 +72,10 @@ const Withdrawal = () => {
 
   const _withdrawal = async () => {
     const url = "http://210.121.173.182/user";
+    setState({
+      ...state,
+      loading: true,
+    });
     const response = await axios.delete(url, {
       data: {
         id: userId,
@@ -72,12 +86,17 @@ const Withdrawal = () => {
       dispatch(logoutRequest());
       console.log('회원 탈퇴 성공');
     }else{
-      console.log('회원탈퇴 실패');
+      toast.error('회원탈퇴 실패');
     }
+    setState({
+      ...state,
+      loading: false,
+    });
   };
 
   return(
     <Container>
+      { state.loading ? <Loading/> : null }
       <Content>
         <div className='info-correction'>
           <TitleBox>
@@ -114,7 +133,7 @@ const Withdrawal = () => {
       </Content>
       <ToastContainer
         position="top-center"
-        autoClose={700}
+        autoClose={1000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick

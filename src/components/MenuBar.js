@@ -71,7 +71,7 @@ const MenuBar = () => {
             backgroundColor: isActive ? '#0064ff' : 'white',
           })}  
         >
-          아두이노
+          실습재료
         </NavLink>
         <NavLink 
           to="/community"
@@ -84,13 +84,13 @@ const MenuBar = () => {
           커뮤니티
         </NavLink>
         <NavLink to="/jobs"
-          className='menu-button4'
+          className='menu-button3'
           style={({ isActive }) => ({
             color: isActive ? 'white' : '#0064ff',
             backgroundColor: isActive ? '#0064ff' : 'white',
           })}
         >
-          Job
+          채용공고
         </NavLink>
       </div>
       {state.menubar && (
@@ -113,7 +113,7 @@ const MenuBar = () => {
               backgroundColor: isActive ? '#0064ff' : '#F2F2F2',
             })}  
           >
-            대여
+            실습재료
           </NavLink>
           <NavLink
             to="/community"
@@ -125,15 +125,15 @@ const MenuBar = () => {
           >
               커뮤니티
           </NavLink>
-          {/* <NavLink to="/patchNotes"
+          <NavLink to="/jobs"
             className='menu-button4'
             style={({ isActive }) => ({
               color: isActive ? 'white' : '#0064ff',
               backgroundColor: isActive ? '#0064ff' : '#F2F2F2',
             })}
           >
-            개발자&nbsp;노트
-          </NavLink> */}
+            채용공고
+          </NavLink>
           <button
             className='menu-button5'
             onClick={_handleLogout}

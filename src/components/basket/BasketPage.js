@@ -11,10 +11,10 @@ import Modal from '../Modal';
 import _axios from '../../utils/axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import EllipsisText from "react-ellipsis-text";
+import Loading from '../Loading';
 //css, icon
 import { faX  } from '@fortawesome/free-solid-svg-icons';
 import 'react-toastify/dist/ReactToastify.css';
-import Loading from '../Loading';
 
 const BasketPage = () => {
   const userId = useSelector((store) => store.auth.authStatus.userId);
@@ -29,8 +29,6 @@ const BasketPage = () => {
     professor: '',
     check: false,
     checkbox: false,
-    changePage: false,
-    delete: false,
     itemList: [],
     loading: false,
   });
@@ -93,19 +91,27 @@ const BasketPage = () => {
     }
   }
 
-  useEffect(() => {
-    console.log(state.delete);
+  useEffect(() => {    
     const _getMemberData = async () => {
       const url = `http://210.121.173.182/cart/${userId}`;
+      setState({
+        ...state,
+        loading: true,
+      });
       const response = await axios.get(url);
       console.log(response);
       if(response.data.message === '장바구니 전송 완료'){
         setState({
           ...state,
+          loading: false,
           itemList: response.data.result,
         });
         console.log('장바구니 조회성공');
       } else {
+        setState({
+          ...state,
+          loading: false,
+        });
         console.log('장바구니 조회실패');
       }
     }
@@ -121,7 +127,8 @@ const BasketPage = () => {
               <div className='item-name-box'>
                 <EllipsisText
                   text={item.arduinoName}
-                  length={20} />
+                  length={20}
+                />
               </div>
               <div className='count-item'>
                 <div className='blank-box'/>
@@ -198,12 +205,11 @@ const BasketPage = () => {
     const response = await _axios(url, params);
     console.log(response);
     if(response.result === true){
-      navigate('/mypage');
       setState({
         ...state,
-        changePage: true,
         loading: false,
-      })
+      });
+      navigate('/mypage');
     }else{
       setState({
         ...state,
@@ -222,18 +228,6 @@ const BasketPage = () => {
             <div className='input-form'>
               <div className='top-info'>
                 <div className='name-box'>
-                  <div className='name'>이름</div>
-                  <input
-                    className='name-input'
-                    value={state.name}
-                    type='text'
-                    name='name'
-                    onChange={_handleInputChange}
-                    required={true}            
-                    maxLength={10}
-                  />
-                </div>
-                <div className='name-box'>
                   <div className='name'>활용교과목</div>
                   <input
                     className='second-box'
@@ -247,18 +241,6 @@ const BasketPage = () => {
                 </div>
               </div>
               <div className='top-info'>
-                <div className='name-box'>
-                  <div className='info'>소속</div>
-                  <input
-                    className='third-box'
-                    value={state.major}
-                    type='text'
-                    name='major'
-                    onChange={_handleInputChange}
-                    required={true}            
-                    maxLength={10}
-                  />  
-                </div>
                 <div className='name-box'>
                   <div className='info'>담당교수</div>
                   <input
@@ -283,8 +265,8 @@ const BasketPage = () => {
           )}
           <div className='text-box'>
             <div className='text-box-left'>
-              <div className='text'><div className='text-font'>· 상품을 찾을 시 학생증이 필요합니다.</div></div>
-              <div className='text'><div className='text-font'>· 상품은 다음날 찾으러 오셔야 합니다.</div></div>
+              <div className='text'><div className='text-font'>· 반드시 승인된 다음날 수령해야 합니다.</div></div>
+              <div className='text'><div className='text-font'>· 상품 수령 시 학생증이 필요합니다.</div></div>
             </div>
             <div className='text-box-right'>
               <button
@@ -298,7 +280,7 @@ const BasketPage = () => {
           </div>
           <OrderButton>
             <div className='check-box'>
-              상기 내용을 모두 확인했습니다.&nbsp;
+              내용을 모두 확인했습니다.&nbsp;
               <input type='checkbox' className='checkbox-button' value={'1'} onChange={_handleInputCheckbox} checked={state.checkbox}/>
             </div>
             {!state.checkbox ?
@@ -370,7 +352,11 @@ const Container = styled.div`
 
   .text-font {
     color: gray;
-    font-size: 14px;
+    font-size: 16px;
+
+    @media screen and (max-width: 430px) {
+      font-size: 14px;
+    }
   }
 
   .text {
@@ -380,7 +366,6 @@ const Container = styled.div`
 
     @media screen and (max-width: 430px) {
       width: 100%;
-      // font-size: 13px;
     }
   }
 
@@ -415,7 +400,7 @@ const Container = styled.div`
   }
 
   .name-box {
-    width: 50%;
+    width: 100%;
     height: 100%;
     display: flex;
   }
@@ -431,18 +416,6 @@ const Container = styled.div`
 
     @media screen and (max-width: 430px) {
       font-size: 14px;
-    }
-  }
-
-  .name-input {
-    width: 50%;
-    height: 100%;
-    border-top: 0.5px solid black; 
-    border-bottom: 0.5px solid black; 
-    
-    @media screen and (max-width: 430px) {
-      font-size: 14px;
-      border-radius: 0px 0px 0px 0px;
     }
   }
 
@@ -480,17 +453,6 @@ const Container = styled.div`
     border-bottom: 0.5px solid black; 
     border-right: 0.5px solid black; 
     border-top: 0.5px solid black; 
-
-    @media screen and (max-width: 430px) {
-      font-size: 14px;
-      border-radius: 0px 0px 0px 0px;
-    }
-  }
-
-  .third-box {
-    width: 50%;
-    height: 100%;
-    border-bottom: 0.5px solid black; 
 
     @media screen and (max-width: 430px) {
       font-size: 14px;

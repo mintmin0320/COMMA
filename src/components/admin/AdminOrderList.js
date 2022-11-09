@@ -21,13 +21,12 @@ const AdminOrderList = () => {
     nickname:'',
     studentId: '',
     result: false,        // 서버와의 axios 요청 결과   
-    message: null,
     orderList: [],
     approveList: [],
     loading: false,
   });
 
-   // 관리자 승인 버튼
+  // 관리자 승인 버튼
   const _handleApprove = (id, date) => {
     console.log(id, date);
     _getApprove(id, date);
@@ -61,18 +60,30 @@ const AdminOrderList = () => {
     }
   }
 
+  //주문 목록 조회
   useEffect(() => {
     const _getListData = async () => {
       const url = "http://210.121.173.182/admin/arduino/users";
+      setState({
+        ...state,
+        loading: true,
+      });
       const response = await axios.get(url);
       console.log(response);
       if(response.status === 200){
         setState({
           ...state,
+          loading: false,
           orderList: response.data.result.신청,
           approveList: response.data.result.승인,
         });
-        console.log('관리자 주문목록 조회성공');
+        console.log('관리자 주문목록 조회성공!');
+      } else {
+        setState({
+          ...state,
+          loading: false,
+        });
+        console.log('관리자 주문목록 조회실패!');
       }
     }
     _getListData()
@@ -269,7 +280,7 @@ const Container = styled.div`
     border-right: 1px solid #D8D8D8;
 
     @media screen and (max-width: 430px) {
-      width: 15%;
+      width: 10%;
     }
   }
   
@@ -282,7 +293,7 @@ const Container = styled.div`
     border-right: 1px solid #D8D8D8;
 
     @media screen and (max-width: 430px) {
-      width: 25%;
+      width: 20%;
     }
   }
 
@@ -295,7 +306,7 @@ const Container = styled.div`
     border-right: 1px solid #D8D8D8;
 
     @media screen and (max-width: 430px) {
-      display: none;
+      width: 10%;
     }
   }
 
@@ -324,7 +335,7 @@ const Container = styled.div`
     // background: red;
 
     @media screen and (max-width: 430px) {
-      width: 30%;
+      width: 25%;
     }
   }
 
@@ -338,7 +349,7 @@ const Container = styled.div`
     // background: red;
 
     @media screen and (max-width: 430px) {
-      width: 30%;
+      width: 25%;
     }
   }
 
@@ -364,7 +375,7 @@ const Container = styled.div`
     border-right: 1px solid #D8D8D8;
 
     @media screen and (max-width: 430px) {
-      width: 15%;
+      width: 20%;
     }
   }
 
@@ -390,12 +401,23 @@ const Container = styled.div`
     justify-content: space-around;
     align-items: center;
     border-right: 1px solid #D8D8D8;
+
+    @media screen and (max-width: 430px) {
+      width: 15%;
+    }
   }
 
   .btn-box {
     width: 80%;
     height: 30%;
     border-radius: 10px 10px 10px 10px;
+
+    @media screen and (max-width: 430px) {
+      width: 80%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
   }
 
   .status-btn {
@@ -405,7 +427,7 @@ const Container = styled.div`
     border-radius: 10px 10px 10px 10px;
 
     @media screen and (max-width: 430px) {
-      width: 75%;
+      width: 100%;
       height: 30%;
     }
   }
@@ -453,6 +475,10 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     border-right: 1px solid #D8D8D8;
+
+    @media screen and (max-width: 430px) {
+      width: 20%;
+    }
   }
   
   .approve-phone {
@@ -462,6 +488,10 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     border-right: 1px solid #D8D8D8;
+
+    @media screen and (max-width: 430px) {
+      width: 25%;
+    }
   }
 
   .approve-date {
@@ -471,6 +501,10 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     border-right: 1px solid #D8D8D8;
+
+    @media screen and (max-width: 430px) {
+      width: 18%;
+    }
   }
 
   .approve-status {
@@ -480,6 +514,10 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     border-right: 1px solid #D8D8D8;
+
+    @media screen and (max-width: 430px) {
+      width: 7%;
+    }
   }
 
   .approve-item-list {
@@ -491,7 +529,10 @@ const Container = styled.div`
     border-right: 1px solid #D8D8D8;
     overflow-y: scroll;
     padding: 8px;
-    // background: red;
+
+    @media screen and (max-width: 430px) {
+      width: 25%;
+    }
   }
 
   .approve-item-list::-webkit-scrollbar{
@@ -505,7 +546,10 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     border-right: 1px solid #D8D8D8;
-    // background: red;
+    
+    @media screen and (max-width: 430px) {
+      width: 25%;
+    }
   }
 `;
 

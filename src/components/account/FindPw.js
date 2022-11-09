@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router';
+import styled from 'styled-components';
 // 개발자
 import titleTab from '../../utils/TitleTab';
+import Loading from '../Loading';
 import _axios from '../../utils/axios';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { toast, ToastContainer } from 'react-toastify';
 // css, icon, img
 import {
   LogoWrap,
 } from '../../styles/account';
 import theme from '../../styles/theme';
-import styled from 'styled-components';
 import Logo from '../../images/white_bg.svg';
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
@@ -28,7 +30,7 @@ const FindPw = () => {
     idValidation: '',  // 회원가입 인풋창 유효성 검사
     validation: false,    // 유효성 검사 결과 
     result: false,        // 서버와의 axios 요청 결과
-    message: null,
+    loading: false,
     });
 
     const _handlePageMove2 = () => {
@@ -45,28 +47,32 @@ const FindPw = () => {
       _postEmail();
     };
   
+    // 비밀번호 찾기 확인 
     const _postEmail = async () => {
       const url = '/user/find/password'; 
       const params = {
         user_id: state.userId + state.selected,
       };
-      console.log(params);
+      setState({
+        ...state,
+        loading: true,
+      })
       const response = await _axios(url, params);
       console.log(response);
       if(response.result){
         setState({
           ...state,
+          loading: false,
           result: response.result,
-          message: response.message,
         });
         console.log('발급 되었습니다.');
       }else{
         setState({
           ...state,
+          loading: false,
           idValidation: '잘못된 이메일입니다.',
-          message: response.message,
         });
-        console.log( '실패!');
+        toast.error( '실패!');
         }  
       };
     
@@ -100,6 +106,7 @@ const FindPw = () => {
 
   return (
     <Container>
+      { state.loading ? <Loading/> : null }
       <Wrap>
         <Link to="/login">
           <LogoWrap>
@@ -158,6 +165,17 @@ const FindPw = () => {
             </div>
           </EmailBox>
         </Wrap>
+        <ToastContainer
+          position="top-center"
+          autoClose={1000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </Container>
     );
   }
@@ -180,6 +198,7 @@ const Wrap = styled.div`
     width: 100%;
     padding-top: 0px;
     padding-bottom: 30px;
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0); 
   }
   @media ${({ theme }) => theme.device.desktop} {
     width: 500px;
@@ -203,7 +222,6 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  // border: 1px solid #A9A9A9;
 
   .login-button {
     width: 80%;

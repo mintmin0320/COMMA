@@ -123,7 +123,8 @@ const Container = styled.div`
   // padding-left: 10%;
   // text-align: center;
   width: 85%;
-  height: 70vmax; 
+  height: fit-content;
+  min-height: 100vh;
   padding: 10px;
   background: white
 `
@@ -230,24 +231,17 @@ const HomePage = () => {
                   (notice.noticeCategoryId === 320 ? <p>컴소</p> : 
                   (notice.noticeCategoryId === 321 ? <p>컴정</p> : 
                   <p>인공</p>)))
-                    // function() {
-                    //     if (notice.noticeCategoryId === 7) return (<p>대학</p>);
-                    //     else if (notice.noticeCategoryId === 294) return (<p>학부</p>);
-                    //     else if (notice.noticeCategoryId === 320) return (<p>컴소</p>);
-                    //     else if (notice.noticeCategoryId === 321) return (<p>컴정</p>);
-                    //     else if (notice.noticeCategoryId === 322) return (<p>인공</p>);
-                    // }
                 }
                 <p style={{width: '50%', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap'}}>{notice.title}</p>
                 <p>{notice.writer}</p>
                 <p>{notice.createDate}</p>
 
-                <Tooltip>
+                {/* <Tooltip>
                 { notice.fileCount > 0 ?
                   <a href={notice.fileLink}><p>{notice.fileCount}</p></a>
                 :<p>첨부파일 없음</p>
                 }
-                </Tooltip>
+                </Tooltip> */}
 
                 </summary>
                 <NoticeContent>
@@ -265,64 +259,90 @@ const HomePage = () => {
 
   // ==========================================================
 
-  // 카테고리
-  const [isChecked, setIsChecked] = useState(false); // 체크 여부
-  const [checkedItems, setCheckedItems] = useState(new Set()); // 체크된 요소들
-  const checkHandler = ({ target }) => {
-      setIsChecked(!isChecked);
-      checkedItemHandler(target.parentNode, target.value, target.checked);
+   // 체크된 요소
+  const [checkedItem, setCheckedItem] = useState();
+  // 카테고리 하나만 선택
+  const checkOnlyOne = (checkThis) => {
+    const checkboxes = document.getElementsByName("dept");
+    var checkValue = "";
+
+    for (let i = 0; i < checkboxes.length; i++) {
+      if (checkboxes[i] !== checkThis.target) {
+        checkboxes[i].checked = false;
+        //스타일 초기화
+        checkboxes[i].parentNode.style.backgroundColor = "";
+        checkboxes[i].parentNode.style.color = "";
+        checkboxes[i].parentNode.style.fontWeight = "";
+      }
+    }
+
+    if(checkThis.target.checked === true){
+      checkValue = checkThis.target.value;
+      //스타일 변경
+      checkThis.target.parentNode.style.backgroundColor = "#0064ff";
+      checkThis.target.parentNode.style.color = "white";
+      checkThis.target.parentNode.style.fontWeight = "bold";
+    }
+    else{
+      checkValue = "";
+      //스타일 초기화
+      checkThis.target.parentNode.style.backgroundColor = "";
+      checkThis.target.parentNode.style.color = "";
+      checkThis.target.parentNode.style.fontWeight = "";
+    }
+    
+    setCheckedItem(checkValue);
+    getDataCategory(checkValue);
+    if(checkValue !== "") getDataFirstCategory(checkValue);
   };
+  const getDataFirstCategory =async(checkValue)=> {
+    const url = "http://210.121.173.182/notice/category/"+checkValue+"/";
+    let pageNumbers = [];
+    let i, res;
+    for(i=1; i<=5; i++){
+      res = await axios.get(url+i);
+      if(res.data.result.length !== 0) pageNumbers.push(i);
+      else break;
+    }
+    setPage(pageNumbers);
+
+    if(Object.keys(pageNumbers).length !== 5) setMore(false);
+    else{
+      res = await axios.get(url+i);
+      if(res.data.result.length !== 0) setMore(true);
+      else setMore(false);
+    }
+  }
+  // 체크박스 전체 해제
   const uncheckAll =()=> {
-    // 체크박스 전체 해제
-    var checkboxes = document.getElementsByName("dept");
-    for(var i=0; i<checkedItems.size; i++){
+    const checkboxes = document.getElementsByName("dept");
+    for(let i=0; i<checkboxes.length; i++){
+      setCheckedItem();
       checkboxes[i].checked = false;
       // 스타일 초기화
       checkboxes[i].parentNode.style.backgroundColor = "";
       checkboxes[i].parentNode.style.color = "";
       checkboxes[i].parentNode.style.fontWeight = "";
     }
-    // setCheckedItems(new Set());
   }
-  const checkedItemHandler = (box, id, isChecked) => {
-    if (isChecked) {
-      checkedItems.add(id);
-      setCheckedItems(checkedItems);
-      //스타일 변경
-      box.style.backgroundColor = "#0064ff";
-      box.style.color = "white";
-      box.style.fontWeight = "bold";
-    } else if (!isChecked && checkedItems.has(id)) {
-      checkedItems.delete(id);
-      setCheckedItems(checkedItems);
-      //스타일 초기화
-      box.style.backgroundColor = "";
-      box.style.color = "";
-      box.style.fontWeight = "";
-    }
-
-    getDataCategory();
-    // getDataCategory("category", [...checkedItems].join('&'));
-  };
   // 카테고리 데이터 불러오기
-  const getDataCategory =async()=> {
+  const getDataCategory =async(checkValue)=> {
     var url = "http://210.121.173.182/notice";
-    var categoryJoin = [...checkedItems].join('&');
-    if(categoryJoin !== "") {
-      url = url + "/category/" + categoryJoin;
+
+    if(checkValue !== "") {
+      url = url + "/category/" + checkValue;
       setStatus("category");
     }
     else {
       setStatus("");
     }
+
     const res = await axios.get(url);
     setTest(res.data.result);
     
     closeDetails(); // 페이지 변경 시 열린 목록 닫기
     setSearch(""); // 검색어 초기화
 
-    // 수정 필요..
-    setPage([1,2,3,4,5]);
     setcurrentPage(1);
 
     // console.log(res.data);
@@ -346,11 +366,11 @@ const HomePage = () => {
     var url = "http://210.121.173.182/notice";
     // 기본 인덱스, 카테고리 인덱스, 검색 인덱스 중 1
     if(status === "category") {
-      url = url + "/category/" + [...checkedItems].join('&') + "/" + number;
+      url = url + "/category/" + checkedItem + "/" + number;
       // setStatus("category");
     }
     else if(status === "title") {
-      url = url + "/title/" + {search} + "/" + number;
+      url = url + "/title/" + search + "/" + number;
       // setStatus("title");
     }
     else {
@@ -362,11 +382,7 @@ const HomePage = () => {
     const res = await axios.get(url);
     setTest(res.data.result);
 
-    // 수정 필요.. + 위치 변경 필요
-    // setPage([1,2,3,4,5]);
-    // setcurrentPage(1);
-
-    // console.log(res.data);
+    console.log(res.data);
     // console.log(url);
   }
 
@@ -384,25 +400,32 @@ const HomePage = () => {
         {number}
         </li>
       );
-      // if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
-      //   return (
-      //     <li
-      //     key={number}
-      //     id={number}
-      //     onClick={handleClick}
-      //     className={currentPage === number ? "active" : null}
-      //     >
-      //     {number}
-      //     </li>
-      //   );
-      // }
-      // else {
-      //   return null;
-      // }
     })
     )
   }
+  // 
+  const datatest3 =async(startPage)=> {
+    var url = "http://210.121.173.182/notice";
+    let pageNumbers = [];
+    let i, res;
+    if(status === "category") url = url + "/category/" + checkedItem + "/";
+    else if(status === "title") url = url + "/title/" + search + "/";
+    else  url = url + "/";
+    
+    for(i=startPage; i<startPage+5; i++){
+      res = await axios.get(url+i);
+      if(res.data.result.length !== 0) pageNumbers.push(i);
+      else break;
+    }
+    setPage(pageNumbers);
 
+    if(Object.keys(pageNumbers).length !== 5) setMore(false);
+    else{
+      res = await axios.get(url+i);
+      if(res.data.result.length !== 0) setMore(true);
+      else setMore(false);
+    }
+  }
   // 페이지 버튼(다음)
   const handleNextbtn = () => {
       closeDetails(); // 페이지 변경 시 열린 목록 닫기
@@ -413,25 +436,8 @@ const HomePage = () => {
           setminPageNumberLimit(minPageNumberLimit + pageNumberLimit);
       }
 
-      // if(status === "index"){
-      //     if(currentPage === page[page.length-1]){
-      //         for(let i=0; i<page.length; i++){
-      //             page[i] += 5;
-      //         }
-      //     }
-      //     // getData("index", currentPage);
-      // }
-
-      if(currentPage === page[page.length-1]){
-        for(let i=0; i<page.length; i++){
-          page[i] += 5;
-        }
-      }
+      if(((currentPage+1)%5) === 1) datatest3(currentPage+1);
       getDataIndex(currentPage+1);
-      // 수정 필요
-      // console.log(currentPage, page[page.length-1], currentPage+1);
-      // console.log(maxPageNumberLimit, minPageNumberLimit);
-      // console.log(page);
   };
   // 페이지 버튼(이전)
   const handlePrevbtn = () => {
@@ -442,88 +448,57 @@ const HomePage = () => {
           setmaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
           setminPageNumberLimit(minPageNumberLimit - pageNumberLimit);
       }
-
-      // if(status === "index"){
-      //     if(currentPage === page[0]){
-      //         for(let i=0; i<page.length; i++){
-      //             page[i] -= 5;
-      //         }
-      //     }
-      //     // getData("index", currentPage - 2);
-      // }
       
       if(currentPage === page[0] && page[0] !== 1){
-        for(let i=0; i<page.length; i++){
-          page[i] -= 5;
+        let pageNumbers = [];
+        for(let i=currentPage-5; i<currentPage; i++){
+          pageNumbers.push(i);
         }
+        setPage(pageNumbers);
+        setMore(true);
       }
       getDataIndex(currentPage-1);
-      // 수정 필요..
-      // console.log(currentPage, page[0], currentPage-1);
-      // console.log(maxPageNumberLimit, minPageNumberLimit);
-      // console.log(page);
   };
 
   // ==========================================================
 
-  // 데이터 불러오기
-  const getData = async (p1, p2) => {
-      var url = "http://210.121.173.182/notice";
-      if((p1 === "title" && p2 !== "") || p1 === "index" || (p1 === "category" && p2 !== "")) {
-          url = url + "/" + p1 + "/" + p2;
-      }
-      if(p1 === "title") { 
-          if(p2 !== "") setStatus("title");
-          else setStatus("index");
-          const checkboxes = document.getElementsByName('dept');
-          checkboxes.forEach((checkbox) => {
-              checkbox.checked = false;
-          })
-        } // 카테고리 초기화
-      if(p1 === "category") { 
-          if(p2 !== "") setStatus("category");
-          else setStatus("index");
-          setInputValue("");
-      } // 검색창 초기화
-      if(p1 !== "index" && p1 !== undefined) {
-          setData([]);
-          setcurrentPage(1);
-          setmaxPageNumberLimit(5);
-          setminPageNumberLimit(0);
-      } // 카테고리&검색<->인덱스 변환 시 초기화
-      console.log(url);
-      const res = await axios.get(url);
-      console.log(res.data);
-      setData(res.data);
-      if(p1 === undefined || p2 === "") {
-          setStatus("index");
-          setPage([1,2,3,4,5]);
-      }
-      else if(p1 !== "index" && p1 !== undefined) {
-          const pages = [];
-          for (let i = 1; i <= Math.ceil(res.data.length / itemsPerPage); i++) {
-              pages.push(i);
-          }
-          setPage(pages);
-      }
-  }
-
-    // ==========================================================
-    
     // 데이터 저장 (수정)
     const [test, setTest] = useState();
     
     // 처음 페이지 데이터 불러오기(기본)
     useEffect(() => {
       getData1();
+
+      //datatest();
+      setPage([1,2,3,4,5]);
+      console.log(page);
     }, []);
     // 데이터 불러오기(기본)
     const getData1 =async()=> {
       const url = "http://210.121.173.182/notice";
       const res = await axios.get(url);
       setTest(res.data.result);
+    }
+    // 페이지 인덱스 테스트
+    const [more, setMore] = useState(true);
+    const datatest =async()=> {
+      console.log("datatest 실행"); // 
+      const url = "http://210.121.173.182/notice/";
+      let pageNumbers = [];
+      let i, res;
+      for(i=currentPage; i<currentPage+5; i++){
+        res = await axios.get(url+i);
+        if(res.data.result.length !== 0) pageNumbers.push(i);
+        else break;
+      }
+      setPage(pageNumbers);
 
-      // console.log(res.data.result);
+      if(Object.keys(pageNumbers).length !== 5) setMore(false);
+      else{
+        res = await axios.get(url+i);
+        if(res.data.result.length !== 0) setMore(true);
+        else setMore(false);
+      }
     }
 
     // ==========================================================
@@ -544,18 +519,37 @@ const HomePage = () => {
       else {
         setStatus("");
       }
+      
+      console.log(url);
+
       const res = await axios.get(url);
       setTest(res.data.result);
 
       closeDetails(); // 페이지 변경 시 열린 목록 닫기
       uncheckAll(); // 카테고리 전체 해제
 
-      // 수정 필요..
-      setPage([1,2,3,4,5]);
       setcurrentPage(1);
+      getDataFirstSearch(url);
 
       // console.log(res.data);
       // console.log(url);
+    }
+    const getDataFirstSearch =async(url)=> {
+      let pageNumbers = [];
+      let i, res;
+      for(i=1; i<=5; i++){
+        res = await axios.get(url+"/"+i);
+        if(res.data.result.length !== 0) pageNumbers.push(i);
+        else break;
+      }
+      setPage(pageNumbers);
+  
+      if(Object.keys(pageNumbers).length !== 5) setMore(false);
+      else{
+        res = await axios.get(url+"/"+i);
+        if(res.data.result.length !== 0) setMore(true);
+        else setMore(false);
+      }
     }
 
   return (
@@ -567,7 +561,7 @@ const HomePage = () => {
           id="head" 
           name="dept" 
           value="head" 
-          onChange={(e) => checkHandler(e)} />
+          onClick={(e) => checkOnlyOne(e)} />
           대학
         </label>
         <label htmlFor="department">
@@ -575,7 +569,7 @@ const HomePage = () => {
           id="department" 
           name="dept" 
           value="department" 
-          onChange={(e) => checkHandler(e)} />
+          onClick={(e) => checkOnlyOne(e)} />
           학부
         </label>
         <label htmlFor="software">
@@ -583,7 +577,7 @@ const HomePage = () => {
           id="software" 
           name="dept" 
           value="software" 
-          onChange={(e) => checkHandler(e)} />
+          onClick={(e) => checkOnlyOne(e)} />
           소프트웨어
         </label>
         <label htmlFor="informationEngineering">
@@ -591,7 +585,7 @@ const HomePage = () => {
           id="informationEngineering" 
           name="dept" 
           value="informationEngineering" 
-          onChange={(e) => checkHandler(e)} />
+          onClick={(e) => checkOnlyOne(e)} />
           정보공학
         </label>
         <label htmlFor="intelligence">
@@ -599,16 +593,13 @@ const HomePage = () => {
           id="intelligence" 
           name="dept" 
           value="intelligence" 
-          onChange={(e) => checkHandler(e)} />
+          onClick={(e) => checkOnlyOne(e)} />
           인공지능
         </label>
       </Category>
       
       {/*  공지사항 데이터 출력 */}
       {renderData(test)}
-      {/* <div>
-          {status==="index" ? renderData(data) : renderData(currentItems)}
-      </div> */}
       {/*  페이지 이동 버튼 */}
       <PageBtn>
       <ul>
@@ -624,7 +615,7 @@ const HomePage = () => {
       <li>
           <button
               onClick={handleNextbtn}
-              // disabled={status !== "index" && currentPage === page[page.length - 1] ? true : false}
+              disabled={currentPage === page[Object.keys(page).length-1] && more === false ? true : false}
           >
           &gt;
           </button>

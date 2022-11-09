@@ -5,7 +5,7 @@ import Spiner from './../images/Spiner.gif'
 const Loading = () => {
   return (
     <Background>
-      <img src={Spiner} alt="로딩중" width="5%" />
+      <img src={Spiner} alt="로딩중" className='img-size' />
       <LoadingText>wait for me</LoadingText>
     </Background>
   ) 
@@ -23,6 +23,14 @@ const Background = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+
+  .img-size {
+    width: 6%;
+
+    @media screen and (max-width: 430px) {
+      width: 20%;
+    }
+  }
 `;
 
 const LoadingText = styled.div`

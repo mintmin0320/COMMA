@@ -1,23 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
+import styled from 'styled-components';
 // 개발자
 import _axios from '../../utils/axios';
-import titleTab from '../../utils/TitleTab';
 //css
-import styled from 'styled-components';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Approval = () => {
-  const titleUpdator = titleTab("Loading...");
-  setTimeout(() => titleUpdator("마이페이지 - COMMA"), 100);
-  const dispatch = useDispatch();
   const id = useSelector((store) => store.auth.authStatus.userId);
   const [state, setState] = useState({
-    userPw: '',
-    checkPw: false,
     result:  false,        
-    message: null,
     approvalList: [],
   });
 
@@ -75,10 +68,8 @@ const OrederList = styled.div`
   width: 100%;
   height: 240px;
   display: flex;
-  // border: 1px solid #D8D8D8;
   flex-direction: column; 
   align-items: center;
-  // justify-content: center;
   overflow: scroll;
 
   ::-webkit-scrollbar {
@@ -109,7 +100,7 @@ const OrederList = styled.div`
 
     ::-webkit-scrollbar {
       display: none;
-      }
+    }
   }
 
   .approve-data {

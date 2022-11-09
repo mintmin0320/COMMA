@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-// 개발자
-import {  logoutRequest } from '../../redux/actions/auth';
-import EllipsisText from 'react-ellipsis-text';
-//npm install --save react-ellipsis-text    
+import EllipsisText from 'react-ellipsis-text'; //npm install --save react-ellipsis-text    
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// 개발자
+import { logoutRequest } from '../../redux/actions/auth';
+import ProfileImg from './ProfileImg';
 //css
 import styled from 'styled-components';
-import banner from '../../images/white_bg.svg';
 import chip from '../../images/chip.png';
 //icon
 import { faUser, faCartShopping, faGear, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
@@ -31,15 +30,22 @@ const Profile = () => {
     const _getProfileData = async () => {
       const url = `http://210.121.173.182/user/profile/${userId}`;
       const response = await axios.get(url);
+      console.log(response);
       setState({
         ...state,
-        nickname: response.data.user,
-      })
-      console.log('프로필 조회성공');
+        nickname: response.data.result,
+      });
+      if(response.status === 200){
+        console.log('프로필 조회성공');
+      } else {
+        console.log('프로필 조회실패');
+      }    
+      return () => _getProfileData();
     }
     _getProfileData()
-  },[]);
-
+  }
+  ,[]);
+  
   return (
     <Container>
       <ProfileBox>
@@ -72,7 +78,7 @@ const Profile = () => {
               <div className='img-box'>
                 <div className='img-mid-box'>
                   <div className='img'>
-                    <img src={banner} alt="logo" className='profile'/>  
+                    <ProfileImg/>
                   </div>
                   <div className='logout-box'>
                     <button
