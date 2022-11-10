@@ -10,10 +10,8 @@ import {
 import PrivateRoute from './PrivateRoute '; // 로그인 체크
 import { 
   MypageHome, // 마이페이지 홈
+  MyPost,
 } from "../pages/mypage";
-// css
-
-// icon or images
 
 const MypageRoute = () => {
   return (
@@ -26,6 +24,14 @@ const MypageRoute = () => {
           </PrivateRoute>
         }
       />
+    <Route 
+      path="mypost" 
+      element={
+        // <PrivateRoute>
+            <MyPost />
+        // </PrivateRoute>
+      }
+    />
     </Routes>
   );
 }

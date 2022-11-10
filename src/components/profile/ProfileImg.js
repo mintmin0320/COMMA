@@ -10,6 +10,7 @@ const ProfileImg = () => {
 
   useEffect(() => {
     const _getProfileData = async () => {
+      
       const url = `http://210.121.173.182/user/profileImg/${userId}`;
       const response = await axios.get(url, {responseType: 'blob'});
       // console.log(response);
@@ -36,7 +37,7 @@ const ProfileImg = () => {
   ,[]);
 
   return (
-    <img src={imgBase64} alt="logo" className='profile' style={{objectFit: "cover"}}/>  
+    <img src={url} alt="logo" className='profile' style={{objectFit: "cover"}}/>  
   );
 }
 
