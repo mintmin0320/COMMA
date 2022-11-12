@@ -12,6 +12,7 @@ const Approval = () => {
   const [state, setState] = useState({
     result:  false,        
     approvalList: [],
+    check: true,
   });
 
   useEffect(() => {
@@ -20,13 +21,17 @@ const Approval = () => {
       const response = await axios.get(url);
       console.log(url);
       console.log(response);
-      if(response.status === 200){
+      if(response.data.result){
         setState({
           ...state,
           approvalList: response.data.result.승인,
         })
         console.log('회원 주문목록(승인) 조회성공');
       } else {
+        setState({
+          ...state,
+          approvalList: [],
+        });
         console.log('회원 주문목록(승인) 조회실패');
       }
     }

@@ -34,6 +34,7 @@ const MypageInfo = () => {
     application: true,
     changeImg: false,
     loading: false,
+    card: true,
   });
     
   const _handleApplication = () => {
@@ -92,13 +93,17 @@ const MypageInfo = () => {
       const url = `http://210.121.173.182/user/arduino/${id}`;
       const response = await axios.get(url);
       console.log(response);
-      if(response.status === 200){
+      if(response.data.result){
         setState({
           ...state,
           orderList: response.data.result.신청,
-        })
+        });
         console.log('회원 주문목록 조회성공');
-      } else {
+      }else {
+        setState({
+          ...state,
+          orderList: [],
+        });
         console.log('회원 주문목록 조회실패');
       }
     }
@@ -177,6 +182,7 @@ const MypageInfo = () => {
               <div className='info-text'>
                 <div className='info-id'>아이디</div>
                 <div className='info-nick'>닉네임</div>
+                <div className='info-bbs'>내가 쓴 글</div>
               </div>
               <MyNickname/>
             </div>
@@ -331,6 +337,7 @@ const Content = styled.div`
     display:flex;
     align-items: center;
     font-size: 25px;
+    margin: 20px 0 0 0;
   }
 
   .change-status {
@@ -475,13 +482,15 @@ const MyInfo = styled.div`
     border-left: 1px solid #D8D8D8;
   }
 
-  .info-phone {
+  .info-bbs {
     width: 100%;
     height: 33%;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-bottom: 1px solid #D8D8D8;
     border-right: 1px solid #D8D8D8;
+    border-left: 1px solid #D8D8D8;
   }
 
   .info-data {

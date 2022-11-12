@@ -37,7 +37,7 @@ const ProfileImg = () => {
   ,[]);
 
   return (
-    <img src={url} alt="logo" className='profile' style={{objectFit: "cover"}}/>  
+    <img src={imgBase64} alt="logo" className='profile' style={{objectFit: "cover"}}/>  
   );
 }
 

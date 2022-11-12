@@ -11,7 +11,7 @@ import ProfileImg from './ProfileImg';
 import styled from 'styled-components';
 import chip from '../../images/chip.png';
 //icon
-import { faUser, faCartShopping, faGear, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faCartShopping, faGear, faChevronLeft, faComment } from "@fortawesome/free-solid-svg-icons";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -98,6 +98,10 @@ const Profile = () => {
               <Link to="/basket" className='button-box'>
                 <FontAwesomeIcon icon={faCartShopping} />
               </Link>
+              {userId !== 'admin' && (
+              <Link to="/ask" className='button-box'>
+                <FontAwesomeIcon icon={faComment} />
+              </Link>)}
               {userId === 'admin' && (
                 <Link to="/admin/memberlist" className='button-box'>
                   <FontAwesomeIcon icon={faGear} />

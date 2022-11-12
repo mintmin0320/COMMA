@@ -10,6 +10,7 @@ import {
   AdminHome, // 관리자페이지 홈
   AdminOrder,
   AdminFeed,
+  AdminAsk,
 } from "../pages/admin";
 
 const AdminRoute = () => {
@@ -44,7 +45,17 @@ const AdminRoute = () => {
             </ProtectedRoute>
           </PrivateRoute>
         }
-      />   
+      />  
+      <Route 
+        path="ask" 
+        element={
+          <PrivateRoute>
+            <ProtectedRoute>
+              <AdminAsk />
+            </ProtectedRoute>
+          </PrivateRoute>
+        }
+      />    
     </Routes>
   );
 }

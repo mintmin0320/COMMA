@@ -61,7 +61,6 @@ const ProfileBox = styled.div`
 const WeatherBox = styled.div`
   width: 85%;
   height: 50px;
-  margin-top: 20px;
 `;
 
 const CafeteriaMenuBox = styled.div`

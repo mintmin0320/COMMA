@@ -59,6 +59,16 @@ const AdminBar = () => {
             >
               피드백 현황
             </NavLink>
+            <NavLink
+              to="/admin/ask"
+              className='button-box'
+              style={({ isActive }) => ({
+                color: isActive ? 'white' : '#0064ff',
+                backgroundColor: isActive ? '#0064ff' : '#F5F5F5',
+              })}  
+            >
+              문의 게시판
+            </NavLink>
           </div>
         </div>
       </div>

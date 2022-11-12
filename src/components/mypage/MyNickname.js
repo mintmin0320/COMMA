@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+// import { Link } from 'react-router-dom';
 // 개발자
 import _axios from '../../utils/axios';
 //css
@@ -39,6 +40,7 @@ const MyNickname = () => {
     <div className='info-data'>
       <div className='id'>{state.userId}</div>
       <div className='nick'>{state.nickname}</div>
+      <div className='nick'>3개</div>
     </div>
   )
 }
