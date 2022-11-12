@@ -3,15 +3,15 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import styled from 'styled-components';
 import { toast, ToastContainer } from 'react-toastify';
+import { Link } from 'react-router-dom';
 // 개발자
 import Withdrawal from './Withdrawal';
 import _axios from '../../utils/axios';
 import titleTab from '../../utils/TitleTab';
-import TopButton from '../TopButton';
-import Approval from './Approval';
 import Loading from '../Loading';
 import MyPageImg from './MyPageImg';
 import MyNickname from './MyNickname';
+import MyOrderlist from './MyOrderlistPage';
 //css, icon
 import logo from '../../images/white_bg.svg';
 import 'react-toastify/dist/ReactToastify.css';
@@ -35,22 +35,12 @@ const MypageInfo = () => {
     changeImg: false,
     loading: false,
     card: true,
+    check1: false,
+    check2: false,
+    check3: false,
+    check4: false,
   });
     
-  const _handleApplication = () => {
-    setState({
-      ...state,
-      application: true,
-    })
-  };
-
-  const _handleApplication2 = () => {
-    setState({
-      ...state,
-      application: false,
-    })
-  };
-
   const _handleWithdrawal = () => {
     setState({
       ...state,
@@ -58,112 +48,65 @@ const MypageInfo = () => {
     })
   };
 
-  // 신청 취소 버튼
-  const _handleStrikethrough = (data) => {
-    _getStrikethrough(data);
-  };
-  
-  const _getStrikethrough = async (data) => {
-    const url = 'http://210.121.173.182/user/arduino'
+  const checkChange1 = () => {
     setState({
       ...state,
-      loading: true,
+      check1: true,
+      check2: false,
+      check3: false,
+      check4: false,
     })
-    const response = await axios.delete(url, {
-      data: {
-        userId: id,
-        applicationTime: data,
-      }
-    });
-    console.log(response);
-    if(response.data.result){
-      window.location.reload();
-    }
-    else {
-      toast.error('실패!');
-    }
+  };
+
+  const checkChange2 = () => {
     setState({
       ...state,
-      loading: false,
-    });
-  }
+      check1: false,
+      check2: true,
+      check3: false,
+      check4: false,
+    })
+  };
 
-  useEffect(() => {
-    const getOrderData = async () => {
-      const url = `http://210.121.173.182/user/arduino/${id}`;
-      const response = await axios.get(url);
-      console.log(response);
-      if(response.data.result){
-        setState({
-          ...state,
-          orderList: response.data.result.신청,
-        });
-        console.log('회원 주문목록 조회성공');
-      }else {
-        setState({
-          ...state,
-          orderList: [],
-        });
-        console.log('회원 주문목록 조회실패');
-      }
-    }
-    getOrderData()
-  },[]);
+  const checkChange3 = () => {
+    setState({
+      ...state,
+      check1: false,
+      check2: false,
+      check3: true,
+      check4: false,
+    })
+  };
 
-  const Card = () => {
-    return (
-      <OrederList>
-        {state.orderList.map((item, index) => {
-          const basketList = item.basket;
-          return (
-            <div className='order-data' key={index}>
-              <div className='date-data'>{item.applicationDate}</div>
-              <div className='list-data'>
-                {basketList.map((row, index2) => {
-                  return(
-                    <div className='row-box' key={index2}>
-                      <div>{row.item}</div>
-                      <div className='count-color'>{row.count}EA</div>
-                    </div>
-                  )
-                })}
-              </div>
-              <div className='approve-data'>{item.status}</div>
-              <div className='strikethrough-data'>
-                <button
-                  className='strikethrough-btn'
-                  type='button'
-                  onClick={() => _handleStrikethrough(item.applicationDate)}
-                >
-                  X
-                </button>
-              </div>
-            </div>
-          )
-        })}
-      </OrederList>
-    );
+  const checkChange4 = () => {
+    setState({
+      ...state,
+      check1: false,
+      check2: false,
+      check3: false,
+      check4: true,
+    })
   };
 
   // 이미지 업로드
-  const _handleChangeFile = async (event) => {
-    const formData = new FormData();
-    formData.append('profileImg', event.target.files[0]);
-    formData.append('userId', id);
-    // for (let key of formData.keys()) {
-    //   console.log(key, ":", formData.get(key));
-    // }
-    const url = 'http://210.121.173.182/user/profileImg';
-    const data = formData;
-    const response = await axios.post(url, data);
-    console.log(response);
-    if(response.status === 200) {
-      window.location.reload();
-      console.log('이미지 업로드 성공!');
-    } else {
-      toast.error('이미지 업로드 실패!');
-    }
-  }
+  // const _handleChangeFile = async (event) => {
+  //   const formData = new FormData();
+  //   formData.append('profileImg', event.target.files[0]);
+  //   formData.append('userId', id);
+  //   // for (let key of formData.keys()) {
+  //   //   console.log(key, ":", formData.get(key));
+  //   // }
+  //   const url = 'http://210.121.173.182/user/profileImg';
+  //   const data = formData;
+  //   const response = await axios.post(url, data);
+  //   console.log(response);
+  //   if(response.status === 200) {
+  //     window.location.reload();
+  //     console.log('이미지 업로드 성공!');
+  //   } else {
+  //     toast.error('이미지 업로드 실패!');
+  //   }
+  // }
 
   // 파일 삭제
   const _handledeleteFileImage = () => {
@@ -176,7 +119,21 @@ const MypageInfo = () => {
       { state.loading ? <Loading/> : null }
       {!state.page && (
         <Content>
-          <div className='title1'>내정보</div>
+          <div className='title1'>
+            <div className='menu-box' onClick={checkChange1}>
+              내정보
+            </div>
+            <duv className='menu-box' onClick={checkChange2}>
+              신청목록
+            </duv>
+            <div className='menu-box' onClick={checkChange3}>
+              활동기록
+            </div>
+            <div className='menu-box' onClick={checkChange4}>
+              회원탈퇴
+            </div>
+          </div>
+          {state.check1 && !state.check2 && !state.check3 && !state.check4 && (
           <MyInfo>
             <div className='info'>
               <div className='info-text'>
@@ -184,12 +141,12 @@ const MypageInfo = () => {
                 <div className='info-nick'>닉네임</div>
                 <div className='info-bbs'>내가 쓴 글</div>
               </div>
-              <MyNickname/>
+              {/* <MyNickname/> */}
             </div>
             <div className='change-profile'>
               <div className='change-button-box'>
                 <div className='img-box'>
-                  <MyPageImg/>
+                  {/* <MyPageImg/> */}
                 </div>
                 <div className='btn-box'>
                   <div className='btn'>
@@ -200,7 +157,7 @@ const MypageInfo = () => {
                       type="file"
                       accept='image/*'
                       id='profile'
-                      onChange={_handleChangeFile}
+                      // onChange={_handleChangeFile}
                     />
                   </div>
                   <div className='delete-box'>
@@ -214,76 +171,23 @@ const MypageInfo = () => {
               </div>
             </div>
           </MyInfo>
-          <div className='title2'>신청목록</div>
-            <div className='change-status'>
-              {state.application 
-                ?<Fragment>
-                    <div
-                      className='change-text'
-                      onClick={_handleApplication}
-                    >
-                      신청
-                    </div>
-                    &nbsp;&nbsp;
-                    <div
-                      className='change-text2' 
-                      onClick={_handleApplication2}
-                    >
-                      승인
-                    </div>
-                  </Fragment>
-                  :
-                  <Fragment>
-                    <div
-                      className='change-text2'
-                      onClick={_handleApplication}
-                    >
-                      신청
-                    </div>
-                    &nbsp;&nbsp;
-                    <div
-                      className='change-text'
-                      onClick={_handleApplication2}
-                    >
-                      승인
-                    </div>
-                  </Fragment>
-                }
-              </div>
-              <div className='order-box'>
-                {state.application ? 
-                  <div className='order-text'>
-                    <div className='date'>신청날짜</div>
-                    <div className='list'>신청목록</div>
-                    <div className='approve'>상태</div>
-                    <div className='strikethrough'>취소</div>
-                  </div>
-                  :
-                  <div className='order-text'>
-                    <div className='date'>신청날짜</div>
-                    <div className='list2'>신청목록</div>
-                    <div className='approve2'>상태</div>
-                  </div>  
-                }
-                {!state.application ? <Approval/> : <Card/>}
-              </div>
-              <WithdrawalButton>
-                <button
-                  className='withdrawal-button'
-                  onClick={_handleWithdrawal}
-                >
-                  <div className='login-text'>회원탈퇴</div>
-                </button>
-              </WithdrawalButton>
-            <TopButton/>
+          )}
+          
+          {!state.check1 && state.check2 && !state.check3 && !state.check4 && (
+            <React.Fragment>
+            <div className='title2'>신청목록</div>
+            <MyOrderlist/>
+            </React.Fragment>
+          )}
+              {!state.check1 && !state.check2 && state.check3 && !state.check4 && (
+                <div>hi</div>
+              )}
+              {!state.check1 && !state.check2 && !state.check3 && state.check4 &&(
+                <Withdrawal/>
+              )}
           </Content>
         )
       }  
-      {state.page && (
-        <WithdrawalBox>
-          <Withdrawal/>
-        </WithdrawalBox>
-      )}
       <ToastContainer
         position="top-center"
         autoClose={900}
@@ -321,13 +225,24 @@ const Content = styled.div`
   align-items: center;
 
   .title1 {
-    width: 96%;
+    width: 100%;
     height: 5%;
-    border-bottom: 2px solid black;
+    border-bottom: 1px solid #D8D8D8;
     display:flex;
     align-items: center;
     font-size: 25px;
-    margin: 10px 0 0 0;
+    /* margin: 10px 0 0 0; */
+    /* background: red; */
+  }
+
+  .menu-box {
+    width : 15%;
+    height: 100%;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #D8D8D8;
+    cursor: pointer;
   }
 
   .title2 {
@@ -669,101 +584,6 @@ const MyInfo = styled.div`
 const WithdrawalBox = styled.div`
   width: 100%;
   height: 280px;
-`;
-
-const OrederList = styled.div`
-  width: 100%;
-  height: 240px;
-  display: flex;
-  // border: 1px solid #D8D8D8;
-  flex-direction: column; 
-  align-items: center;
-  // justify-content: center;
-  overflow: scroll;
-
-  ::-webkit-scrollbar {
-    display: none;
-  }
-
-  .order-data {
-    width: 100%;
-    height: 50%;
-    display: flex;
-    border-bottom: 1px solid #D8D8D8;
-  }
-  
-  .date-data {
-    width: 20%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-right: 1px solid #D8D8D8;
-  }
-
-  .list-data {
-    width: 60%;
-    height: 100%;
-    border-right: 1px solid #D8D8D8;
-    overflow: scroll;
-
-    ::-webkit-scrollbar {
-      display: none;
-      }
-  }
-
-  .approve-data {
-    width: 10%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-right: 1px solid #D8D8D8;
-  }
-
-  .strikethrough-data {
-    width: 10%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .row-box {
-    border-bottom: 1px solid black;
-    padding: 8px;
-  }
-
-  .count-color {
-    color: #0064ff;
-  }
-
-  .change-profile {
-    width: 48%;
-    height: 100%;
-    display: flex;
-    background: red;
-    
-    @media screen and (max-width: 430px) {
-      width: 98%;
-      font-size: 15px;
-    }
-  }
-
-  .strikethrough-btn {
-    width: 50%;
-    height: 40%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-    
-    @media screen and (max-width: 430px) {
-      width: 60%;
-      height: 60%;
-    }
-  }
-
 `;
 
 const WithdrawalButton = styled.div`
