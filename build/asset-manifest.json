@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/static/css/main.bc9a9e0a.css",
+    "main.js": "/static/js/main.79cb4e8b.js",
+    "static/media/mypage.png": "/static/media/mypage.287d471a117ee7676240.png",
+    "static/media/basketpage.png": "/static/media/basketpage.94e3886d55f84c9aaeaf.png",
+    "static/media/arduino.png": "/static/media/arduino.8ec95d5691144f696349.png",
+    "static/media/mail2.png": "/static/media/mail2.f81bffbe2431c872f52d.png",
+    "static/media/mail1.png": "/static/media/mail1.3f112e57e7f0f227ec17.png",
+    "static/media/banner.png": "/static/media/banner.94ee1a08c79d6bc0008e.png",
+    "static/media/Spiner.gif": "/static/media/Spiner.e83d2aaaed38fb1e27b9.gif",
+    "static/media/chip.png": "/static/media/chip.7633d5131a92e5f57f8b.png",
+    "static/media/nophoto.png": "/static/media/nophoto.14e78f7210e51c1b737d.png",
+    "static/media/blue_bg.svg": "/static/media/blue_bg.5e299764e3d640da66596809a34603e8.svg",
+    "static/media/white_bg.svg": "/static/media/white_bg.0311043895dc18e90bcc2d7d8e1ffd16.svg",
+    "index.html": "/index.html",
+    "static/media/circle-plus-solid.svg": "/static/media/circle-plus-solid.1ea27f8a8b30b5acfadd92df5589b991.svg",
+    "static/media/grey-arrow.svg": "/static/media/grey-arrow.aab86ea8bfe9fb8c7d38cf3d056c991b.svg",
+    "main.bc9a9e0a.css.map": "/static/css/main.bc9a9e0a.css.map",
+    "main.79cb4e8b.js.map": "/static/js/main.79cb4e8b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bc9a9e0a.css",
+    "static/js/main.79cb4e8b.js"
+  ]
+}
