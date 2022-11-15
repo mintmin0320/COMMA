@@ -12,6 +12,7 @@ import Loading from '../Loading';
 import MyPageImg from './MyPageImg';
 import MyNickname from './MyNickname';
 import MyOrderlist from './MyOrderlistPage';
+import MyLog from './MyLog';
 //css, icon
 import logo from '../../images/white_bg.svg';
 import 'react-toastify/dist/ReactToastify.css';
@@ -51,7 +52,7 @@ const MypageInfo = () => {
   const checkChange1 = () => {
     setState({
       ...state,
-      check1: true,
+      check1: false,
       check2: false,
       check3: false,
       check4: false,
@@ -88,25 +89,25 @@ const MypageInfo = () => {
     })
   };
 
-  // 이미지 업로드
-  // const _handleChangeFile = async (event) => {
-  //   const formData = new FormData();
-  //   formData.append('profileImg', event.target.files[0]);
-  //   formData.append('userId', id);
-  //   // for (let key of formData.keys()) {
-  //   //   console.log(key, ":", formData.get(key));
-  //   // }
-  //   const url = 'http://210.121.173.182/user/profileImg';
-  //   const data = formData;
-  //   const response = await axios.post(url, data);
-  //   console.log(response);
-  //   if(response.status === 200) {
-  //     window.location.reload();
-  //     console.log('이미지 업로드 성공!');
-  //   } else {
-  //     toast.error('이미지 업로드 실패!');
-  //   }
-  // }
+  //이미지 업로드
+  const _handleChangeFile = async (event) => {
+    const formData = new FormData();
+    formData.append('profileImg', event.target.files[0]);
+    formData.append('userId', id);
+    // for (let key of formData.keys()) {
+    //   console.log(key, ":", formData.get(key));
+    // }
+    const url = 'http://210.121.173.182/user/profileImg';
+    const data = formData;
+    const response = await axios.post(url, data);
+    console.log(response);
+    if(response.status === 200) {
+      window.location.reload();
+      console.log('이미지 업로드 성공!');
+    } else {
+      toast.error('이미지 업로드 실패!');
+    }
+  }
 
   // 파일 삭제
   const _handledeleteFileImage = () => {
@@ -120,12 +121,12 @@ const MypageInfo = () => {
       {!state.page && (
         <Content>
           <div className='title1'>
-            <div className='menu-box' onClick={checkChange1}>
+            <div className='menu-box2' onClick={checkChange1}>
               내정보
             </div>
-            <duv className='menu-box' onClick={checkChange2}>
+            <div className='menu-box' onClick={checkChange2}>
               신청목록
-            </duv>
+            </div>
             <div className='menu-box' onClick={checkChange3}>
               활동기록
             </div>
@@ -133,20 +134,20 @@ const MypageInfo = () => {
               회원탈퇴
             </div>
           </div>
-          {state.check1 && !state.check2 && !state.check3 && !state.check4 && (
+          {!state.check1 && !state.check2 && !state.check3 && !state.check4 && (
           <MyInfo>
             <div className='info'>
               <div className='info-text'>
                 <div className='info-id'>아이디</div>
                 <div className='info-nick'>닉네임</div>
-                <div className='info-bbs'>내가 쓴 글</div>
+                <div className='info-bbs'>전화번호</div>
               </div>
-              {/* <MyNickname/> */}
+              <MyNickname/>
             </div>
             <div className='change-profile'>
               <div className='change-button-box'>
-                <div className='img-box'>
-                  {/* <MyPageImg/> */}
+              <div className='img-box'>
+                  <MyPageImg/>
                 </div>
                 <div className='btn-box'>
                   <div className='btn'>
@@ -157,7 +158,7 @@ const MypageInfo = () => {
                       type="file"
                       accept='image/*'
                       id='profile'
-                      // onChange={_handleChangeFile}
+                      onChange={_handleChangeFile}
                     />
                   </div>
                   <div className='delete-box'>
@@ -180,7 +181,7 @@ const MypageInfo = () => {
             </React.Fragment>
           )}
               {!state.check1 && !state.check2 && state.check3 && !state.check4 && (
-                <div>hi</div>
+                <MyLog/>
               )}
               {!state.check1 && !state.check2 && !state.check3 && state.check4 &&(
                 <Withdrawal/>
@@ -208,7 +209,7 @@ const Container = styled.div`
   height: 55vmax; 
   display: flex;
   justify-content: center;
-  background: white;
+  
   margin-top: 20px;
 
   @media screen and (max-width: 430px) {
@@ -219,20 +220,21 @@ const Container = styled.div`
 
 const Content = styled.div`
   width: 100%;
-  // height: 800px;
+  height: 75%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: white;
 
   .title1 {
     width: 100%;
-    height: 5%;
-    border-bottom: 1px solid #D8D8D8;
+    height: 7%;
+    /* border-bottom: 1px solid #D8D8D8; */
     display:flex;
     align-items: center;
-    font-size: 25px;
+    font-size: 20px;
     /* margin: 10px 0 0 0; */
-    /* background: red; */
+    /* background: #0064ff; */
   }
 
   .menu-box {
@@ -242,7 +244,43 @@ const Content = styled.div`
     align-items: center;
     justify-content: center;
     border-right: 1px solid #D8D8D8;
+    border-top: 1px solid #D8D8D8;
+    /* border-bottom: 1px solid #D8D8D8; */
     cursor: pointer;
+    background: #0064ff;
+    color: white;
+
+    @media screen and (max-width: 430px) {
+      width: 100%;
+    }
+  }
+
+  .menu-box2 {
+    width : 15%;
+    height: 100%;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #D8D8D8;
+    border-top: 1px solid #D8D8D8;
+    border-left: 1px solid #D8D8D8;
+    cursor: pointer;
+    background: #0064ff;
+    color: white;
+
+    @media screen and (max-width: 430px) {
+      width: 100%;
+    }
+  }
+
+  .menu-box:hover {
+    color: #0064ff;
+    background: white;
+  }
+
+  .menu-box2:hover {
+    color: #0064ff;
+    background: white;
   }
 
   .title2 {

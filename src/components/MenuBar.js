@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {  logoutRequest } from '../redux/actions/auth';
 import { toast, ToastContainer } from 'react-toastify';
 //css
@@ -14,6 +14,7 @@ import { faBars, faL } from "@fortawesome/free-solid-svg-icons";
 import Logo from '../images/blue_bg.svg';
 
 const MenuBar = () => {
+  const userId = useSelector((store) => store.auth.authStatus.userId);
   const dispatch = useDispatch();
   const [state, setState] = useState({
     menubar: false,
@@ -134,6 +135,27 @@ const MenuBar = () => {
           >
             채용공고
           </NavLink>
+          {userId !== 'admin' ?
+          <NavLink to="/ask"
+          className='menu-button4'
+          style={({ isActive }) => ({
+            color: isActive ? 'white' : '#0064ff',
+            backgroundColor: isActive ? '#0064ff' : '#F2F2F2',
+          })}
+        >
+          문의
+        </NavLink>
+        :
+        <NavLink to="/admin/ask"
+            className='menu-button4'
+            style={({ isActive }) => ({
+              color: isActive ? 'white' : '#0064ff',
+              backgroundColor: isActive ? '#0064ff' : '#F2F2F2',
+            })}
+          >
+            문의(관리자)
+          </NavLink>
+        }
           <button
             className='menu-button5'
             onClick={_handleLogout}

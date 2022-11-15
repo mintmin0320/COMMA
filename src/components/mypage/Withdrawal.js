@@ -6,14 +6,11 @@ import styled from 'styled-components';
 // 개발자
 import { logoutRequest } from '../../redux/actions/auth'
 import _axios from '../../utils/axios';
-import titleTab from '../../utils/TitleTab';
 import Loading from '../Loading';
 //css
 import 'react-toastify/dist/ReactToastify.css';
 
 const Withdrawal = () => {
-  const titleUpdator = titleTab("Loading...");
-  setTimeout(() => titleUpdator("마이페이지 - COMMA"), 100);
   const dispatch = useDispatch();
   const userId = useSelector((store) => store.auth.authStatus.userId);
   const [state, setState] = useState({
@@ -148,7 +145,7 @@ const Withdrawal = () => {
 
 const Container = styled.div`
   width: 100%;
-  height: 100%; 
+  height: 30%; 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -168,7 +165,7 @@ const Content = styled.div`
     height: 25%;
     display: flex;
     border-bottom: 1px solid #D8D8D8;
-      // background: red;
+  
   }
 
   .input-box {
@@ -195,6 +192,10 @@ const Content = styled.div`
     // border-radius: 10px 10px 10px 10px;
     // margin-left: 15px;
     color: white;
+
+    @media screen and (max-width: 430px) {
+      width: 15%;
+    }
   }
 `;
 
@@ -218,6 +219,10 @@ const WithdrawalButton = styled.div`
     height: 50px;
     background: #0064ff;
     border-radius: 10px 10px 10px 10px;
+
+    @media screen and (max-width: 430px) {
+      width: 30%;
+    }
   }
 
   .login-text {

@@ -26,6 +26,7 @@ const MyNickname = () => {
           ...state,
           userId: response.data.user.user_id,
           nickname: response.data.user.user_nickname,
+          phone: response.data.user.phone,
         });
         console.log('회원정보 조회성공!');
       } else {
@@ -40,7 +41,7 @@ const MyNickname = () => {
     <div className='info-data'>
       <div className='id'>{state.userId}</div>
       <div className='nick'>{state.nickname}</div>
-      <div className='nick'>3개</div>
+      <div className='nick'>{state.phone}</div>
     </div>
   )
 }
