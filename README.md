@@ -4,7 +4,7 @@
 # 컴퓨터공학부 커뮤니티 - COMMA
 <div align="center">📗언어📗</div>
 <div align="center">
-  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=black"/>
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white"/>
 </div>  
 <br/>
 
