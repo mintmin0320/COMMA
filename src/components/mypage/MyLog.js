@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import styled from 'styled-components';
 // 개발자
-import Loading from '../Loading';
 import MyComment from './MyComment';
 //css
 import 'react-toastify/dist/ReactToastify.css';
