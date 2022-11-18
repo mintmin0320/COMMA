@@ -1,4 +1,4 @@
-<div align="center" background="red">
+<div align="center" background="red" style="color= green">
 
 ![header](https://capsule-render.vercel.app/api?type=waving&text=COMMA&height=250&fontColor=FFFFFF&fontSize=60&fontAlignY=40&color=timeGradient)
 # 컴퓨터공학부 커뮤니티 - COMMA
