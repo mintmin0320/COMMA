@@ -1,7 +1,7 @@
 <div align="center" background="red" style="color= green">
 
 ![header](https://capsule-render.vercel.app/api?type=waving&text=COMMA&height=250&fontColor=FFFFFF&fontSize=60&fontAlignY=40&color=timeGradient)
-# 컴퓨터공학부 커뮤니티 - COMMA
+# 컴퓨터공학부 커뮤니티 - COMMA (졸업작품)
 <div align="center">📗언어📗</div>
 <div align="center">
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white"/>
