@@ -7,7 +7,7 @@ import styled from 'styled-components';
 //input & button
 //icon
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLocationDot  } from '@fortawesome/free-solid-svg-icons';
+import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
 
 const Weather = () => {
   let today = new Date();
@@ -35,32 +35,32 @@ const Weather = () => {
 
   useEffect(() => {
     const _Refresh = async () => {
-      const url = 'http://210.121.173.182/weather';
+      const url = `${process.env.REACT_APP_SERVER_DOMAIN}/weather`;
       const response = await axios.get(url);
       console.log(response);
       const weatherData = response.data.result;
       console.log(response.data.result);
-      if(response.status === 200){
-        for(let i = 0; i < weatherData.length; i++){
-          if(response.data.result[i].fcstTime === time && response.data.result[i].category === 'SKY'){            
+      if (response.status === 200) {
+        for (let i = 0; i < weatherData.length; i++) {
+          if (response.data.result[i].fcstTime === time && response.data.result[i].category === 'SKY') {
             skydata = response.data.result[i].fcstValue;
-            console.log('하늘상태' + skydata); 
+            console.log('하늘상태' + skydata);
           }
-          if(response.data.result[i].fcstTime === time && response.data.result[i].category === 'PTY' && response.data.result[i].fcstValue !== '0'){            
+          if (response.data.result[i].fcstTime === time && response.data.result[i].category === 'PTY' && response.data.result[i].fcstValue !== '0') {
             ptydata = response.data.result[i].fcstValue;
-            console.log('강수형태' + ptydata); 
+            console.log('강수형태' + ptydata);
           }
-          if(response.data.result[i].fcstTime === time && response.data.result[i].category === 'POP'){            
+          if (response.data.result[i].fcstTime === time && response.data.result[i].category === 'POP') {
             popdata = response.data.result[i].fcstValue;
-            console.log('강수확률' + popdata); 
+            console.log('강수확률' + popdata);
           }
-          if(response.data.result[i].fcstTime === time && response.data.result[i].category === 'TMP'){            
+          if (response.data.result[i].fcstTime === time && response.data.result[i].category === 'TMP') {
             tmpdata = response.data.result[i].fcstValue;
-            console.log('기온' + tmpdata); 
+            console.log('기온' + tmpdata);
           }
-          if(response.data.result[i].fcstTime === time && response.data.result[i].category === 'REH'){            
+          if (response.data.result[i].fcstTime === time && response.data.result[i].category === 'REH') {
             rehdata = response.data.result[i].fcstValue;
-            console.log('습도' + rehdata); 
+            console.log('습도' + rehdata);
           }
           // if(response.data.result[i].fcstTime === time && response.data.result[i].category === 'PCP'){            
           //   pcpdata = response.data.result[i].fcstValue;
@@ -77,12 +77,12 @@ const Weather = () => {
           });
         }
         console.log('날씨 갱신 성공');
-      }else{    
+      } else {
         console.log('날씨 갱신 실패');
       }
     }
-      _Refresh();
-  },[]);
+    _Refresh();
+  }, []);
 
   const TopWidget = () => {
     let timerId = setTimeout(() => {
@@ -92,15 +92,15 @@ const Weather = () => {
       });
       return () => clearInterval(timerId);
     }, 8000);
-    return(
+    return (
       <Fragment>
         <div className='popBox'>{(state.sky === '1') ? '맑음' : (state.sky === '3') ? '구름많음' : (state.sky === '4') ? '흐림' : '갱신필요'}
-        {state.pty === '/1' ? '/비' : (state.pty === '/2') ? '/(비,눈)' : (state.pty === '/3') ? '/눈' : (state.pty === '/5') ? '/빗방울'
-        : (state.pty === '/6') ? '/빗방울눈날림' : (state.pty === '/7') ? '/눈날림' : (state.pty === '/4') ? '/소나기' : ''} </div>  
+          {state.pty === '/1' ? '/비' : (state.pty === '/2') ? '/(비,눈)' : (state.pty === '/3') ? '/눈' : (state.pty === '/5') ? '/빗방울'
+            : (state.pty === '/6') ? '/빗방울눈날림' : (state.pty === '/7') ? '/눈날림' : (state.pty === '/4') ? '/소나기' : ''} </div>
         <div className='popBox'>{state.tmp}℃</div>
-        <div className='popBox'><FontAwesomeIcon icon={faLocationDot}/>&nbsp;고척동</div>
+        <div className='popBox'><FontAwesomeIcon icon={faLocationDot} />&nbsp;고척동</div>
       </Fragment>
-    ); 
+    );
   }
 
   const BottomWidget = () => {
@@ -111,21 +111,21 @@ const Weather = () => {
       });
       return () => clearInterval(timerId);
     }, 8000);
-    return(
-    <Fragment>
-      <div className='popdBox'>습도 {state.reh}%</div>
-      <div className='popdBox'>강수확률 {state.pop}%</div>
-    </Fragment>
-    );  
+    return (
+      <Fragment>
+        <div className='popdBox'>습도 {state.reh}%</div>
+        <div className='popdBox'>강수확률 {state.pop}%</div>
+      </Fragment>
+    );
   }
 
   return (
     <Container>
       <WeatherBoxTop>
         <WeatherBox>
-          {state.change === true ? TopWidget() :  BottomWidget()}
+          {state.change === true ? TopWidget() : BottomWidget()}
         </WeatherBox>
-        </WeatherBoxTop>
+      </WeatherBoxTop>
     </Container>
   );
 }

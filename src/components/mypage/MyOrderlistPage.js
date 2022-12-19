@@ -1,25 +1,23 @@
-import React, {  Fragment, useEffect, useState } from 'react';
-import _axios from '../../utils/axios';
+import React, { Fragment, useEffect, useState } from 'react';
 import Approval from './Approval';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
-// import Loading from '../Loading';
 
 const MyOrderlist = () => {
   const id = useSelector((store) => store.auth.authStatus.userId);
   const [state, setState] = useState({
     userPw: '',
     email: '',
-    nickname:'',
-    phone:'',
-    changePw:'',
+    nickname: '',
+    phone: '',
+    changePw: '',
     changeName: '',
     orderList: [],
     page: false,
-    result:  false,        
+    result: false,
     application: true,
     changeImg: false,
     loading: false,
@@ -45,9 +43,9 @@ const MyOrderlist = () => {
   const _handleStrikethrough = (data) => {
     _getStrikethrough(data);
   };
-  
+
   const _getStrikethrough = async (data) => {
-    const url = 'http://210.121.173.182/user/arduino'
+    const url = `${process.env.REACT_APP_SERVER_DOMAIN}/user/arduino`
     setState({
       ...state,
       loading: true,
@@ -59,7 +57,7 @@ const MyOrderlist = () => {
       }
     });
     console.log(response);
-    if(response.data.result){
+    if (response.data.result) {
       window.location.reload();
     }
     else {
@@ -73,16 +71,16 @@ const MyOrderlist = () => {
 
   useEffect(() => {
     const getOrderData = async () => {
-      const url = `http://210.121.173.182/user/arduino/${id}`;
+      const url = `${process.env.REACT_APP_SERVER_DOMAIN}/user/arduino/${id}`;
       const response = await axios.get(url);
       console.log(response);
-      if(response.data.result){
+      if (response.data.result) {
         setState({
           ...state,
           orderList: response.data.result.신청,
         });
         console.log('회원 주문목록 조회성공');
-      }else {
+      } else {
         setState({
           ...state,
           orderList: [],
@@ -91,7 +89,7 @@ const MyOrderlist = () => {
       }
     }
     getOrderData()
-  },[]);
+  }, []);
 
   const Card = () => {
     return (
@@ -103,7 +101,7 @@ const MyOrderlist = () => {
               <div className='date-data'>{item.applicationDate}</div>
               <div className='list-data'>
                 {basketList.map((row, index2) => {
-                  return(
+                  return (
                     <div className='row-box' key={index2}>
                       <div>{row.item}</div>
                       <div className='count-color'>{row.count}EA</div>
@@ -129,59 +127,59 @@ const MyOrderlist = () => {
   };
   return (
     <React.Fragment>
-    <div className='change-status'>
-    {state.application 
-      ?<Fragment>
-          <div
-            className='change-text'
-            onClick={_handleApplication}
-          >
-            신청
+      <div className='change-status'>
+        {state.application
+          ? <Fragment>
+            <div
+              className='change-text'
+              onClick={_handleApplication}
+            >
+              신청
+            </div>
+            &nbsp;&nbsp;
+            <div
+              className='change-text2'
+              onClick={_handleApplication2}
+            >
+              승인
+            </div>
+          </Fragment>
+          :
+          <Fragment>
+            <div
+              className='change-text2'
+              onClick={_handleApplication}
+            >
+              신청
+            </div>
+            &nbsp;&nbsp;
+            <div
+              className='change-text'
+              onClick={_handleApplication2}
+            >
+              승인
+            </div>
+          </Fragment>
+        }
+      </div>
+      <div className='order-box'>
+        {state.application ?
+          <div className='order-text'>
+            <div className='date'>신청날짜</div>
+            <div className='list'>신청목록</div>
+            <div className='approve'>상태</div>
+            <div className='strikethrough'>취소</div>
           </div>
-          &nbsp;&nbsp;
-          <div
-            className='change-text2' 
-            onClick={_handleApplication2}
-          >
-            승인
+          :
+          <div className='order-text'>
+            <div className='date'>신청날짜</div>
+            <div className='list2'>신청목록</div>
+            <div className='approve2'>상태</div>
           </div>
-        </Fragment>
-        :
-        <Fragment>
-          <div
-            className='change-text2'
-            onClick={_handleApplication}
-          >
-            신청
-          </div>
-          &nbsp;&nbsp;
-          <div
-            className='change-text'
-            onClick={_handleApplication2}
-          >
-            승인
-          </div>
-        </Fragment>
-      }
-    </div>
-    <div className='order-box'>
-      {state.application ? 
-        <div className='order-text'>
-          <div className='date'>신청날짜</div>
-          <div className='list'>신청목록</div>
-          <div className='approve'>상태</div>
-          <div className='strikethrough'>취소</div>
-        </div>
-        :
-        <div className='order-text'>
-          <div className='date'>신청날짜</div>
-          <div className='list2'>신청목록</div>
-          <div className='approve2'>상태</div>
-        </div>  
-      }
-      {!state.application ? <Approval/> : <Card/>}
-    </div>
-    <ToastContainer
+        }
+        {!state.application ? <Approval /> : <Card />}
+      </div>
+      <ToastContainer
         position="top-center"
         autoClose={900}
         hideProgressBar={false}

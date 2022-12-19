@@ -1,4 +1,4 @@
-import React, {  Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -25,13 +25,13 @@ const MypageInfo = () => {
   const [state, setState] = useState({
     userPw: '',
     email: '',
-    nickname:'',
-    phone:'',
-    changePw:'',
+    nickname: '',
+    phone: '',
+    changePw: '',
     changeName: '',
     orderList: [],
     page: false,
-    result:  false,        
+    result: false,
     application: true,
     changeImg: false,
     loading: false,
@@ -41,7 +41,7 @@ const MypageInfo = () => {
     check3: false,
     check4: false,
   });
-    
+
   const _handleWithdrawal = () => {
     setState({
       ...state,
@@ -97,11 +97,11 @@ const MypageInfo = () => {
     // for (let key of formData.keys()) {
     //   console.log(key, ":", formData.get(key));
     // }
-    const url = 'http://210.121.173.182/user/profileImg';
+    const url = `${process.env.REACT_APP_SERVER_DOMAIN}/user/profileImg`;
     const data = formData;
     const response = await axios.post(url, data);
     console.log(response);
-    if(response.status === 200) {
+    if (response.status === 200) {
       window.location.reload();
       console.log('이미지 업로드 성공!');
     } else {
@@ -114,10 +114,10 @@ const MypageInfo = () => {
     URL.revokeObjectURL(imgBase64);
     setImgBase64(logo);
   };
-  
-  return(
+
+  return (
     <Container>
-      { state.loading ? <Loading/> : null }
+      {state.loading ? <Loading /> : null}
       {!state.page && (
         <Content>
           <div className='title1'>
@@ -135,60 +135,60 @@ const MypageInfo = () => {
             </div>
           </div>
           {!state.check1 && !state.check2 && !state.check3 && !state.check4 && (
-          <MyInfo>
-            <div className='info'>
-              <div className='info-text'>
-                <div className='info-id'>아이디</div>
-                <div className='info-nick'>닉네임</div>
-                <div className='info-bbs'>전화번호</div>
-              </div>
-              <MyNickname/>
-            </div>
-            <div className='change-profile'>
-              <div className='change-button-box'>
-              <div className='img-box'>
-                  <MyPageImg/>
+            <MyInfo>
+              <div className='info'>
+                <div className='info-text'>
+                  <div className='info-id'>아이디</div>
+                  <div className='info-nick'>닉네임</div>
+                  <div className='info-bbs'>전화번호</div>
                 </div>
-                <div className='btn-box'>
-                  <div className='btn'>
-                    <label htmlFor='profile'>
-                      <div className="btn-upload">파일 업로드하기</div>
-                    </label>
-                    <input
-                      type="file"
-                      accept='image/*'
-                      id='profile'
-                      onChange={_handleChangeFile}
-                    />
+                <MyNickname />
+              </div>
+              <div className='change-profile'>
+                <div className='change-button-box'>
+                  <div className='img-box'>
+                    <MyPageImg />
                   </div>
-                  <div className='delete-box'>
-                    {/* <div className="btn-upload" 
+                  <div className='btn-box'>
+                    <div className='btn'>
+                      <label htmlFor='profile'>
+                        <div className="btn-upload">파일 업로드하기</div>
+                      </label>
+                      <input
+                        type="file"
+                        accept='image/*'
+                        id='profile'
+                        onChange={_handleChangeFile}
+                      />
+                    </div>
+                    <div className='delete-box'>
+                      {/* <div className="btn-upload" 
                       onClick={_handledeleteFileImage}
                     >
                       기본이미지
                     </div> */}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </MyInfo>
+            </MyInfo>
           )}
-          
+
           {!state.check1 && state.check2 && !state.check3 && !state.check4 && (
             <React.Fragment>
-            <div className='title2'>신청목록</div>
-            <MyOrderlist/>
+              <div className='title2'>신청목록</div>
+              <MyOrderlist />
             </React.Fragment>
           )}
-              {!state.check1 && !state.check2 && state.check3 && !state.check4 && (
-                <MyLog/>
-              )}
-              {!state.check1 && !state.check2 && !state.check3 && state.check4 &&(
-                <Withdrawal/>
-              )}
-          </Content>
-        )
-      }  
+          {!state.check1 && !state.check2 && state.check3 && !state.check4 && (
+            <MyLog />
+          )}
+          {!state.check1 && !state.check2 && !state.check3 && state.check4 && (
+            <Withdrawal />
+          )}
+        </Content>
+      )
+      }
       <ToastContainer
         position="top-center"
         autoClose={900}

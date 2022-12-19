@@ -7,13 +7,12 @@ import styled from 'styled-components';
 // 개발자
 import titleTab from '../../utils/TitleTab';
 import TopButton from '../TopButton';
-import Modal from '../Modal';
 import _axios from '../../utils/axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import EllipsisText from "react-ellipsis-text";
 import Loading from '../Loading';
 //css, icon
-import { faX  } from '@fortawesome/free-solid-svg-icons';
+import { faX } from '@fortawesome/free-solid-svg-icons';
 import 'react-toastify/dist/ReactToastify.css';
 
 const BasketPage = () => {
@@ -37,7 +36,7 @@ const BasketPage = () => {
     e.preventDefault();
     setState({
       ...state,
-      [e.target.name]: e.target.value 
+      [e.target.name]: e.target.value
     });
   }
 
@@ -50,19 +49,19 @@ const BasketPage = () => {
 
   // 상품 선택 삭제
   const _itemDelete = (arduinoId) => {
-    _dlelteItem(arduinoId); 
+    _dlelteItem(arduinoId);
   }
 
   const _dlelteItem = async (arduinoId) => {
     console.log(arduinoId);
-    const url = `http://210.121.173.182/cart/arduino/${arduinoId}`;
+    const url = `${process.env.REACT_APP_SERVER_DOMAIN}/cart/arduino/${arduinoId}`;
     const response = await axios.delete(url, {
       data: {
-        id : userId,
+        id: userId,
       }
     });
     console.log(response);
-    if(response.status === 200){
+    if (response.status === 200) {
       console.log('상품 삭제');
       window.location.reload();
     } else {
@@ -71,19 +70,19 @@ const BasketPage = () => {
   }
 
   const _allItemDelete = () => {
-    _dlelteAllItem(); 
+    _dlelteAllItem();
   }
 
   // 전체 삭제
   const _dlelteAllItem = async () => {
-    const url = `http://210.121.173.182/user/cart`;
+    const url = `${process.env.REACT_APP_SERVER_DOMAIN}/user/cart`;
     const response = await axios.delete(url, {
       data: {
-        id : userId,
+        id: userId,
       }
     })
     console.log(response);
-    if(response.status === 200){
+    if (response.status === 200) {
       console.log('상품 전체 삭제');
       window.location.reload();
     } else {
@@ -91,16 +90,16 @@ const BasketPage = () => {
     }
   }
 
-  useEffect(() => {    
+  useEffect(() => {
     const _getMemberData = async () => {
-      const url = `http://210.121.173.182/cart/${userId}`;
+      const url = `${process.env.REACT_APP_SERVER_DOMAIN}/cart/${userId}`;
       setState({
         ...state,
         loading: true,
       });
       const response = await axios.get(url);
       console.log(response);
-      if(response.data.message === '장바구니 전송 완료'){
+      if (response.data.message === '장바구니 전송 완료') {
         setState({
           ...state,
           loading: false,
@@ -116,7 +115,7 @@ const BasketPage = () => {
       }
     }
     _getMemberData();
-  },[]);
+  }, []);
 
   const Card = () => {
     return (
@@ -131,13 +130,13 @@ const BasketPage = () => {
                 />
               </div>
               <div className='count-item'>
-                <div className='blank-box'/>
+                <div className='blank-box' />
                 <div className='count-box'>
-                  <button 
-                    className='plus-box' 
+                  <button
+                    className='plus-box'
                     type='button'
                     onClick={() => {
-                      if(item.count < 10){
+                      if (item.count < 10) {
                         state.itemList[index].count = Number(item.count) + 1;
                         setState({
                           ...state,
@@ -152,7 +151,7 @@ const BasketPage = () => {
                   <button className='minus-box'
                     type='button'
                     onClick={() => {
-                      if(item.count > 1){
+                      if (item.count > 1) {
                         state.itemList[index].count = Number(item.count) + -1;
                         setState({
                           ...state,
@@ -170,8 +169,8 @@ const BasketPage = () => {
                     type='button'
                     onClick={() => _itemDelete(item.arduinoId)}
                   >
-                    <FontAwesomeIcon icon={ faX } size="1x"/>
-                  </button> 
+                    <FontAwesomeIcon icon={faX} size="1x" />
+                  </button>
                 </div>
               </div>
             </div>
@@ -181,7 +180,7 @@ const BasketPage = () => {
     );
   };
 
-   // 주문 버튼 클릭
+  // 주문 버튼 클릭
   const _handleSubmit = (e) => {
     e.preventDefault();
     _setData();
@@ -204,13 +203,13 @@ const BasketPage = () => {
     });
     const response = await _axios(url, params);
     console.log(response);
-    if(response.result === true){
+    if (response.result === true) {
       setState({
         ...state,
         loading: false,
       });
       navigate('/mypage');
-    }else{
+    } else {
       setState({
         ...state,
         loading: false,
@@ -219,78 +218,77 @@ const BasketPage = () => {
     }
   };
 
-  return(
+  return (
     <Container>
-      { state.loading ? <Loading/> : null }
+      {state.loading ? <Loading /> : null}
       <form onSubmit={_handleSubmit} className="main-content">
         <div className='header'>실험실습재료 신청</div>
-          <div className='content'>
-            <div className='input-form'>
-              <div className='top-info'>
-                <div className='name-box'>
-                  <div className='name'>활용교과목</div>
-                  <input
-                    className='second-box'
-                    value={state.subject}
-                    type='text'
-                    name='subject'
-                    onChange={_handleInputChange}
-                    required={true}            
-                    maxLength={10}
-                  />
-                </div>
-              </div>
-              <div className='top-info'>
-                <div className='name-box'>
-                  <div className='info'>담당교수</div>
-                  <input
-                    className='info-input'
-                    value={state.professor}
-                    type='text'
-                    name='professor'
-                    onChange={_handleInputChange}
-                    required={true}            
-                    maxLength={3}
-                  />
-                  </div>
-                </div>
+        <div className='content'>
+          <div className='input-form'>
+            <div className='top-info'>
+              <div className='name-box'>
+                <div className='name'>활용교과목</div>
+                <input
+                  className='second-box'
+                  value={state.subject}
+                  type='text'
+                  name='subject'
+                  onChange={_handleInputChange}
+                  required={true}
+                  maxLength={10}
+                />
               </div>
             </div>
-          <div className='top-box'>
-            <div className='item-name'>품&nbsp;&nbsp;명</div>
-            <div className='item-count'>수&nbsp;&nbsp;량</div>
-          </div>
-          { state.check === false && (
-            <Card/>
-          )}
-          <div className='text-box'>
-            <div className='text-box-left'>
-              <div className='text'><div className='text-font'>· 반드시 승인된 다음날 수령해야 합니다.</div></div>
-              <div className='text'><div className='text-font'>· 상품 수령 시 학생증이 필요합니다.</div></div>
-            </div>
-            <div className='text-box-right'>
-              <button
-                className='all-delete'
-                type='button'
-                onClick={_allItemDelete}
-              >
-                전체삭제
-              </button>  
+            <div className='top-info'>
+              <div className='name-box'>
+                <div className='info'>담당교수</div>
+                <input
+                  className='info-input'
+                  value={state.professor}
+                  type='text'
+                  name='professor'
+                  onChange={_handleInputChange}
+                  required={true}
+                  maxLength={3}
+                />
+              </div>
             </div>
           </div>
-          <OrderButton>
-            <div className='check-box'>
-              내용을 모두 확인했습니다.&nbsp;
-              <input type='checkbox' className='checkbox-button' value={'1'} onChange={_handleInputCheckbox} checked={state.checkbox}/>
-            </div>
-            {!state.checkbox ?
-              <LoginButton style={{ background: "gray" }} disabled={!state.checkbox}><div className='login-text'>신청</div></LoginButton>
-              : <LoginButton disabled={!state.checkbox}><div className='login-text'>신청</div></LoginButton>
-            }     
-          </OrderButton>
-        </form>
-      <TopButton/>
-      <Modal/>
+        </div>
+        <div className='top-box'>
+          <div className='item-name'>품&nbsp;&nbsp;명</div>
+          <div className='item-count'>수&nbsp;&nbsp;량</div>
+        </div>
+        {state.check === false && (
+          <Card />
+        )}
+        <div className='text-box'>
+          <div className='text-box-left'>
+            <div className='text'><div className='text-font'>· 반드시 승인된 다음날 수령해야 합니다.</div></div>
+            <div className='text'><div className='text-font'>· 상품 수령 시 학생증이 필요합니다.</div></div>
+          </div>
+          <div className='text-box-right'>
+            <button
+              className='all-delete'
+              type='button'
+              onClick={_allItemDelete}
+            >
+              전체삭제
+            </button>
+          </div>
+        </div>
+        <OrderButton>
+          <div className='check-box'>
+            내용을 모두 확인했습니다.&nbsp;
+            <input type='checkbox' className='checkbox-button' value={'1'} onChange={_handleInputCheckbox} checked={state.checkbox} />
+          </div>
+          {!state.checkbox ?
+            <LoginButton style={{ background: "gray" }} disabled={!state.checkbox}><div className='login-text'>신청</div></LoginButton>
+            : <LoginButton disabled={!state.checkbox}><div className='login-text'>신청</div></LoginButton>
+          }
+        </OrderButton>
+      </form>
+      <TopButton />
       <ToastContainer
         position="top-center"
         autoClose={500}
@@ -302,8 +300,8 @@ const BasketPage = () => {
         draggable
         pauseOnHover
       />
-    </Container> 
-  )       
+    </Container>
+  )
 }
 
 const Container = styled.div`

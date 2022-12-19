@@ -1,18 +1,15 @@
 import Axios from 'axios';
 
-// const Domain = 'http://dev.spiderplatform.co.kr';
-const Domain = 'http://210.121.173.182';
-
 const _axios = async (url, params) => {
   console.log(params);
   const headers = {
     headers: {
-      "Content-type" : "application/json",
-      "Opera-Token" : '123abc',
+      "Content-type": "application/json",
+      "Opera-Token": '123abc',
     }
   }
 
-  return await Axios.post(Domain + url, params, headers)
+  return await Axios.post(process.env.REACT_APP_SERVER_DOMAIN + url, params, headers)
     .then((response) => {
       console.log(response.data);
       return response.data;
@@ -20,7 +17,8 @@ const _axios = async (url, params) => {
     .catch(function (error) {
       console.log(error);
     }
-  );
+    );
 };
 
 export default _axios;
+

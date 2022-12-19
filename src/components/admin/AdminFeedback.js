@@ -23,14 +23,14 @@ const AdminFeedback = () => {
   // 피드백 결과 데이터
   useEffect(() => {
     const _getData = async () => {
-      const url = "http://210.121.173.182/admin/survey";
+      const url = `${process.env.REACT_APP_SERVER_DOMAIN}/admin/survey`;
       setState({
         ...state,
         loading: true,
       });
       const response = await axios.get(url);
       console.log(response);
-      if(response.status === 200){
+      if (response.status === 200) {
         setState({
           ...state,
           loading: false,
@@ -52,7 +52,7 @@ const AdminFeedback = () => {
       }
     }
     _getData()
-  },[]);
+  }, []);
 
   // 기타 의견 출력
   const Card = () => {
@@ -60,7 +60,7 @@ const AdminFeedback = () => {
     return (
       <div className='question-tag'>
         {state.opinion.map((data, idx) => {
-          if(data !== '') {
+          if (data !== '') {
             return (
               <div className='question2' key={idx}>
                 <EllipsisText
@@ -75,9 +75,9 @@ const AdminFeedback = () => {
     );
   };
 
-  return(
+  return (
     <Container>
-      { state.loading ? <Loading/> : null }
+      {state.loading ? <Loading /> : null}
       <div className='content'>
         <div className='count-box'>{state.count}명 참여</div>
         <div className='tag-list'>
@@ -98,7 +98,7 @@ const AdminFeedback = () => {
         </div>
         <div className='opinion-box'>
           <div className='opinion-tag'>기타</div>
-          <Card/>
+          <Card />
         </div>
       </div>
     </Container>

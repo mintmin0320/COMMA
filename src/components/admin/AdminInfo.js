@@ -14,7 +14,7 @@ const AdminInfo = () => {
     major: '',
     academic: '',
     classroom: '',
-    nickname:'',
+    nickname: '',
     studentId: '',
     delete: false,
     memberList: [],
@@ -23,14 +23,14 @@ const AdminInfo = () => {
 
   useEffect(() => {
     const _getMemberData = async () => {
-      const url = "http://210.121.173.182/admin/users";
+      const url = `${process.env.REACT_APP_SERVER_DOMAIN}/admin/users`;
       setState({
         ...state,
         loading: true,
       })
       const response = await axios.get(url);
       console.log(response);
-      if(response.status === 200){
+      if (response.status === 200) {
         setState({
           ...state,
           memberList: response.data,
@@ -46,22 +46,22 @@ const AdminInfo = () => {
       }
     }
     _getMemberData()
-  },[]);
+  }, []);
 
   const _memberDelete = (id) => {
-    _dlelteMember(id); 
+    _dlelteMember(id);
   }
 
   const _dlelteMember = async (id) => {
     console.log(id);
-    const url = `http://210.121.173.182/admin/user`;
+    const url = `${process.env.REACT_APP_SERVER_DOMAIN}/admin/user`;
     const response = await axios.delete(url, {
       data: {
-        id : id,
+        id: id,
       }
     });
     console.log(response);
-    if(response.status === 200){
+    if (response.status === 200) {
       window.location.reload();
       console.log('추방 성공');
     } else {
@@ -70,7 +70,7 @@ const AdminInfo = () => {
   }
 
   const Card = () => {
-    return(
+    return (
       <Fragment>
         {state.memberList.map((user, index) => {
           return (
@@ -97,24 +97,24 @@ const AdminInfo = () => {
     )
   };
 
-  return(
+  return (
     <Container>
-      { state.loading ? <Loading/> : null }
+      {state.loading ? <Loading /> : null}
       <div className='content'>
         <div className='tag-list'>
           <div className='member-id'>아이디</div>
-            <div className='member-name'>이름</div>
-            <div className='member-nickname'>닉네임</div>
-            <div className='member-phone'>전화번호</div>
-            <div className='member-student_id'>학번</div>
-            <div className='member-major'>학과</div>
-            <div className='member-grade'>학년</div>
-            <div className='member-class'>반</div>
-            <div className='member-academic'>학적</div>
-            <div className='member-delete'>추방</div>
+          <div className='member-name'>이름</div>
+          <div className='member-nickname'>닉네임</div>
+          <div className='member-phone'>전화번호</div>
+          <div className='member-student_id'>학번</div>
+          <div className='member-major'>학과</div>
+          <div className='member-grade'>학년</div>
+          <div className='member-class'>반</div>
+          <div className='member-academic'>학적</div>
+          <div className='member-delete'>추방</div>
         </div>
         <div className='member-data'>
-          <Card/>
+          <Card />
         </div>
       </div>
     </Container>

@@ -38,10 +38,10 @@ const RentalPage = () => {
     loading: false,
   });
 
-   // 입력값이 변할 때
+  // 입력값이 변할 때
   const _handleInputChange = (e) => {
-    setState({ 
-      ...state, 
+    setState({
+      ...state,
       [e.target.name]: e.target.value,
     });
   }
@@ -51,13 +51,13 @@ const RentalPage = () => {
     console.log(id);
     _getData(id);
   };
-  
+
   const _getData = async (id) => {
     const url = '/cart'
     const params = {
       userId: userId,
       basket: [{
-        arduinoId : id,
+        arduinoId: id,
       }]
     };
     setState({
@@ -66,11 +66,11 @@ const RentalPage = () => {
     });
     const response = await _axios(url, params);
     console.log(response);
-    if(response.result === 'true'){
+    if (response.result === 'true') {
       toast.success('장바구니에 상품이 담겼습니다.');
-    } else if(response.message === '이미 장바구니에 추가된 부품입니다.') {
+    } else if (response.message === '이미 장바구니에 추가된 부품입니다.') {
       toast.error(response.message);
-    } else if(response.message === '신청하신 아두이노 부품이 부족합니다.') {
+    } else if (response.message === '신청하신 아두이노 부품이 부족합니다.') {
       toast.error(response.message);
     } else {
       toast.error('실패');
@@ -90,13 +90,13 @@ const RentalPage = () => {
         checkboxes[i].checked = false
       }
     }
-    if(checkThis.value === '전체'){
+    if (checkThis.value === '전체') {
       setState({
         ...state,
         check: '',
         page: 1,
         index: 1,
-      });  
+      });
     } else {
       setState({
         ...state,
@@ -105,34 +105,34 @@ const RentalPage = () => {
     }
   }
 
-    // page + 1
+  // page + 1
   const _handleInputPlus = () => {
-    if(state.page + 1 === 10){
-      setState({ 
-        ...state, 
+    if (state.page + 1 === 10) {
+      setState({
+        ...state,
         page: 9,
         index: 9,
-      });  
+      });
     } else {
-      setState({ 
-        ...state, 
+      setState({
+        ...state,
         page: state.page + 1,
         index: state.index + 1,
       });
     }
   }
-    
+
   // page - 1
   const _handleInputMinus = () => {
-    if(state.page -1 === 0){
-      setState({ 
-        ...state, 
+    if (state.page - 1 === 0) {
+      setState({
+        ...state,
         index: 1,
         page: 1,
-      });  
+      });
     } else {
-      setState({ 
-        ...state, 
+      setState({
+        ...state,
         page: state.page - 1,
         index: state.index - 1,
       });
@@ -141,15 +141,15 @@ const RentalPage = () => {
 
   // page 이동
   const _handleInputMove = () => {
-    if(state.index === '0' || state.index < '0' || state.index > '10') {
-      setState({ 
-        ...state, 
+    if (state.index === '0' || state.index < '0' || state.index > '10') {
+      setState({
+        ...state,
         index: 1,
         page: 1,
-      });  
+      });
     } else {
-      setState({ 
-        ...state, 
+      setState({
+        ...state,
         page: state.index,
       });
     }
@@ -162,14 +162,14 @@ const RentalPage = () => {
   }
 
   const _getSearchData = async () => {
-    const url = `http://210.121.173.182/arduino/name/${state.search}`;
+    const url = `${process.env.REACT_APP_SERVER_DOMAIN}/arduino/name/${state.search}`;
     setState({
       ...state,
       loading: true,
     });
     const response = await axios.get(url);
     console.log(response);
-    if(response.data.result === false){
+    if (response.data.result === false) {
       setState({
         ...state,
         insufficient: true,
@@ -189,12 +189,12 @@ const RentalPage = () => {
   // 아두이노 리스트
   useEffect(() => {
     const _getItemData = async () => {
-      if(state.check !== '' && state.check !== '조명' && state.check !== '트랜지스터'){
+      if (state.check !== '' && state.check !== '조명' && state.check !== '트랜지스터') {
         setState({
           ...state,
           loading: true,
         });
-        const url = `http://210.121.173.182/arduino/type/${state.check}`;
+        const url = `${process.env.REACT_APP_SERVER_DOMAIN}/arduino/type/${state.check}`;
         const response = await axios.get(url);
         console.log(response);
         setState({
@@ -206,8 +206,8 @@ const RentalPage = () => {
           loading: false,
         });
         console.log(`아두이노 ${state.check} 분류 성공`);
-      } 
-      else if(state.check === '조명' || state.check === '트랜지스터') {
+      }
+      else if (state.check === '조명' || state.check === '트랜지스터') {
         setState({
           ...state,
           insufficient: true,
@@ -219,16 +219,16 @@ const RentalPage = () => {
           ...state,
           loading: true, // 빌드시 true로 전환!!
         });
-        const url = `http://210.121.173.182/arduino/${state.page}`;
+        const url = `${process.env.REACT_APP_SERVER_DOMAIN}/arduino/${state.page}`;
         const response = await axios.get(url);
         console.log(response);
-        if(response.data.result){
+        if (response.data.result) {
           setState({
-          ...state,
-          itemList: response.data.result,
-          insufficient: false,
-          loading: false,
-        });
+            ...state,
+            itemList: response.data.result,
+            insufficient: false,
+            loading: false,
+          });
           console.log(`아두이노 리스트 출력 성공`);
         } else {
           setState({
@@ -240,9 +240,9 @@ const RentalPage = () => {
           console.log(`아두이노 리스트 출력 실패`);
         }
       }
-    } 
+    }
     _getItemData();
-  },[state.check, state.page]);
+  }, [state.check, state.page]);
 
   const Card = () => {
     return (
@@ -253,21 +253,21 @@ const RentalPage = () => {
               <div
                 className='data-box'
                 onClick={() => _handleBasketAdd(item.arduinoId)}
-              >  
+              >
                 <div className='img-box'>
                   {
                     item.picture !== null ?
-                    <img
-                      src={`http://210.121.173.182/arduinoImage/${item.picture}`}
-                      alt="사진"
-                      style={{overflow : "hiden", objectFit: "contain",  width: "100%", height: "100%"}}
-                    />
-                    :
-                    <img
-                      src={NoPhoto}
-                      alt="사진"
-                      style={{overflow : "hiden", objectFit: "contain",  width: "100%", height: "100%"}}
-                    />
+                      <img
+                        src={`${process.env.REACT_APP_SERVER_DOMAIN}/arduinoImage/${item.picture}`}
+                        alt="사진"
+                        style={{ overflow: "hiden", objectFit: "contain", width: "100%", height: "100%" }}
+                      />
+                      :
+                      <img
+                        src={NoPhoto}
+                        alt="사진"
+                        style={{ overflow: "hiden", objectFit: "contain", width: "100%", height: "100%" }}
+                      />
                   }
                 </div>
                 <div className='title-box'>
@@ -281,15 +281,16 @@ const RentalPage = () => {
                 </div>
               </div>
             </Fragment>
-          )})
+          )
+        })
         }
       </Fragment>
     );
   };
 
-  return(
+  return (
     <Container>
-      { state.loading ? <Loading/> : null }
+      {state.loading ? <Loading /> : null}
       <div className='box'>
         <div className='top-menu'>
           <div className='header-bar'>
@@ -299,17 +300,17 @@ const RentalPage = () => {
                 <div className='search'>
                   <input
                     value={state.search}
-                    onChange={_handleInputChange}                
+                    onChange={_handleInputChange}
                     type='text'
-                    name='search'     
-                    className='input-css'             
+                    name='search'
+                    className='input-css'
                   />
                   <button
                     className='login-button'
                     type='button'
                     onClick={_handleSearchButton}
                   >
-                    <FontAwesomeIcon icon={ faMagnifyingGlass }/>
+                    <FontAwesomeIcon icon={faMagnifyingGlass} />
                   </button>
                 </div>
               </div>
@@ -328,7 +329,7 @@ const RentalPage = () => {
                       value="전체"
                       name="check"
                     />
-                      &nbsp;전체
+                    &nbsp;전체
                   </div>
                   <div className='checkbox1'>
                     &nbsp;
@@ -338,7 +339,7 @@ const RentalPage = () => {
                       value="센서"
                       name="check"
                     />
-                      &nbsp;센서
+                    &nbsp;센서
                   </div>
                   <div className='checkbox1'>
                     &nbsp;
@@ -348,7 +349,7 @@ const RentalPage = () => {
                       value="모듈"
                       name="check"
                     />
-                      &nbsp;모듈
+                    &nbsp;모듈
                   </div>
                   <div className='checkbox1'>
                     &nbsp;
@@ -358,7 +359,7 @@ const RentalPage = () => {
                       value="조명"
                       name="check"
                     />
-                      &nbsp;조명
+                    &nbsp;조명
                   </div>
                   <div className='checkbox1'>
                     &nbsp;
@@ -368,7 +369,7 @@ const RentalPage = () => {
                       value="IC"
                       name="check"
                     />
-                      &nbsp;IC
+                    &nbsp;IC
                   </div>
                   <div className='checkbox1'>
                     &nbsp;
@@ -378,7 +379,7 @@ const RentalPage = () => {
                       value="모터"
                       name="check"
                     />
-                      &nbsp;모터
+                    &nbsp;모터
                   </div>
                   <div className='checkbox1'>
                     &nbsp;
@@ -388,7 +389,7 @@ const RentalPage = () => {
                       value="보드"
                       name="check"
                     />
-                      &nbsp;보드
+                    &nbsp;보드
                   </div>
                   <div className='checkbox1'>
                     &nbsp;
@@ -466,9 +467,9 @@ const RentalPage = () => {
           </div>
           <div className='ranking'>
             <div className='ranking-title'>
-              <FontAwesomeIcon icon={faMedal}/>&nbsp;Best
+              <FontAwesomeIcon icon={faMedal} />&nbsp;Best
             </div>
-            <BestList/>
+            <BestList />
           </div>
         </div>
       </div>
@@ -479,7 +480,7 @@ const RentalPage = () => {
               className='button-css'
               onClick={_handleInputMinus}
             >
-                이전
+              이전
             </button>
           </div>
           <div className='now-index'>
@@ -510,13 +511,13 @@ const RentalPage = () => {
         </div>
       </MobileMoreData>
       <Content>
-      {!state.insufficient ? 
-        <div className='data'>
-          <Card/>   
-        </div>
-        :<div className='insufficient'>
-          <InsufficientPage/>
-        </div>}
+        {!state.insufficient ?
+          <div className='data'>
+            <Card />
+          </div>
+          : <div className='insufficient'>
+            <InsufficientPage />
+          </div>}
       </Content>
       <MoreData>
         <div className='index-box'>
@@ -566,8 +567,8 @@ const RentalPage = () => {
         draggable
         pauseOnHover
       />
-    </Container> 
-  )       
+    </Container>
+  )
 }
 
 const Container = styled.div`

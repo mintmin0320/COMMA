@@ -16,15 +16,15 @@ const Withdrawal = () => {
   const [state, setState] = useState({
     userPw: '',
     checkPw: false,
-    result:  false,        
+    result: false,
     loading: false
   });
-  
+
   // 입력값이 변할 때
   const _handleInputChange = (e) => {
-    setState({ 
-      ...state, 
-      [e.target.name]: e.target.value 
+    setState({
+      ...state,
+      [e.target.name]: e.target.value
     });
   }
 
@@ -42,18 +42,18 @@ const Withdrawal = () => {
     };
     setState({
       ...state,
-      loading:true,
+      loading: true,
     })
     const response = await _axios(url, params);
     console.log(response);
-    if(response.result === true){
+    if (response.result === true) {
       toast.success('비밀번호 인증 성공');
       setState({
         ...state,
         loading: false,
         checkPw: true,
       });
-    }else{
+    } else {
       toast.error('비밀번호 인증 실패');
       setState({
         ...state,
@@ -68,7 +68,7 @@ const Withdrawal = () => {
   };
 
   const _withdrawal = async () => {
-    const url = "http://210.121.173.182/user";
+    const url = `${process.env.REACT_APP_SERVER_DOMAIN}/user`;
     setState({
       ...state,
       loading: true,
@@ -79,10 +79,10 @@ const Withdrawal = () => {
       }
     });
     console.log(response);
-    if(response.status === 200){
+    if (response.status === 200) {
       dispatch(logoutRequest());
       console.log('회원 탈퇴 성공');
-    }else{
+    } else {
       toast.error('회원탈퇴 실패');
     }
     setState({
@@ -91,9 +91,9 @@ const Withdrawal = () => {
     });
   };
 
-  return(
+  return (
     <Container>
-      { state.loading ? <Loading/> : null }
+      {state.loading ? <Loading /> : null}
       <Content>
         <div className='info-correction'>
           <TitleBox>
@@ -105,7 +105,7 @@ const Withdrawal = () => {
               type='password'
               name='userPw'
               onChange={_handleInputChange}
-              required={true}            
+              required={true}
               maxLength={15}
               disabled={state.checkPw}
             />

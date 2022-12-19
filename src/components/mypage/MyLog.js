@@ -9,23 +9,23 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const MyLog = () => {
   const id = useSelector((store) => store.auth.authStatus.userId);
-  const [state, setState] = useState({        
+  const [state, setState] = useState({
     postList: [],
     loading: false,
   });
 
   useEffect(() => {
     const getUserLog = async () => {
-      const url = `http://210.121.173.182/user/${id}/post/`;
+      const url = `${process.env.REACT_APP_SERVER_DOMAIN}/user/${id}/post/`;
       const response = await axios.get(url);
       console.log(response);
-      if(response.status === 200){
+      if (response.status === 200) {
         setState({
           ...state,
           postList: response.data.result,
         });
         console.log('회원 글 목록 조회성공');
-      }else {
+      } else {
         setState({
           ...state,
           postList: [],
@@ -34,10 +34,10 @@ const MyLog = () => {
       }
     }
     getUserLog()
-  },[]);
+  }, []);
 
   const Card = () => {
-    return(
+    return (
       <React.Fragment>
         {state.postList.map((bbs, index) => {
           return (
@@ -52,7 +52,7 @@ const MyLog = () => {
     )
   };
 
-  return(
+  return (
     <Container>
       <div className='my-post-box'>
         <div className='page-title1'>
@@ -65,7 +65,7 @@ const MyLog = () => {
             <div className='bbs-date'>작성일</div>
           </div>
           <div className='log-content'>
-            <Card/>
+            <Card />
           </div>
         </div>
       </div>
@@ -79,8 +79,8 @@ const MyLog = () => {
             <div className='bbs-date'>작성일</div>
           </div>
           <div className='log-content'>
-            <MyComment/>
-          </div>  
+            <MyComment />
+          </div>
         </div>
       </div>
     </Container>

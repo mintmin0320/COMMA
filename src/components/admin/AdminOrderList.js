@@ -18,7 +18,7 @@ const AdminOrderList = () => {
     major: '',
     academic: '',
     classroom: '',
-    nickname:'',
+    nickname: '',
     studentId: '',
     result: false,        // 서버와의 axios 요청 결과   
     orderList: [],
@@ -31,12 +31,12 @@ const AdminOrderList = () => {
     console.log(id, date);
     _getApprove(id, date);
   };
-  
+
   const _getApprove = async (id, date) => {
     const url = '/admin/arduino/user'
     const params = {
       userId: id,
-      applicationDate: date,        
+      applicationDate: date,
     };
     setState({
       ...state,
@@ -44,7 +44,7 @@ const AdminOrderList = () => {
     });
     const response = await _axios(url, params);
     console.log(response);
-    if(response.result){
+    if (response.result) {
       setState({
         ...state,
         loading: false,
@@ -63,14 +63,14 @@ const AdminOrderList = () => {
   //주문 목록 조회
   useEffect(() => {
     const _getListData = async () => {
-      const url = "http://210.121.173.182/admin/arduino/users";
+      const url = `${process.env.REACT_APP_SERVER_DOMAIN}/admin/arduino/users`;
       setState({
         ...state,
         loading: true,
       });
       const response = await axios.get(url);
       console.log(response);
-      if(response.status === 200){
+      if (response.status === 200) {
         setState({
           ...state,
           loading: false,
@@ -87,10 +87,10 @@ const AdminOrderList = () => {
       }
     }
     _getListData()
-  },[]);
+  }, []);
 
   const Card = () => {
-    return(
+    return (
       <Fragment>
         {state.orderList.map((row, index) => {
           const orderBasket = row.basket;
@@ -103,14 +103,14 @@ const AdminOrderList = () => {
               <div className='member-subject'>{row.subjectName}</div>
               <div className='member-item-list'>
                 {orderBasket.map((row2, index2) => {
-                  return(
+                  return (
                     <div className='row-box' key={index2}>
                       <div>{row2.item}</div>
                       <div className='count-color'>{row2.count}EA</div>
                     </div>
                   )
                 })}
-              </div>              
+              </div>
               <div className='member-date'>{row.applicationDate}</div>
               <div className='member-status-data'>
                 <div className='btn-box'>
@@ -124,7 +124,7 @@ const AdminOrderList = () => {
                 <div className='btn-box'>
                   <button
                     className='status-btn'
-                    // onClick={() => _handleApprove(row.userId, row.applicationDate)}
+                  // onClick={() => _handleApprove(row.userId, row.applicationDate)}
                   >
                     취소
                   </button>
@@ -138,7 +138,7 @@ const AdminOrderList = () => {
   };
 
   const Card2 = () => {
-    return(
+    return (
       <Fragment>
         {state.approveList.map((row, index) => {
           const approveBasket = row.basket;
@@ -151,14 +151,14 @@ const AdminOrderList = () => {
               <div className='approve-status'>{row.status}</div>
               <div className='approve-item-list'>
                 {approveBasket.map((row3, index2) => {
-                  return(
+                  return (
                     <div className='row-box' key={index2}>
                       <div>{row3.item}</div>
                       <div className='count-color'>{row3.count}EA</div>
                     </div>
                   )
                 })}
-              </div>              
+              </div>
             </div>
           )
         })}
@@ -166,9 +166,9 @@ const AdminOrderList = () => {
     )
   };
 
-  return(
+  return (
     <Container>
-      { state.loading ? <Loading/> : null }
+      {state.loading ? <Loading /> : null}
       <div className='content'>
         <div className='list-box'>
           <div className='tag-list'>
@@ -182,10 +182,10 @@ const AdminOrderList = () => {
             <div className='member-status'>상태</div>
           </div>
           <div className='member-data'>
-            <Card/>
+            <Card />
           </div>
         </div>
-        <div className='list-blank'/>
+        <div className='list-blank' />
         <div className='list-box2'>
           <div className='tag-list'>
             <div className='approve-name'>이름</div>
@@ -196,7 +196,7 @@ const AdminOrderList = () => {
             <div className='approve-item-list2'>리스트</div>
           </div>
           <div className='member-data'>
-            <Card2/>
+            <Card2 />
           </div>
         </div>
       </div>

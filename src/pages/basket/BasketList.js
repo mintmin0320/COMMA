@@ -8,24 +8,24 @@ import TopButton from '../../components/TopButton';
 import ResponsiveBtn from '../../components/ResponsiveBtn';
 
 const BasketList = () => {
-  return(
+  return (
     <Container>
-      <ScrollIndiactor/>
+      <ScrollIndiactor />
       <MenuBox>
-        <MenuBar/>
+        <MenuBar />
       </MenuBox>
       <div className='container-box'>
         <HeaderBox>
-          <Header/>
+          <Header />
         </HeaderBox>
         <BasketPageBox>
-          <BasketPage/>
+          <BasketPage />
         </BasketPageBox>
       </div>
       <RpsBtnBox>
-        <ResponsiveBtn/>
+        <ResponsiveBtn />
       </RpsBtnBox>
-      <TopButton/>
+      <TopButton />
     </Container>
   );
 }

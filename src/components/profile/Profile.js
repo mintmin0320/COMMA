@@ -17,9 +17,9 @@ const Profile = () => {
   const dispatch = useDispatch();
   const userId = useSelector((store) => store.auth.authStatus.userId);
   const [state, setState] = useState({
-    nickname:'',
+    nickname: '',
   });
-  
+
   // 로그아웃 버튼 클릭
   const _handleLogout = (e) => {
     e.preventDefault();
@@ -28,24 +28,24 @@ const Profile = () => {
 
   useEffect(() => {
     const _getProfileData = async () => {
-      const url = `http://210.121.173.182/user/profile/${userId}`;
+      const url = `${process.env.REACT_APP_SERVER_DOMAIN}/user/profile/${userId}`;
       const response = await axios.get(url);
       console.log(response);
       setState({
         ...state,
         nickname: response.data.result,
       });
-      if(response.status === 200){
+      if (response.status === 200) {
         console.log('프로필 조회성공');
       } else {
         console.log('프로필 조회실패');
-      }    
+      }
       return () => _getProfileData();
     }
     _getProfileData()
   }
-  ,[]);
-  
+    , []);
+
   return (
     <Container>
       <ProfileBox>
@@ -58,8 +58,8 @@ const Profile = () => {
                     <EllipsisText
                       text={state.nickname}
                       length={18} />
-                      님
-                    </div>
+                    님
+                  </div>
                 </div>
                 <div className='student-id'>
                   <div className='text-box2'>Student ID</div>
@@ -70,7 +70,7 @@ const Profile = () => {
                       <FontAwesomeIcon icon={faChevronLeft} size="2x" color='white' />
                     </div>
                     <div className='chip-box'>
-                      <img src={chip} alt="logo" className='profile2'/>  
+                      <img src={chip} alt="logo" className='profile2' />
                     </div>
                   </div>
                 </div>
@@ -78,7 +78,7 @@ const Profile = () => {
               <div className='img-box'>
                 <div className='img-mid-box'>
                   <div className='img'>
-                    <ProfileImg/>
+                    <ProfileImg />
                   </div>
                   <div className='logout-box'>
                     <button
@@ -99,9 +99,9 @@ const Profile = () => {
                 <FontAwesomeIcon icon={faCartShopping} />
               </Link>
               {userId !== 'admin' && (
-              <Link to="/ask" className='button-box'>
-                <FontAwesomeIcon icon={faComment} />
-              </Link>)}
+                <Link to="/ask" className='button-box'>
+                  <FontAwesomeIcon icon={faComment} />
+                </Link>)}
               {userId === 'admin' && (
                 <Link to="/admin/memberlist" className='button-box'>
                   <FontAwesomeIcon icon={faGear} />

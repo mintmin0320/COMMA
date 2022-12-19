@@ -24,22 +24,22 @@ const Classification = () => {
     // toast.success('장바구니에 상품이 담겼습니다.');
     _getData(id);
   };
-  
+
   const _getData = async (id) => {
     const url = '/cart'
     const params = {
       userId: userId,
       basket: [{
-        arduinoId : id,
+        arduinoId: id,
       }]
     };
     const response = await _axios(url, params);
     console.log(response);
-    if(response.result === 'true'){
+    if (response.result === 'true') {
       toast.success('장바구니에 상품이 담겼습니다.');
-    } else if(response.message === '이미 장바구니에 추가된 부품입니다.') {
+    } else if (response.message === '이미 장바구니에 추가된 부품입니다.') {
       toast.error(response.message);
-    } else if(response.message === '신청하신 아두이노 부품이 부족합니다.') {
+    } else if (response.message === '신청하신 아두이노 부품이 부족합니다.') {
       alert.error(response.message);
     } else {
       alert.error('실패');
@@ -49,17 +49,17 @@ const Classification = () => {
   // best 상품
   useEffect(() => {
     const _getBestData = async () => {
-        const url = `http://210.121.173.182/arduino/best`;
-        const response = await axios.get(url);
-        console.log(response.data.result);
-        setState({
-          ...state,
-          bestList: response.data.result,
-        });
-        console.log('베스트 리스트 출력 성공');
-    } 
+      const url = `${process.env.REACT_APP_SERVER_DOMAIN}/arduino/best`;
+      const response = await axios.get(url);
+      console.log(response.data.result);
+      setState({
+        ...state,
+        bestList: response.data.result,
+      });
+      console.log('베스트 리스트 출력 성공');
+    }
     _getBestData();
-  },[]);
+  }, []);
 
   const Best = () => {
     return (
@@ -76,17 +76,18 @@ const Classification = () => {
                   />
                 </div>
                 <div className='best-icon-box'>
-                  <FontAwesomeIcon icon={ faCartArrowDown } size="2x" onClick={() => _handleBasketAdd(list.arduinoId)}/>
+                  <FontAwesomeIcon icon={faCartArrowDown} size="2x" onClick={() => _handleBasketAdd(list.arduinoId)} />
                 </div>
               </div>
-            </Fragment>  
-          )})
+            </Fragment>
+          )
+        })
         }
       </div>
     );
   };
 
-  return(
+  return (
     <Best>
       <ToastContainer
         position="top-center"
@@ -99,8 +100,8 @@ const Classification = () => {
         draggable
         pauseOnHover
       />
-    </Best> 
-  )       
+    </Best>
+  )
 }
 
 export default Classification;

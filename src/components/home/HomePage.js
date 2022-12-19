@@ -53,66 +53,66 @@ const HomePage = () => {
 
   // 공지사항 목록 데이터 출력
   const renderData = (data) => {
-    if(status === "title" && data.length === 0) {
-      return(
+    if (status === "title" && data.length === 0) {
+      return (
         <NoPost>게시물이(가) 없습니다.</NoPost>
       )
     }
-    else if(data.length === 0 || data === undefined){
-      return(
+    else if (data.length === 0 || data === undefined) {
+      return (
         <NoPost>게시물이(가) 없습니다.</NoPost>
       )
     }
     else {
-    return (
-      <Dropdown>
-        {data.filter((val, idx) => {
-          if(idx === 0 || (idx!==0 && val.noticeId !== data[idx-1].noticeId)){
-            return val;
-          }
-        }).map((notice) => {
-          return (
-            <details>
-              <summary key={notice.noticeId} onClick={() => {oneDetail(notice.noticeId)}}>
-              <p className="number">{notice.noticeId}</p>
-              { notice.noticeCategoryId === 7 ? <p className="classify">대학</p> : 
-                (notice.noticeCategoryId === 294 ? <p className="classify">학부</p> : 
-                (notice.noticeCategoryId === 320 ? <p className="classify">컴소</p> : 
-                (notice.noticeCategoryId === 321 ? <p className="classify">컴정</p> : 
-                <p className="classify">인공</p>)))
-              }
-              <p className="title">{notice.title}</p>
-              <p className="attachments">
-              {notice.file.length !== 0 ? 
-                <span><FontAwesomeIcon icon={ faPaperclip } size="1x"/></span>
-                : 
-                <span>{nbsp}</span>
-              }
-              </p>
-              <p className="writer">{notice.writer}</p>
-              <p className="date">{notice.createDate}</p>
+      return (
+        <Dropdown>
+          {data.filter((val, idx) => {
+            if (idx === 0 || (idx !== 0 && val.noticeId !== data[idx - 1].noticeId)) {
+              return val;
+            }
+          }).map((notice) => {
+            return (
+              <details>
+                <summary key={notice.noticeId} onClick={() => { oneDetail(notice.noticeId) }}>
+                  <p className="number">{notice.noticeId}</p>
+                  {notice.noticeCategoryId === 7 ? <p className="classify">대학</p> :
+                    (notice.noticeCategoryId === 294 ? <p className="classify">학부</p> :
+                      (notice.noticeCategoryId === 320 ? <p className="classify">컴소</p> :
+                        (notice.noticeCategoryId === 321 ? <p className="classify">컴정</p> :
+                          <p className="classify">인공</p>)))
+                  }
+                  <p className="title">{notice.title}</p>
+                  <p className="attachments">
+                    {notice.file.length !== 0 ?
+                      <span><FontAwesomeIcon icon={faPaperclip} size="1x" /></span>
+                      :
+                      <span>{nbsp}</span>
+                    }
+                  </p>
+                  <p className="writer">{notice.writer}</p>
+                  <p className="date">{notice.createDate}</p>
 
-              </summary>
-              <NoticeContent>
-                {notice.file.length !== 0 && 
-                  <div className='attachments'>
-                  {notice.file.map((f) => {
-                    return(
-                    <p>
-                      <FontAwesomeIcon style={{color: 'grey', marginRight: '5px'}} icon={ faPaperclip } size="1x"/>
-                      <a href={f.fileLink}>{f.fileName}</a>
-                    </p>
-                    )
-                  })}
-                  </div>
-                }
-                <span dangerouslySetInnerHTML={{__html: unescape(notice.content)}} />
-              </NoticeContent>
-            </details>
-          )
-        })}
-      </Dropdown>
-    );
+                </summary>
+                <NoticeContent>
+                  {notice.file.length !== 0 &&
+                    <div className='attachments'>
+                      {notice.file.map((f) => {
+                        return (
+                          <p>
+                            <FontAwesomeIcon style={{ color: 'grey', marginRight: '5px' }} icon={faPaperclip} size="1x" />
+                            <a href={f.fileLink}>{f.fileName}</a>
+                          </p>
+                        )
+                      })}
+                    </div>
+                  }
+                  <span dangerouslySetInnerHTML={{ __html: unescape(notice.content) }} />
+                </NoticeContent>
+              </details>
+            )
+          })}
+        </Dropdown>
+      );
     }
   };
 
@@ -131,48 +131,48 @@ const HomePage = () => {
       }
     }
 
-    if(checkThis.target.checked === true){
+    if (checkThis.target.checked === true) {
       checkValue = checkThis.target.value;
       //스타일 변경
       checkThis.target.parentNode.style.backgroundColor = "#0064ff";
       checkThis.target.parentNode.style.color = "white";
       checkThis.target.parentNode.style.fontWeight = "bold";
     }
-    else{
+    else {
       checkValue = "";
       //스타일 초기화
       checkThis.target.parentNode.style.backgroundColor = "";
       checkThis.target.parentNode.style.color = "";
       checkThis.target.parentNode.style.fontWeight = "";
     }
-    
+
     setCheckedItem(checkValue);
     getDataCategory(checkValue);
-    if(checkValue !== "") getDataFirstCategory(checkValue);
+    if (checkValue !== "") getDataFirstCategory(checkValue);
   };
   // 카테고리 선택 시 첫 페이지 데이터 가져오기
-  const getDataFirstCategory =async(checkValue)=> {
-    const url = "http://210.121.173.182/notice/category/"+checkValue+"/";
+  const getDataFirstCategory = async (checkValue) => {
+    const url = `${process.env.REACT_APP_SERVER_DOMAIN}/notice/category/` + checkValue + "/";
     let pageNumbers = [];
     let i, res;
-    for(i=1; i<=5; i++){
-      res = await axios.get(url+i);
-      if(res.data.result.length !== 0) pageNumbers.push(i);
+    for (i = 1; i <= 5; i++) {
+      res = await axios.get(url + i);
+      if (res.data.result.length !== 0) pageNumbers.push(i);
       else break;
     }
     setPage(pageNumbers);
 
-    if(Object.keys(pageNumbers).length !== 5) setMore(false);
-    else{
-      res = await axios.get(url+i);
-      if(res.data.result.length !== 0) setMore(true);
+    if (Object.keys(pageNumbers).length !== 5) setMore(false);
+    else {
+      res = await axios.get(url + i);
+      if (res.data.result.length !== 0) setMore(true);
       else setMore(false);
     }
   }
   // 체크박스 전체 해제
-  const uncheckAll =()=> {
+  const uncheckAll = () => {
     const checkboxes = document.getElementsByName("dept");
-    for(let i=0; i<checkboxes.length; i++){
+    for (let i = 0; i < checkboxes.length; i++) {
       setCheckedItem();
       checkboxes[i].checked = false;
       // 스타일 초기화
@@ -182,10 +182,10 @@ const HomePage = () => {
     }
   }
   // 카테고리 데이터 불러오기
-  const getDataCategory =async(checkValue)=> {
-    var url = "http://210.121.173.182/notice";
+  const getDataCategory = async (checkValue) => {
+    var url = `${process.env.REACT_APP_SERVER_DOMAIN}/notice`;
 
-    if(checkValue !== "") {
+    if (checkValue !== "") {
       url = url + "/category/" + checkValue;
       setStatus("category");
     }
@@ -195,7 +195,7 @@ const HomePage = () => {
 
     const res = await axios.get(url);
     setNoticeData(res.data.result);
-    
+
     closeDetails(); // 페이지 변경 시 열린 목록 닫기
     setSearch(""); // 검색어 초기화
 
@@ -209,13 +209,13 @@ const HomePage = () => {
     getDataIndex(Number(event.target.id));
   };
   // 인덱스(기본) 데이터 불러오기
-  const getDataIndex = async(number) => {
-    var url = "http://210.121.173.182/notice";
+  const getDataIndex = async (number) => {
+    var url = `${process.env.REACT_APP_SERVER_DOMAIN}/notice`;
     // 기본 인덱스, 카테고리 인덱스, 검색 인덱스 중 1
-    if(status === "category") {
+    if (status === "category") {
       url = url + "/category/" + checkedItem + "/" + number;
     }
-    else if(status === "title") {
+    else if (status === "title") {
       url = url + "/title/" + search + "/" + number;
     }
     else {
@@ -228,41 +228,41 @@ const HomePage = () => {
   }
   // 페이지 번호
   const renderPageNumbers = () => {
-    return(
+    return (
       page.map((number) => {
         return (
           <li
-          key={number}
-          id={number}
-          onClick={handleClick}
-          className={currentPage === number ? "active" : null}
+            key={number}
+            id={number}
+            onClick={handleClick}
+            className={currentPage === number ? "active" : null}
           >
-          {number}
+            {number}
           </li>
         );
       })
     )
   }
   // 페이지 번호 다음 파트 검사
-  const MorePage =async(startPage)=> {
-    var url = "http://210.121.173.182/notice";
+  const MorePage = async (startPage) => {
+    var url = `${process.env.REACT_APP_SERVER_DOMAIN}/notice`;
     let pageNumbers = [];
     let i, res;
-    if(status === "category") url = url + "/category/" + checkedItem + "/";
-    else if(status === "title") url = url + "/title/" + search + "/";
-    else  url = url + "/";
-    
-    for(i=startPage; i<startPage+5; i++){
-      res = await axios.get(url+i);
-      if(res.data.result.length !== 0) pageNumbers.push(i);
+    if (status === "category") url = url + "/category/" + checkedItem + "/";
+    else if (status === "title") url = url + "/title/" + search + "/";
+    else url = url + "/";
+
+    for (i = startPage; i < startPage + 5; i++) {
+      res = await axios.get(url + i);
+      if (res.data.result.length !== 0) pageNumbers.push(i);
       else break;
     }
     setPage(pageNumbers);
 
-    if(Object.keys(pageNumbers).length !== 5) setMore(false);
-    else{
-      res = await axios.get(url+i);
-      if(res.data.result.length !== 0) setMore(true);
+    if (Object.keys(pageNumbers).length !== 5) setMore(false);
+    else {
+      res = await axios.get(url + i);
+      if (res.data.result.length !== 0) setMore(true);
       else setMore(false);
     }
   }
@@ -271,23 +271,23 @@ const HomePage = () => {
     closeDetails(); // 페이지 변경 시 열린 목록 닫기
     setcurrentPage(currentPage + 1);
 
-    if(((currentPage+1)%5) === 1) MorePage(currentPage+1);
-    getDataIndex(currentPage+1);
+    if (((currentPage + 1) % 5) === 1) MorePage(currentPage + 1);
+    getDataIndex(currentPage + 1);
   };
   // 페이지 버튼(이전)
   const handlePrevbtn = () => {
     closeDetails(); // 페이지 변경 시 열린 목록 닫기
     setcurrentPage(currentPage - 1);
-    
-    if(currentPage === page[0] && page[0] !== 1){
+
+    if (currentPage === page[0] && page[0] !== 1) {
       let pageNumbers = [];
-      for(let i=currentPage-5; i<currentPage; i++){
+      for (let i = currentPage - 5; i < currentPage; i++) {
         pageNumbers.push(i);
       }
       setPage(pageNumbers);
       setMore(true);
     }
-    getDataIndex(currentPage-1);
+    getDataIndex(currentPage - 1);
   };
 
   // 처음 페이지 데이터 불러오기(기본)
@@ -296,26 +296,26 @@ const HomePage = () => {
     MorePageFirst();
   }, []);
   // 데이터 불러오기(기본)
-  const getDataFirst =async()=> {
-    const url = "http://210.121.173.182/notice";
+  const getDataFirst = async () => {
+    const url = `${process.env.REACT_APP_SERVER_DOMAIN}/notice`;
     const res = await axios.get(url);
     setNoticeData(res.data.result);
   }
-  const MorePageFirst =async()=> {
-    const url = "http://210.121.173.182/notice/";
+  const MorePageFirst = async () => {
+    const url = `${process.env.REACT_APP_SERVER_DOMAIN}/notice/`;
     let pageNumbers = [];
     let i, res;
-    for(i=currentPage; i<currentPage+5; i++){
-      res = await axios.get(url+i);
-      if(res.data.result.length !== 0) pageNumbers.push(i);
+    for (i = currentPage; i < currentPage + 5; i++) {
+      res = await axios.get(url + i);
+      if (res.data.result.length !== 0) pageNumbers.push(i);
       else break;
     }
     setPage(pageNumbers);
 
-    if(Object.keys(pageNumbers).length !== 5) setMore(false);
-    else{
-      res = await axios.get(url+i);
-      if(res.data.result.length !== 0) setMore(true);
+    if (Object.keys(pageNumbers).length !== 5) setMore(false);
+    else {
+      res = await axios.get(url + i);
+      if (res.data.result.length !== 0) setMore(true);
       else setMore(false);
     }
   }
@@ -326,9 +326,9 @@ const HomePage = () => {
     setSearch(e.target.value);
   }
   // 검색어 데이터 불러오기
-  const getDataSearch =async()=> {
-    var url = "http://210.121.173.182/notice";
-    if(search !== "") {
+  const getDataSearch = async () => {
+    var url = `${process.env.REACT_APP_SERVER_DOMAIN}/notice`;
+    if (search !== "") {
       url = url + "/title/" + search;
       setStatus("title");
     }
@@ -344,20 +344,20 @@ const HomePage = () => {
     setcurrentPage(1);
     getDataFirstSearch(url);
   }
-  const getDataFirstSearch =async(url)=> {
+  const getDataFirstSearch = async (url) => {
     let pageNumbers = [];
     let i, res;
-    for(i=1; i<=5; i++){
-      res = await axios.get(url+"/"+i);
-      if(res.data.result.length !== 0) pageNumbers.push(i);
+    for (i = 1; i <= 5; i++) {
+      res = await axios.get(url + "/" + i);
+      if (res.data.result.length !== 0) pageNumbers.push(i);
       else break;
     }
     setPage(pageNumbers);
 
-    if(Object.keys(pageNumbers).length !== 5) setMore(false);
-    else{
-      res = await axios.get(url+"/"+i);
-      if(res.data.result.length !== 0) setMore(true);
+    if (Object.keys(pageNumbers).length !== 5) setMore(false);
+    else {
+      res = await axios.get(url + "/" + i);
+      if (res.data.result.length !== 0) setMore(true);
       else setMore(false);
     }
   }
@@ -368,43 +368,43 @@ const HomePage = () => {
       {/*  카테고리 체크박스 */}
       <Category>
         <label htmlFor="head">
-        <input type="checkbox" 
-          id="head" 
-          name="dept" 
-          value="head" 
-          onClick={(e) => checkOnlyOne(e)} />
+          <input type="checkbox"
+            id="head"
+            name="dept"
+            value="head"
+            onClick={(e) => checkOnlyOne(e)} />
           대학
         </label>
         <label htmlFor="department">
-        <input type="checkbox" 
-          id="department" 
-          name="dept" 
-          value="department" 
-          onClick={(e) => checkOnlyOne(e)} />
+          <input type="checkbox"
+            id="department"
+            name="dept"
+            value="department"
+            onClick={(e) => checkOnlyOne(e)} />
           학부
         </label>
         <label htmlFor="software">
-        <input type="checkbox" 
-          id="software" 
-          name="dept" 
-          value="software" 
-          onClick={(e) => checkOnlyOne(e)} />
+          <input type="checkbox"
+            id="software"
+            name="dept"
+            value="software"
+            onClick={(e) => checkOnlyOne(e)} />
           소프트웨어
         </label>
         <label htmlFor="informationEngineering">
-        <input type="checkbox" 
-          id="informationEngineering" 
-          name="dept" 
-          value="informationEngineering" 
-          onClick={(e) => checkOnlyOne(e)} />
+          <input type="checkbox"
+            id="informationEngineering"
+            name="dept"
+            value="informationEngineering"
+            onClick={(e) => checkOnlyOne(e)} />
           정보공학
         </label>
         <label htmlFor="intelligence">
-        <input type="checkbox" 
-          id="intelligence" 
-          name="dept" 
-          value="intelligence" 
-          onClick={(e) => checkOnlyOne(e)} />
+          <input type="checkbox"
+            id="intelligence"
+            name="dept"
+            value="intelligence"
+            onClick={(e) => checkOnlyOne(e)} />
           인공지능
         </label>
       </Category>
@@ -414,18 +414,18 @@ const HomePage = () => {
         <div className='right-box'>
           <input
             value={search}
-            onChange={_handleInputChange}                
+            onChange={_handleInputChange}
             type='text'
             name='search'
             // placeholder='제목 검색'
-            onKeyPress={(e) => {if(e.key === 'Enter'){getDataSearch()}}}
+            onKeyPress={(e) => { if (e.key === 'Enter') { getDataSearch() } }}
           />
           <button
             className='login-button'
             type='submit'
             onClick={getDataSearch}
           >
-            <FontAwesomeIcon icon={ faMagnifyingGlass } size="1x"/>
+            <FontAwesomeIcon icon={faMagnifyingGlass} size="1x" />
           </button>
         </div>
       </Search>
@@ -436,25 +436,25 @@ const HomePage = () => {
       {/*  페이지 이동 버튼 */}
       {noticeData.length !== 0 &&
         <PageBtn>
-        <ul>
-        <li>
-          <button
-            onClick={handlePrevbtn}
-            disabled={currentPage === 1 ? true : false}
-          >
-          &lt;
-          </button>
-        </li>
-        {renderPageNumbers()}
-        <li>
-          <button
-            onClick={handleNextbtn}
-            disabled={currentPage === page[Object.keys(page).length-1] && more === false ? true : false}
-          >
-          &gt;
-          </button>
-        </li>
-        </ul>
+          <ul>
+            <li>
+              <button
+                onClick={handlePrevbtn}
+                disabled={currentPage === 1 ? true : false}
+              >
+                &lt;
+              </button>
+            </li>
+            {renderPageNumbers()}
+            <li>
+              <button
+                onClick={handleNextbtn}
+                disabled={currentPage === page[Object.keys(page).length - 1] && more === false ? true : false}
+              >
+                &gt;
+              </button>
+            </li>
+          </ul>
         </PageBtn>
       }
 

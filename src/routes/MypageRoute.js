@@ -2,13 +2,13 @@
   마이페이지 Routes 
 */
 import React from "react";
-import { 
-  Routes, 
-  Route 
+import {
+  Routes,
+  Route
 } from "react-router-dom";
 // 개발자
 import PrivateRoute from './PrivateRoute '; // 로그인 체크
-import { 
+import {
   MypageHome, // 마이페이지 홈
   MyPost,
 } from "../pages/mypage";
@@ -16,22 +16,14 @@ import {
 const MypageRoute = () => {
   return (
     <Routes>
-      <Route 
-        path="/" 
+      <Route
+        path="/"
         element={
           <PrivateRoute>
             <MypageHome />
           </PrivateRoute>
         }
       />
-    <Route 
-      path="mypost" 
-      element={
-        // <PrivateRoute>
-            <MyPost />
-        // </PrivateRoute>
-      }
-    />
     </Routes>
   );
 }

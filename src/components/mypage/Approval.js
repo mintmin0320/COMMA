@@ -10,18 +10,18 @@ import 'react-toastify/dist/ReactToastify.css';
 const Approval = () => {
   const id = useSelector((store) => store.auth.authStatus.userId);
   const [state, setState] = useState({
-    result:  false,        
+    result: false,
     approvalList: [],
     check: true,
   });
 
   useEffect(() => {
     const getOrderData = async () => {
-      const url = `http://210.121.173.182/user/arduino/${id}`;
+      const url = `${process.env.REACT_APP_SERVER_DOMAIN}/user/arduino/${id}`;
       const response = await axios.get(url);
       console.log(url);
       console.log(response);
-      if(response.data.result){
+      if (response.data.result) {
         setState({
           ...state,
           approvalList: response.data.result.승인,
@@ -36,7 +36,7 @@ const Approval = () => {
       }
     }
     getOrderData()
-  },[]);
+  }, []);
 
   const Card = () => {
     return (
@@ -48,7 +48,7 @@ const Approval = () => {
               <div className='date-data'>{item2.applicationDate}</div>
               <div className='list-data'>
                 {List.map((row2, index3) => {
-                  return(
+                  return (
                     <div className='row-box' key={index3}>
                       <div>{row2.item}</div>
                       <div className='count-color'>{row2.count}EA</div>
@@ -64,8 +64,8 @@ const Approval = () => {
     );
   };
 
-  return(
-    <Card/>
+  return (
+    <Card />
   )
 }
 

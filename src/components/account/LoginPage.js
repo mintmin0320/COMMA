@@ -44,26 +44,26 @@ const LoginPage = () => {
 
   // 입력값이 변할 때
   const _handleInputChange = (e) => {
-    setState({ 
-      ...state, 
-      [e.target.name]: e.target.value 
+    setState({
+      ...state,
+      [e.target.name]: e.target.value
     });
   };
 
   const _handlePageMove = () => {
-    window.open('https://www.dongyang.ac.kr/dongyang/index.do','홈페이지', 'scrollbars=yes');
+    window.open('https://www.dongyang.ac.kr/dongyang/index.do', '홈페이지', 'scrollbars=yes');
   };
 
   const _handlePageMove2 = () => {
-    window.open('https://account.live.com/username/recover','이메일찾기', 'scrollbars=yes');
+    window.open('https://account.live.com/username/recover', '이메일찾기', 'scrollbars=yes');
   };
 
   // 로그인 버튼 클릭
   const _handleSubmit = (e) => {
     e.preventDefault();
     console.log(state.userPw);
-    if (state.userId === 'admin'){
-      dispatch(loginRequest(state.userId, state.userPw));  
+    if (state.userId === 'admin') {
+      dispatch(loginRequest(state.userId, state.userPw));
     } else {
       dispatch(loginRequest(state.userId + state.selected, state.userPw));
     }
@@ -123,13 +123,13 @@ const LoginPage = () => {
     <Container>
       <Wrap>
         <LogoWrap>
-            <img src={Logo} alt="logo" width="100%"></img>
+          <img src={Logo} alt="logo" width="100%"></img>
         </LogoWrap>
         <form onSubmit={_handleSubmit}>
           <LoginBox>
             <IdBox>
               <TitleBox>
-                <FontAwesomeIcon icon={faUser} size="1x"/>
+                <FontAwesomeIcon icon={faUser} size="1x" />
               </TitleBox>
               <input
                 placeholder='ID'
@@ -142,7 +142,7 @@ const LoginPage = () => {
                 name='userId'
               />
               <SelectBox>
-                <select name='email' onChange={handleSelect} value={state.selected} style={{color:'black'}}>
+                <select name='email' onChange={handleSelect} value={state.selected} style={{ color: 'black' }}>
                   {selectList.map((item) => (
                     <option value={item} key={item}>
                       {item}
@@ -153,7 +153,7 @@ const LoginPage = () => {
             </IdBox>
             <PwBox>
               <TitleBox>
-                <FontAwesomeIcon icon={faLock} size="1x"/>
+                <FontAwesomeIcon icon={faLock} size="1x" />
               </TitleBox>
               <input
                 placeholder='PASSWORD'
@@ -167,13 +167,13 @@ const LoginPage = () => {
               />
             </PwBox>
             <FindIDPW>
-              <div 
+              <div
                 onClick={_handlePageMove2}
-                style={{textDecorationLine: 'none', cursor: 'pointer',color: '#0064ff'}}
+                style={{ textDecorationLine: 'none', cursor: 'pointer', color: '#0064ff' }}
               >
                 아이디 |
               </div>
-              <Link to="/findPW" style={{textDecorationLine: 'none'}}>&nbsp;비밀번호찾기</Link>
+              <Link to="/findPW" style={{ textDecorationLine: 'none' }}>&nbsp;비밀번호찾기</Link>
             </FindIDPW>
             <button
               className='login-button'

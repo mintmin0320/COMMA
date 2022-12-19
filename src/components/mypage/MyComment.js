@@ -2,30 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import styled from 'styled-components';
-// 개발자
-import Loading from '../Loading';
 //css
 import 'react-toastify/dist/ReactToastify.css';
 
 const MyComment = () => {
   const id = useSelector((store) => store.auth.authStatus.userId);
-  const [state, setState] = useState({        
+  const [state, setState] = useState({
     cmtList: [],
     loading: false,
   });
 
   useEffect(() => {
     const getUserLogCmt = async () => {
-      const url = `http://210.121.173.182/user/${id}/comment/`;
+      const url = `${process.env.REACT_APP_SERVER_DOMAIN}/user/${id}/comment/`;
       const response = await axios.get(url);
       console.log(response);
-      if(response.status === 200){
+      if (response.status === 200) {
         setState({
           ...state,
           cmtList: response.data.result,
         });
         console.log('회원 댓글 목록 조회성공');
-      }else {
+      } else {
         setState({
           ...state,
           cmtList: [],
@@ -34,11 +32,11 @@ const MyComment = () => {
       }
     }
     getUserLogCmt()
-  },[]);
+  }, []);
 
   const Card = () => {
     console.log(state.cmtList);
-    return(
+    return (
       <React.Fragment>
         {state.cmtList.map((cmt, index) => {
           return (
@@ -52,10 +50,10 @@ const MyComment = () => {
     )
   };
   console.log(state.cmtList);
-  return(
+  return (
     <Container>
-      <Card/>
-  </Container>
+      <Card />
+    </Container>
   );
 }
 

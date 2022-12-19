@@ -8,7 +8,7 @@ const AskPage = () => {
   const titleUpdator = titleTab("Loading...");
   setTimeout(() => titleUpdator("문의 - COMMA"), 100);
   const userId = useSelector((store) => store.auth.authStatus.userId);
-  
+
   // 글 작성
   const [title, setTitle] = useState();
   const [postContent, setPostContent] = useState();
@@ -27,7 +27,7 @@ const AskPage = () => {
 
   // 데이터 전송(게시글)
   const postPost = async () => {
-    const url = 'http://210.121.173.182/adminQuestionPost';
+    const url = `${process.env.REACT_APP_SERVER_DOMAIN}/adminQuestionPost`;
     const params = {
       writerId: userId,
       title: title,
@@ -45,17 +45,17 @@ const AskPage = () => {
 
   // 데이터 전송(댓글)
   const postComment = async (postId) => {
-    const url = 'http://210.121.173.182/adminQuestionPost/comment';
+    const url = `${process.env.REACT_APP_SERVER_DOMAIN}/adminQuestionPost/comment`;
     const params = {
-        writerId: userId,
-        postId: postId,
-        content: commentContent
+      writerId: userId,
+      postId: postId,
+      content: commentContent
     };
 
     // 서버로 데이터 전송
     const res = await axios.post(url, params);
 
-    if(res.data.result === false) {
+    if (res.data.result === false) {
       alert(res.data.message);
       return;
     }
@@ -68,33 +68,33 @@ const AskPage = () => {
     MorePageFirst();
   }, []);
   // 데이터 불러오기(기본)
-  const getPostsFirst =async()=> {
-    const url = "http://210.121.173.182/adminQuestionPosts";
-    const res = await axios.get(url+"/"+userId);
+  const getPostsFirst = async () => {
+    const url = `${process.env.REACT_APP_SERVER_DOMAIN}/adminQuestionPosts`;
+    const res = await axios.get(url + "/" + userId);
     setData(res.data.result);
   }
-  const MorePageFirst =async()=> {
-    const url = "http://210.121.173.182/adminQuestionPosts/"+userId;
+  const MorePageFirst = async () => {
+    const url = `${process.env.REACT_APP_SERVER_DOMAIN}/adminQuestionPosts/` + userId;
     let pageNumbers = [];
     let i, res;
-    for(i=currentPage; i<currentPage+5; i++){
-      res = await axios.get(url+"/"+i);
-      if(res.data.result.length !== 0) pageNumbers.push(i);
+    for (i = currentPage; i < currentPage + 5; i++) {
+      res = await axios.get(url + "/" + i);
+      if (res.data.result.length !== 0) pageNumbers.push(i);
       else break;
     }
     setPage(pageNumbers);
 
-    if(Object.keys(pageNumbers).length !== 5) setMore(false);
-    else{
-      res = await axios.get(url+i);
-      if(res.data.result.length !== 0) setMore(true);
+    if (Object.keys(pageNumbers).length !== 5) setMore(false);
+    else {
+      res = await axios.get(url + i);
+      if (res.data.result.length !== 0) setMore(true);
       else setMore(false);
     }
   }
-  
+
   // 글 작성 폼
-  const writePost =()=>{
-    return(
+  const writePost = () => {
+    return (
       <WritePostForm>
         <input
           name="title"
@@ -109,7 +109,7 @@ const AskPage = () => {
           value={postContent}
         />
         <div className='buttonBox'>
-          <button className='registBtn' onClick={() => {changeState(); postPost();}}>등록</button>
+          <button className='registBtn' onClick={() => { changeState(); postPost(); }}>등록</button>
           <button className='cancleBtn' onClick={() => changeState()}>취소</button>
         </div>
       </WritePostForm>
@@ -117,104 +117,104 @@ const AskPage = () => {
   }
 
   // 상태 전환
-  const changeState =()=> {
-    if(viewPost === true) setViewPost(false);
+  const changeState = () => {
+    if (viewPost === true) setViewPost(false);
     else setViewPost(true);
   }
 
   // 글 목록 폼
-  const viewPostList =(data)=>{
-    if(data === undefined || data.length === 0){
-      return(
+  const viewPostList = (data) => {
+    if (data === undefined || data.length === 0) {
+      return (
         <NoPost>
           <div>
-          <p>게시물이 없습니다.</p>
-          <button className='writeBtn' onClick={() => changeState()}>글 작성</button>
+            <p>게시물이 없습니다.</p>
+            <button className='writeBtn' onClick={() => changeState()}>글 작성</button>
           </div>
         </NoPost>
       )
     }
     else {
-    data = data.slice(0).reverse().map(num => num); // 거꾸로 정렬(최신글을 위쪽으로 배치)
-    return (
-      <>
-      <Dropdown>
-        <button className='writeBtn' onClick={() => changeState()}>글 작성</button>
-        {data.map((data) => {
-          return (
-            <>
-              <details>
-              <summary key={data.postId} onClick={() => {oneDetail(data.postId); getPostIndex(data.postId);}}>
-              <p className='title'>{data.title}</p>
-              <p className='status'>{data.status}</p>
-              <p className='writer'>{data.writerId.split('@', 1)}</p>
-              <p className='date'>{data.writeDate}</p>
-              </summary>
-              {/* 게시글 부분 */}
-              <div className='content'>
-              {/* {(userId === data.writerId || userId === "admin") && <button className='delBtn' onClick={() => {deletePost(data.postId);}}>삭제</button>} */}
-              {postData !== undefined && <p>{postData.content}</p>}
-              </div>
-              {/* 댓글 부분 */}
-              {commentData !== undefined && commentData.map((comment) => {
-                return(
-                  <CommentList key={comment.commentId}>
-                  {/* {(userId === comment.writerId || userId === "admin") && <button className='delBtn' onClick={() => {deleteComment(comment.commentId); getPostIndex(postData.postId);}}>삭제</button>} */}
-                  <p className='c_writer'>{comment.writerId.split('@', 1)}</p>
-                  <p className='c_content'>{comment.content}</p>
-                  <p className='c_date'>{comment.writeDate}</p>
-                  </CommentList>
-                )
-              })}
-              {/* 댓글 입력 부분 */}
-              <CommentInput >
-              <input 
-              name="commentContent"
-              placeholder="댓글을 입력하세요."
-              onChange={e => setCommentContent(e.target.value)}
-              value={commentContent}
-              />
-              <button
-              className='registBtn'
-              onClick={() => {postComment(postData.postId); getPostIndex(postData.postId); window.location.reload();}}>등록</button>
-              </CommentInput>
-              </details>
-            </>
-          )
-        })}
-        </Dropdown>
-        {/* 페이지 이동 버튼 */}
-        {data.length !== 0 &&
-          <PageBtn>
-            <ul>
-            <li>
-              <button
-                onClick={handlePrevbtn}
-                disabled={currentPage === 1 ? true : false}
-              >
-              &lt;
-              </button>
-            </li>
-            {renderPageNumbers()}
-            <li>
-              <button
-                onClick={handleNextbtn}
-                disabled={currentPage === page[Object.keys(page).length-1] && more === false ? true : false}
-              >
-              &gt;
-              </button>
-            </li>
-            </ul>
-          </PageBtn>
-        }
-      </>
-    );
+      data = data.slice(0).reverse().map(num => num); // 거꾸로 정렬(최신글을 위쪽으로 배치)
+      return (
+        <>
+          <Dropdown>
+            <button className='writeBtn' onClick={() => changeState()}>글 작성</button>
+            {data.map((data) => {
+              return (
+                <>
+                  <details>
+                    <summary key={data.postId} onClick={() => { oneDetail(data.postId); getPostIndex(data.postId); }}>
+                      <p className='title'>{data.title}</p>
+                      <p className='status'>{data.status}</p>
+                      <p className='writer'>{data.writerId.split('@', 1)}</p>
+                      <p className='date'>{data.writeDate}</p>
+                    </summary>
+                    {/* 게시글 부분 */}
+                    <div className='content'>
+                      {/* {(userId === data.writerId || userId === "admin") && <button className='delBtn' onClick={() => {deletePost(data.postId);}}>삭제</button>} */}
+                      {postData !== undefined && <p>{postData.content}</p>}
+                    </div>
+                    {/* 댓글 부분 */}
+                    {commentData !== undefined && commentData.map((comment) => {
+                      return (
+                        <CommentList key={comment.commentId}>
+                          {/* {(userId === comment.writerId || userId === "admin") && <button className='delBtn' onClick={() => {deleteComment(comment.commentId); getPostIndex(postData.postId);}}>삭제</button>} */}
+                          <p className='c_writer'>{comment.writerId.split('@', 1)}</p>
+                          <p className='c_content'>{comment.content}</p>
+                          <p className='c_date'>{comment.writeDate}</p>
+                        </CommentList>
+                      )
+                    })}
+                    {/* 댓글 입력 부분 */}
+                    <CommentInput >
+                      <input
+                        name="commentContent"
+                        placeholder="댓글을 입력하세요."
+                        onChange={e => setCommentContent(e.target.value)}
+                        value={commentContent}
+                      />
+                      <button
+                        className='registBtn'
+                        onClick={() => { postComment(postData.postId); getPostIndex(postData.postId); window.location.reload(); }}>등록</button>
+                    </CommentInput>
+                  </details>
+                </>
+              )
+            })}
+          </Dropdown>
+          {/* 페이지 이동 버튼 */}
+          {data.length !== 0 &&
+            <PageBtn>
+              <ul>
+                <li>
+                  <button
+                    onClick={handlePrevbtn}
+                    disabled={currentPage === 1 ? true : false}
+                  >
+                    &lt;
+                  </button>
+                </li>
+                {renderPageNumbers()}
+                <li>
+                  <button
+                    onClick={handleNextbtn}
+                    disabled={currentPage === page[Object.keys(page).length - 1] && more === false ? true : false}
+                  >
+                    &gt;
+                  </button>
+                </li>
+              </ul>
+            </PageBtn>
+          }
+        </>
+      );
     }
   }
   // 게시물 항목 데이터 가져오기
-  const getPostIndex =async(postId)=> {
-    const url = 'http://210.121.173.182/adminQuestionPost';
-    const res = await axios.get(url+"/"+postId);
+  const getPostIndex = async (postId) => {
+    const url = `${process.env.REACT_APP_SERVER_DOMAIN}/adminQuestionPost`;
+    const res = await axios.get(url + "/" + postId);
     setPostData(res.data.result.post);
     setCommentData(res.data.result.comment);
   }
@@ -232,7 +232,7 @@ const AskPage = () => {
     const details = document.querySelectorAll("details");
 
     details.forEach((targetDetail) => {
-    targetDetail.addEventListener("click", () => {
+      targetDetail.addEventListener("click", () => {
         details.forEach((detail) => {
           if (detail !== targetDetail) {
             detail.removeAttribute("open");
@@ -250,47 +250,47 @@ const AskPage = () => {
     getDataIndex(Number(event.target.id));
   };
   // 인덱스(기본) 데이터 불러오기
-  const getDataIndex = async(number) => {
-    var url = "http://210.121.173.182/adminQuestionPosts/"+userId;
-    const res = await axios.get(url+"/"+number);
+  const getDataIndex = async (number) => {
+    var url = `${process.env.REACT_APP_SERVER_DOMAIN}/adminQuestionPosts/` + userId;
+    const res = await axios.get(url + "/" + number);
     setData(res.data.result);
   }
 
   // 페이지 번호
   const renderPageNumbers = () => {
-    return(
+    return (
       page.map((number) => {
         return (
           <li
-          key={number}
-          id={number}
-          onClick={handleClick}
-          className={currentPage === number ? "active" : null}
+            key={number}
+            id={number}
+            onClick={handleClick}
+            className={currentPage === number ? "active" : null}
           >
-          {number}
+            {number}
           </li>
         );
       })
     )
   }
   // 페이지 번호 다음 파트 검사
-  const MorePage =async(startPage)=> {
-    var url = "http://210.121.173.182/posts/";
+  const MorePage = async (startPage) => {
+    var url = `${process.env.REACT_APP_SERVER_DOMAIN}/posts/`;
     let pageNumbers = [];
     let i, res;
-    
-    for(i=startPage; i<startPage+5; i++){
-    res = await axios.get(url+i);
-    if(res.data.result.length !== 0) pageNumbers.push(i);
-    else break;
+
+    for (i = startPage; i < startPage + 5; i++) {
+      res = await axios.get(url + i);
+      if (res.data.result.length !== 0) pageNumbers.push(i);
+      else break;
     }
     setPage(pageNumbers);
 
-    if(Object.keys(pageNumbers).length !== 5) setMore(false);
-    else{
-    res = await axios.get(url+i);
-    if(res.data.result.length !== 0) setMore(true);
-    else setMore(false);
+    if (Object.keys(pageNumbers).length !== 5) setMore(false);
+    else {
+      res = await axios.get(url + i);
+      if (res.data.result.length !== 0) setMore(true);
+      else setMore(false);
     }
   }
   // 페이지 버튼(다음)
@@ -298,26 +298,26 @@ const AskPage = () => {
     closeDetails(); // 페이지 변경 시 열린 목록 닫기
     setcurrentPage(currentPage + 1);
 
-    if(((currentPage+1)%5) === 1) MorePage(currentPage+1);
-    getDataIndex(currentPage+1);
+    if (((currentPage + 1) % 5) === 1) MorePage(currentPage + 1);
+    getDataIndex(currentPage + 1);
   };
   // 페이지 버튼(이전)
   const handlePrevbtn = () => {
     closeDetails(); // 페이지 변경 시 열린 목록 닫기
     setcurrentPage(currentPage - 1);
 
-    if(currentPage === page[0] && page[0] !== 1){
+    if (currentPage === page[0] && page[0] !== 1) {
       let pageNumbers = [];
-      for(let i=currentPage-5; i<currentPage; i++){
+      for (let i = currentPage - 5; i < currentPage; i++) {
         pageNumbers.push(i);
       }
       setPage(pageNumbers);
       setMore(true);
     }
-    getDataIndex(currentPage-1);
+    getDataIndex(currentPage - 1);
   };
 
-  return(
+  return (
     <Container>
       {viewPost === true ? viewPostList(data) : writePost()}
     </Container>

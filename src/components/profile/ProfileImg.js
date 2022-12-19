@@ -10,11 +10,11 @@ const ProfileImg = () => {
 
   useEffect(() => {
     const _getProfileData = async () => {
-      
-      const url = `http://210.121.173.182/user/profileImg/${userId}`;
-      const response = await axios.get(url, {responseType: 'blob'});
+
+      const url = `${process.env.REACT_APP_SERVER_DOMAIN}/user/profileImg/${userId}`;
+      const response = await axios.get(url, { responseType: 'blob' });
       // console.log(response);
-      if(response.status === 200){
+      if (response.status === 200) {
         // console.log(response.data);
         const reader = new FileReader();
         // console.log(reader);
@@ -29,15 +29,15 @@ const ProfileImg = () => {
         console.log('프로필사진 조회성공');
       } else {
         console.log('프로필사진 조회실패');
-      }    
+      }
       return () => _getProfileData();
     }
     _getProfileData()
   }
-  ,[]);
+    , []);
 
   return (
-    <img src={imgBase64} alt="logo" className='profile' style={{objectFit: "cover"}}/>  
+    <img src={imgBase64} alt="logo" className='profile' style={{ objectFit: "cover" }} />
   );
 }
 

@@ -6,14 +6,14 @@ import styled from 'styled-components';
 
 const CafeteriaMenu = () => {
   const dt = new Date();
-  let month = (1 + dt.getMonth());          
+  let month = (1 + dt.getMonth());
   month = month >= 10 ? month : '0' + month;  //month 두자리로 저장
-  let day = dt.getDate();                   
+  let day = dt.getDate();
   day = day >= 10 ? day : '0' + day;
 
-  let arrDayStr = ['일','월','화','수','목','금','토'];
-  let str = (dt.getMonth()+1)+'월 '+dt.getDate()+'일 ('+arrDayStr[dt.getDay()]+')';
-  let todayDate = (dt.getFullYear())+'-'+(month)+'-'+(day);
+  let arrDayStr = ['일', '월', '화', '수', '목', '금', '토'];
+  let str = (dt.getMonth() + 1) + '월 ' + dt.getDate() + '일 (' + arrDayStr[dt.getDay()] + ')';
+  let todayDate = (dt.getFullYear()) + '-' + (month) + '-' + (day);
 
   let koreanData = '';
   let goodData = '';
@@ -25,17 +25,17 @@ const CafeteriaMenu = () => {
 
   useEffect(() => {
     const Refresh = async () => {
-      const url = 'http://210.121.173.182/cafeteriaMenu';
+      const url = `${process.env.REACT_APP_SERVER_DOMAIN}/cafeteriaMenu`;
       const response = await axios.get(url);
       console.log(response);
-      if(response.status === 200){
-        for(let i = 0; i < response.data.result.length; i++){
-          if(response.data.result[i].date === todayDate){
-            if(response.data.result[i].category === '한식'){
+      if (response.status === 200) {
+        for (let i = 0; i < response.data.result.length; i++) {
+          if (response.data.result[i].date === todayDate) {
+            if (response.data.result[i].category === '한식') {
               koreanData = response.data.result[i].food;
               console.log('한식 조회 성공');
             }
-            else if(response.data.result[i].category === '일품'){
+            else if (response.data.result[i].category === '일품') {
               goodData = response.data.result[i].food;
               console.log('일품 조회 성공');
             }
@@ -47,12 +47,12 @@ const CafeteriaMenu = () => {
           });
           console.log('식단 조회 성공');
         }
-      }else{    
+      } else {
         console.log('식단 조회 실패입니다');
       }
     }
-      Refresh();
-  },[]);
+    Refresh();
+  }, []);
 
   return (
     <Container>
