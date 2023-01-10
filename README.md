@@ -31,5 +31,18 @@
 <br/>
 
 ![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=mintmin0320&layout=compact)
+
+<br/>
+<br/>
+<div>
+
+
+![1](https://user-images.githubusercontent.com/114549939/210188152-937dfac6-e0b8-4ae6-8841-a5197cc2c1da.png)
+
+
+![2](https://user-images.githubusercontent.com/114549939/210188154-3a1f592b-2fab-4801-98cb-d5a5f8b26cae.png)
+
+<b>시스템 구성도</b>
+</div>
   
   </div>
