@@ -30,7 +30,6 @@
 </div>
 <br/>
 
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=mintmin0320&layout=compact)
 
 <br/>
 <br/>
