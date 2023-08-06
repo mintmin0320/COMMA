@@ -73,3 +73,6 @@
 # 시스템 구성도 <br/>
 ![2](https://user-images.githubusercontent.com/114549939/210188154-3a1f592b-2fab-4801-98cb-d5a5f8b26cae.png)
 <br/>
+
+# 프로젝트 회고
+<a href="https://velog.io/@mintmin0320/COMMA-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%ED%9A%8C%EA%B3%A0">COMMA 프로젝트를 진행하며</a>
