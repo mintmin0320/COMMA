@@ -75,4 +75,4 @@
 <br/>
 
 # 프로젝트 회고
-<a href="https://velog.io/@mintmin0320/COMMA-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%ED%9A%8C%EA%B3%A0">COMMA 프로젝트를 진행하며</a>
+<a href="https://mintmin-dev-world.vercel.app/blog/20230730">COMMA 프로젝트를 진행하며</a>
