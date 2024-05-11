@@ -74,4 +74,4 @@
 <br/>
 
 # 프로젝트 회고
-<a href="https://mintmin-dev-world.vercel.app/blog/20230730">COMMA 프로젝트를 진행하며</a>
+<a href="https://mintmin.dev/blog/2307/20230730">COMMA 프로젝트를 진행하며</a>
